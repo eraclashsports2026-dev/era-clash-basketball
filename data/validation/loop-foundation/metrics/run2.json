@@ -1,0 +1,172 @@
+{
+  "label": "run2",
+  "generatedAt": "2026-10-02T09:33:35.286Z",
+  "sourceSha": "b0ef7ae430f818d1d3b98bbf15a8ed3e19b30d44",
+  "environment": "test-only actual-handler / emulated Redis transport",
+  "identity": "synthetic browser cohort, no account",
+  "status": "PASS",
+  "vendor": "UNVERIFIED — no vendor configured",
+  "realRetention": "UNVERIFIED — cohort timestamps deliberately synthetic",
+  "numbers": {
+    "sharesPerCompletedGame": 0.2,
+    "cardTapsPerShare": 1,
+    "playsPerCardTap": 1,
+    "returnRate": {
+      "day2": 0.5,
+      "day7": 0.5
+    }
+  },
+  "counters": [
+    {
+      "game_completed": 5,
+      "card_created": 1,
+      "card_shared": 1,
+      "card_opened": 1,
+      "rematch_started_from_card": 1,
+      "guest_play_started": 1,
+      "signup_completed": 1,
+      "daily_attempted": 1,
+      "daily_shared": 1,
+      "mode_started": 1
+    }
+  ],
+  "ingested": [
+    {
+      "event": "game_completed",
+      "ts": 1789905600000
+    },
+    {
+      "event": "game_completed",
+      "ts": 1790424000000,
+      "uid": "synthetic-browser-a"
+    },
+    {
+      "event": "game_completed",
+      "ts": 1789992000000,
+      "uid": "synthetic-browser-a"
+    },
+    {
+      "event": "game_completed",
+      "ts": 1789905600000,
+      "uid": "synthetic-browser-b"
+    },
+    {
+      "event": "mode_started",
+      "ts": 1789905600009,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "daily_shared",
+      "ts": 1789905600008,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "daily_attempted",
+      "ts": 1789905600007,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "signup_completed",
+      "ts": 1789905600006,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "guest_play_started",
+      "ts": 1789905600005,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "rematch_started_from_card",
+      "ts": 1789905600004,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "card_opened",
+      "ts": 1789905600003,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "card_shared",
+      "ts": 1789905600002,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "card_created",
+      "ts": 1789905600001,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    },
+    {
+      "event": "game_completed",
+      "ts": 1789905600000,
+      "uid": "synthetic-browser-a",
+      "mode": "any-five",
+      "channel": "copy",
+      "source": "card"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Real handler accepts ingest",
+      "pass": true
+    },
+    {
+      "name": "Every named event stored",
+      "pass": true
+    },
+    {
+      "name": "All14 valid observations stored",
+      "pass": true
+    },
+    {
+      "name": "Closed properties remove private fields and invalid identity",
+      "pass": true
+    },
+    {
+      "name": "Unique counter never receives the invalid identity",
+      "pass": true
+    },
+    {
+      "name": "Shares per completed game",
+      "pass": true
+    },
+    {
+      "name": "Card taps per share",
+      "pass": true
+    },
+    {
+      "name": "Plays per tap (entry intent)",
+      "pass": true
+    },
+    {
+      "name": "Synthetic day2 and day7 cohorts",
+      "pass": true
+    }
+  ]
+}

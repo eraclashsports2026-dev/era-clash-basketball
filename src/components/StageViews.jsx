@@ -1,3 +1,4 @@
+import { leagueCopy } from "../loop/rights.js";
 // ── Stage views: team summary cards, Era Style stage, Ready stage ──────────────
 // Canonical panels D and E: compact team cards with coach lines flank a VS
 // mark; the Era stage owns ONE shared era control with the real rule summary
@@ -72,7 +73,7 @@ export function EraStage({ eras, selected, onSelect, gold, blue }) {
             <div style={{ fontSize: 13, fontWeight: 900, fontFamily: FONT.display }}>{era.id} ERA STYLE <span style={{ color: T.textDim, fontWeight: 400, fontSize: 11, fontFamily: FONT.ui }}>anchor {era.anchorSeason}</span></div>
             <div style={{ display: "grid", gap: 6, marginTop: 10 }}>
               {era.styleSummary.map((s, i) => (
-                <div key={i} style={{ fontSize: 12, color: T.textDim, display: "flex", gap: 8 }}><span aria-hidden="true">🏀</span>{s}</div>
+                <div key={i} style={{ fontSize: 12, color: T.textDim, display: "flex", gap: 8 }}><span aria-hidden="true">🏀</span>{leagueCopy(s)}</div>
               ))}
               <div style={{ fontSize: 12, color: T.textDim, display: "flex", gap: 8 }}><span aria-hidden="true">🎯</span>{era.threePoint ? "The three-point shot exists in this environment." : "No three-point line — every deep shot is worth two."}</div>
             </div>
@@ -81,9 +82,9 @@ export function EraStage({ eras, selected, onSelect, gold, blue }) {
             <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>HOW THIS AFFECTS THIS MATCHUP</div>
             <div style={{ marginTop: 8 }}>
               <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: T.gold }}>TEAM GOLD</div>
-              <p style={{ fontSize: 12, color: T.text, lineHeight: 1.6, margin: "3px 0 10px" }}>{notes.gold ?? (goldIds.length === 5 ? "Reading this roster in the era…" : "Complete Team Gold to see its translation.")}</p>
+              <p style={{ fontSize: 12, color: T.text, lineHeight: 1.6, margin: "3px 0 10px" }}>{leagueCopy(notes.gold) ?? (goldIds.length === 5 ? "Reading this roster in the era…" : "Complete Team Gold to see its translation.")}</p>
               <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: T.blue }}>TEAM BLUE</div>
-              <p style={{ fontSize: 12, color: T.text, lineHeight: 1.6, margin: "3px 0 0" }}>{notes.blue ?? (blueIds.length === 5 ? "Reading this roster in the era…" : "This mode generates opponents — their translation shows in the postgame.")}</p>
+              <p style={{ fontSize: 12, color: T.text, lineHeight: 1.6, margin: "3px 0 0" }}>{leagueCopy(notes.blue) ?? (blueIds.length === 5 ? "Reading this roster in the era…" : "This mode generates opponents — their translation shows in the postgame.")}</p>
             </div>
           </div>
         </div>

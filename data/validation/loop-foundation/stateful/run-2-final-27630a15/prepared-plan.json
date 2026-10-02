@@ -1,0 +1,326 @@
+{
+  "status": "PREPARED_HOLD_FOR_ROOT_GO_AFTER_FINAL_BUILD_AND_QUIET_LIGHTHOUSE",
+  "preparedAt": "2026-10-02T11:50:42.210208+00:00",
+  "runtimeSHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+  "primaryPath": "/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current",
+  "executionPath": "/private/tmp/eraclash-loop-verification-20261002",
+  "normalBuildStamp": "eraclash-assets:2.7.2:f94eb9fb10ab",
+  "normalBuildStampStatus": "Verified actual final temp dist/index.html; browsers remain held for quiet LH/root GO.",
+  "identityNamespace": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+  "reportNamespace": "run-2-final-27630a15",
+  "clientOrigin": "http://localhost:4321",
+  "apiOrigin": "http://localhost:4322",
+  "rootOriginsUntouched": [
+    "http://localhost:4320",
+    "http://localhost:4330"
+  ],
+  "localOnlyQuotas": {
+    "RL_SIM_PER_MIN_SESSION": 500,
+    "RL_SIM_PER_MIN_IP": 500,
+    "loopActionsPerMinuteUnchanged": 120,
+    "publicRecapsPerMinuteUnchanged": 20
+  },
+  "requiredChecks": {
+    "stateful": 28,
+    "guestModes": 72,
+    "reset": 3,
+    "affected": 7,
+    "privacy": 5,
+    "survival": "Actual7wins; bound20runs/140games; exact stage/outcome/terminal/public/serverboard or UNVERIFIED",
+    "dataIdentity": "Every new row/rematch candidate/calibration/core and matching snapshot",
+    "events": "All10closed names/actual wire/native/ratios/current clock/censored cohorts",
+    "tonightDirect": "Direct route + hub + current schedule + actual sourced selection + real result/card + fresh guest rematch; prior section journey is not direct-route proof",
+    "tonightDirectExpectedChecks": 9
+  },
+  "commands": [
+    {
+      "step": "fresh empty companion",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002"
+      },
+      "argv": [
+        "node",
+        "tests/loop-stateful-harness.mjs"
+      ]
+    },
+    {
+      "step": "full28 stateful actual rows/events",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002",
+        "LOOP_STATEFUL_RUN": "run-2-final-27630a15",
+        "LOOP_STATEFUL_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "tests/loop-stateful-browser.mjs"
+      ]
+    },
+    {
+      "step": "actual fresh event metrics",
+      "argv": [
+        "node",
+        "tests/loop-journey-metrics.mjs",
+        "data/validation/loop-foundation/stateful/run-2-final-27630a15/report.json"
+      ]
+    },
+    {
+      "step": "modes",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002",
+        "LOOP_BROWSER_RUN": "run-2-final-27630a15-modes",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "tests/loop-modes-browser.mjs"
+      ]
+    },
+    {
+      "step": "reset",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002",
+        "LOOP_BROWSER_RUN": "run-2-final-27630a15-reset",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "tests/loop-modes-state-reset.mjs"
+      ]
+    },
+    {
+      "step": "survival",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002",
+        "LOOP_BROWSER_RUN": "run-2-final-27630a15-survival",
+        "LOOP_TEST_URL": "http://localhost:4321",
+        "LOOP_GAUNTLET_BOUND": "20"
+      },
+      "argv": [
+        "node",
+        "tests/loop-gauntlet-survival-browser.mjs"
+      ]
+    },
+    {
+      "step": "affected",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002",
+        "LOOP_BROWSER_RUN": "run-2-final-27630a15-affected",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "/private/tmp/loop-run2-affected-state-browser.mjs"
+      ]
+    },
+    {
+      "step": "privacy",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002",
+        "LOOP_BROWSER_RUN": "run-2-final-27630a15-privacy",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "/private/tmp/loop-run2-public-get-privacy-browser.mjs"
+      ]
+    },
+    {
+      "step": "tonight-direct",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+        "LOOP_RUNTIME_SOURCE_SHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-loop-verification-20261002",
+        "LOOP_BROWSER_RUN": "run-2-final-27630a15-tonight-direct",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "/private/tmp/loop-run2-tonight-direct-browser.mjs"
+      ]
+    },
+    {
+      "step": "focused Daily clock/claim/streak; report all unselected tests",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/loop-foundation-server.test.js",
+        "-t",
+        "guest identities|forged and other-owner tokens|one completion|next-day streak",
+        "--reporter=json",
+        "--outputFile",
+        "data/validation/loop-foundation/stateful/run-2-final-27630a15/daily-clock-unit.json"
+      ]
+    }
+  ],
+  "runnerHashes": {
+    "tests/loop-stateful-harness.mjs": "584e486d83547e2761c2349e9e03d6d4b0b3a2616fbe98a4133c8f7c13fdf8f8",
+    "tests/loop-stateful-browser.mjs": "d5bf646ef19a12501e7a781737437407cf09e8d62e9111e54c1ebc52d31bad3e",
+    "tests/loop-stateful-browser-provider.js": "5c3db74c93a34d6ca6364b48e363980d7a24dfae6db497d2bfa03c093cf10515",
+    "tests/loop-stateful-identities.mjs": "eee7966e2388a13ff79ab6067b90845d47bad4ddef72b964ae5afdb0810844b7",
+    "tests/loop-modes-browser.mjs": "2423917a8c48a1a87ac44654719ad960c4064f98d68fbc7aea10b8bc75129a0b",
+    "tests/loop-modes-state-reset.mjs": "45c8578aa67adbb47f96784c7e6582dabb0cbf57ba1afae9cf1f634c90cc1d88",
+    "tests/loop-gauntlet-survival-browser.mjs": "a24f850131fd21ab5a73c1d0fc8901c4d4b6b36d62a3fed3717699f5a1f05076",
+    "tests/loop-journey-metrics.mjs": "dd0779bbf8eeffdcad83281809be41e3c8295986b2c87f20146426617295c8c6",
+    "/private/tmp/loop-run2-affected-state-browser.mjs": "a643cfef3744a52a9bba5d96132cbb8651807bc0688e5277f38b3d354486cff9",
+    "/private/tmp/loop-run2-public-get-privacy-browser.mjs": "4d164ad6db6e29309aad372c5ad0a829c63d212be986d1be2bf4ef9db8318fad",
+    "/private/tmp/loop-run2-tonight-direct-browser.mjs": "bd35c37cbc2cbee23971b38d57fe8a63da1e98895222b1dad68985ed76add237"
+  },
+  "sourceHashManifest": "/private/tmp/run-2-final-27630a15-source-hashes.json",
+  "limits": [
+    "PARTIAL EMULATED two fresh UUID account actors; actual handler-created rows, no saved/game fixtures.",
+    "No real OAuth/SMTP/Preview/Postgres RLS/hosted durability acceptance.",
+    "Browser viewport emulation; no physical-device acceptance.",
+    "Companion Vite SOURCE client with test-only existing provider injection; normal production build recorded separately.",
+    "Fresh empty memory/context/results; no old report/result IDs reused as fixtures.",
+    "Candidate4/calibration/core and saved snapshot identity asserted; no engine/data/calibration edits.",
+    "No seed/stage/result/victory injection; seven-win bounded real survival or honest UNVERIFIED.",
+    "Local session/IP500 only; shared120Loop actions/min and20public recaps/min unchanged.",
+    "Native beacon acceptance/wire receipts measured; durable/vendor ingestion unverified without readback.",
+    "Actual current clocks; immature day2/day7 censored null, no future timestamps or demand claim.",
+    "Focused Daily -t records all skipped names/reasons; parent owns separate full-unit acceptance.",
+    "Residual LCP and broader rights/provider/release blockers remain open; no threshold waiver."
+  ],
+  "runtimeOrBrowserExecution": false,
+  "oldReportsUsedAsFixtures": false,
+  "fixtureBuildStamp": "eraclash-assets:2.7.2:809e87cb7f99",
+  "sourceHashTempComparison": [
+    {
+      "path": "src/App.jsx",
+      "tempSHA256": "b9fe887352828c61109d5b476fa3af1f2fb9d432a6e30953ee05288f906f074e",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/main.jsx",
+      "tempSHA256": "aab8fa9d01d49d3e4e5ec50416e43d41b09e7e7dd9c78d15b7d3cb13dc59ec60",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/client.js",
+      "tempSHA256": "11aa3abc90adf37bc9b88fd96a4c62a96185fa386f4d00f55bca72c062fcd7e4",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/modes/LoopModes.jsx",
+      "tempSHA256": "b59c7ba6201042c8576b2f399d46237fe6c09eb794920e18d7a6f5bbc5e006eb",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/modes/TeamModes.jsx",
+      "tempSHA256": "c9ca308c2e8ddb34f4d2b38b51e13d96efd4e253f8090189a37ff33bfe4dfdbf",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/modes/SpinMode.jsx",
+      "tempSHA256": "cd793a841a3dd3285ff3977ed1473790c07bd84aeaab326f224e3233fbf8842f",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/modes/GauntletMode.jsx",
+      "tempSHA256": "8db672e505acab5ee4088ca2eeb93c2aa4e5cdeaf2cfb86287e5fb33dec17278",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/modes/FranchiseMode.jsx",
+      "tempSHA256": "0a15b567d669cf08a307c8d5519f32a9c4a777d93c2e16455d8765ca6ab42af9",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/daily/DailyMode.jsx",
+      "tempSHA256": "3d0eb820c5f78b0a39defe0191db5fdcaabe35981f6269bd883b0955f44456db",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/daily/calendar.js",
+      "tempSHA256": "1c9d7fd65d77d91de3f6282071f57373627c661761f9c1808ea64fd2ac5c1617",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/daily/clock.js",
+      "tempSHA256": "00c7ab96243b0bc70ed3a1b0ce7a2db284d450aa8ad55130d850a61c50e7fcc8",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/careerMode.js",
+      "tempSHA256": "486eec44f91d382267a535987ec94c13dd7caaba3865331d0025970bf87ba944",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/loop/events.js",
+      "tempSHA256": "6560e2d509063d7e6890175b21912b8268977b9be5ead9797e86579ea4c9f6df",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "api/game.js",
+      "tempSHA256": "e426dc510946f8443db761f1e02f6ec9c931154533b039b13b27fb938497ae1c",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "api/_lib/loopFoundation.js",
+      "tempSHA256": "09018fec4feb20aa1f9a4d54ca90bf04bed20b5ccb2577402d6f57ea78370a3e",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "api/_lib/cloudAccounts.js",
+      "tempSHA256": "cf1cc7741efefe95ece82584b2c325670827e5a08f67edbbbc3dbfc25d642f76",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/accounts/careerV2.js",
+      "tempSHA256": "c9b932c5d3dc1da0a60f6329c5fe017d1382e351905e10ae3efe20bb92a0fa57",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/theme/applyTheme.js",
+      "tempSHA256": "0c0d4e3e81617a210b7171aa5ad5210024020e081e60fc5a620bc4bbc8f3a131",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/components/arena/ArenaHeader.jsx",
+      "tempSHA256": "fddf0b7da0d9eb2e67888a91cee41eb15b90c1b01491278640a066733f41fee8",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "src/components/lobby/PlayLobby.jsx",
+      "tempSHA256": "17f07cbb5089097920ba3c62375ab79b302e811539af230b638d8998a31a0c8a",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "index.html",
+      "tempSHA256": "aaec51276f4465f5d3b90e6173c9b3e592f7cb950c7df5cff7000555f9fd6d35",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "vite.config.js",
+      "tempSHA256": "7f9373188864395faf2605f903bdcb1261e122619a16e30e18d8e43e4f5db063",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "scripts/harness.mjs",
+      "tempSHA256": "43a5cd82590ded298b21e9a6eec5b5afcd8d198388caa117a35a6ef052aef976",
+      "matchesPrimaryPreparedSHA256": true
+    },
+    {
+      "path": "tests/loop-foundation-server.test.js",
+      "tempSHA256": "fa77594a79a28c7014d5e49c0da767529960be834f5d68650d61c042c19f894f",
+      "matchesPrimaryPreparedSHA256": true
+    }
+  ],
+  "lastPreparedAt": "2026-10-02T11:51:48.156863+00:00",
+  "selectedTrackedTempClean": true,
+  "selectedTrackedTempCleanProof": "Read-only git diff --exit-code -- src api public config scripts package.json package-lock.json returned0 on exact276HEAD."
+}

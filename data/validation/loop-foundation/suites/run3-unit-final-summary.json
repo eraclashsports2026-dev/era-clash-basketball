@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-02T13:22:08.411286+00:00",
+  "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "status": "FAIL_FINAL",
+  "testFiles": 100,
+  "filePass": 97,
+  "fileFail": 3,
+  "testPass": 2961,
+  "testFail": 2,
+  "testTotal": 2963,
+  "collectionBlocked": 1,
+  "pending": 0,
+  "todo": 0,
+  "failures": [
+    {
+      "file": "tests/v6c2c4-scoped-calibration.test.js",
+      "message": "run `npm run calibration:identifiability` first \u2014 readiness is derived from measured identifiability, not asserted",
+      "assertions": []
+    },
+    {
+      "file": "tests/v6c2c6-orientation-and-sidebias.test.js",
+      "message": "",
+      "assertions": [
+        {
+          "name": "prior failing cell was read from the artifact, not inferred",
+          "status": "failed",
+          "failures": [
+            "Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'\n    at readFileSync (node:fs:440:20)\n    at /private/tmp/eraclash-run3-final-20261002/tests/v6c2c6-orientation-and-sidebias.test.js:19:27\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/v6c2c6-side-bias-policy.test.js",
+      "message": "",
+      "assertions": [
+        {
+          "name": "side-bias policy v2 is frozen keeps the v1 policy unedited",
+          "status": "failed",
+          "failures": [
+            "Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'\n    at readFileSync (node:fs:440:20)\n    at /private/tmp/eraclash-run3-final-20261002/tests/v6c2c6-side-bias-policy.test.js:48:27\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+          ]
+        }
+      ]
+    }
+  ],
+  "rawSha256": "3d83023479062478f4f345a8c255835da2287b02ea44cf565a5179dff2ef711d",
+  "sourceChange": "None; only exact original Git source objects fetched in disposable clone. Frozen calibration measurement caches not fabricated/regenerated.",
+  "preservationAssertion": "passed"
+}

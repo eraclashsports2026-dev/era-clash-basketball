@@ -1,0 +1,78 @@
+{
+  "artifact": "preview-isolation-check",
+  "origin": "https://era-clash-basketball-git-phase-data-foundation-8711b8-era-clash.vercel.app",
+  "recordedAt": "2026-09-26T22:16:04.195Z",
+  "diagnostics": {
+    "environment": "preview",
+    "serverAndBrowserSameProject": true,
+    "previewPointedAtProduction": false,
+    "serverCredentialAccepted": true,
+    "probe": 200
+  },
+  "browserHosts": [
+    "https://lfybiphmqkiecfrqsfzt.supabase.co"
+  ],
+  "checks": [
+    {
+      "name": "this is a preview deployment",
+      "pass": true,
+      "fact": "preview"
+    },
+    {
+      "name": "server and browser name the same project",
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "name": "the preview is NOT pointed at production",
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "name": "the provider accepts the preview server credential",
+      "pass": true,
+      "fact": "probe 200"
+    },
+    {
+      "name": "account features are ready on the preview",
+      "pass": true,
+      "fact": "{\"enabled\":true,\"ready\":true}"
+    },
+    {
+      "name": "the browser bundle names the PREVIEW project only",
+      "pass": true,
+      "fact": "[\"https://lfybiphmqkiecfrqsfzt.supabase.co\"]"
+    },
+    {
+      "name": "the leaderboard answers 200 on the preview",
+      "pass": true,
+      "fact": "200 {\"status\":\"ok\",\"ratingVersion\":\"1.0.0\",\"limit\":100,\"rows\":[],\"requestId\":\"697922"
+    },
+    {
+      "name": "a public-profile lookup answers 200 (found:false) — no 502",
+      "pass": true,
+      "fact": "200"
+    },
+    {
+      "name": "anonymous protected reads are still refused",
+      "pass": true,
+      "fact": "401"
+    },
+    {
+      "name": "a forged token is refused",
+      "pass": true,
+      "fact": "401"
+    },
+    {
+      "name": "My EraClash renders without an error state",
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "name": "the Leaderboard page loads its rows (or an honest empty state), not the failure card",
+      "pass": true,
+      "fact": "BASKETBALL Play ▾ Fantasy ▾ Daily Challenges Leaderboard My EraClash Sign in Create free account LEADERBOARD Challenge R"
+    }
+  ],
+  "pass": true
+}

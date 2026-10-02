@@ -10,6 +10,8 @@
 import { useState, useEffect, useRef } from "react";
 import { EraFractureActiveEdge } from "../brand/EraFracture.jsx";
 import { track } from "../../analytics.js";
+// Clash Breakdown V1: a descriptive breakdown of this completed result, behind one control.
+import ClashBreakdown from "../breakdown/ClashBreakdown.jsx";
 
 const TABS = [
   ["story", "Game Story"],
@@ -126,6 +128,9 @@ export default function ResultDock({
   // Phase 9D: CAREER PROGRESS after the result hierarchy; a previous clash
   // shows what it earned from browser memory, never a new award.
   careerProgress = null, priorCareerProgress = null,
+  // Clash Breakdown V1 (server flag clashBreakdown): the entry sits under the
+  // score and comparison, collapsed, so rating, XP and the actions stay put.
+  showBreakdown = false,
 }) {
   // No section is open in the canonical reference state — the summary and four
   // tab controls fit the first viewport, and the frozen 8C.1 geometry contract
@@ -204,6 +209,7 @@ export default function ResultDock({
 
         {/* Phase 9C: a recipient's comparison against the original leads the result. */}
         {challengeComparison}
+        {showBreakdown && <ClashBreakdown result={res.sim} surface="dock" />}
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
           {TABS.map(([id, label]) => (
             <button key={id} role="tab" className="ec-dock-tab" aria-selected={tab === id} aria-controls="ec-dock-panel"

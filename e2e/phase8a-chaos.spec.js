@@ -184,7 +184,7 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
   await expect(page.getByRole("dialog", { name: "Full postgame report" })).toBeVisible();
 
   // Game Story: a deterministic, player-centered opening and quarter flow.
-  await page.getByRole("tab", { name: "Game Story" }).last().click();
+  await page.getByRole("dialog", { name: "Full postgame report" }).getByRole("tab", { name: "Game Story", exact: true }).click();
   await expect(page.getByText(/HOW (GOLD|BLUE) WON/).last()).toBeVisible();
   await expect(page.getByText("QUARTER BY QUARTER").last()).toBeVisible();
   await expect(page.getByText(/WHY YOU (WON|LOST)/)).toHaveCount(0);
@@ -192,7 +192,7 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
   await expect(page.getByText("EXPANDED GAME ANALYSIS").last()).toBeVisible();
 
   // Box score: ONE table, two row groups, columns that actually agree.
-  await page.getByRole("tab", { name: "Box Score" }).last().click();
+  await page.getByRole("dialog", { name: "Full postgame report" }).getByRole("tab", { name: "Box Score", exact: true }).click();
   const geometry = await page.evaluate(() => {
     const t = document.querySelector("table.box-table");
     const bodies = [...t.querySelectorAll("tbody")];
@@ -214,7 +214,7 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
   expect(geometry.pageOverflow).toBe(false);
 
   // Coaching: a scouting report, named coaches, no enums, no fabricated clock.
-  await page.getByRole("tab", { name: "Coaching & Strategy" }).last().click();
+  await page.getByRole("dialog", { name: "Full postgame report" }).getByRole("tab", { name: "Coaching & Strategy", exact: true }).click();
   // Three sub-sections, not two very long parallel columns.
   for (const sec of ["Offensive Scheme", "Defensive Scheme", "In-Game Adjustments"]) {
     await expect(page.getByRole("tab", { name: sec })).toBeVisible();
@@ -242,7 +242,7 @@ test("box-score stat values never wrap", async ({ page }) => {
   await page.getByRole("button", { name: /RUN CLASH/ }).click();
   await expect(page.locator(".ec-ta-score[data-winner]")).toBeVisible({ timeout: 40_000 });
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).click();
-  await page.getByRole("tab", { name: "Box Score" }).last().click();
+  await page.getByRole("dialog", { name: "Full postgame report" }).getByRole("tab", { name: "Box Score", exact: true }).click();
   const wrapped = await page.evaluate(() => {
     const cells = [...document.querySelectorAll("table.box-table tbody td")];
     const line = Math.min(...cells.map((c) => c.getBoundingClientRect().height));

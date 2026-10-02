@@ -12,8 +12,10 @@ import { sameOrigin } from "./_lib/session.js";
 import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
 import { WAVE2, WAVE2_TELEMETRY_EVENTS, cohortOf } from "../src/wave2.js";
+import { LOOP_EVENTS, cleanLoopProperties } from '../src/loop/events.js';
 
 const ALLOWED = new Set([
+  ...LOOP_EVENTS,
   "session_started", "returning_session",
   "draft_started", "player_option_shown", "player_selected", "reroll_used",
   "draft_completed", "draft_abandoned",
@@ -104,6 +106,9 @@ const ALLOWED = new Set([
   // attempt id, a payload, an image or a token)
   "card_composer_opened", "card_exported", "card_share_invoked", "card_export_failed",
   "rivalry_requested", "rivalry_responded", "rivalry_ended", "rivalries_viewed", "rivalry_challenge_again",
+  // Clash Breakdown V1 (closed; metadata may carry breakdownVersion, surface,
+  // insightCount, hasFlow — never a name, a score, a result id or a stat)
+  "clash_breakdown_opened", "clash_breakdown_comparison_opened",
 ]);
 export const EVENTS_ALLOWLIST = ALLOWED;
 
@@ -132,11 +137,16 @@ export default async function handler(req, res) {
   const study = new Set(WAVE2_TELEMETRY_EVENTS);
   for (const e of events) {
     if (!e || typeof e.event !== "string" || !ALLOWED.has(e.event)) continue;
-    const clean = JSON.stringify(e);
+    const cleanEvent = LOOP_EVENTS.includes(e.event) ? {
+      event: e.event, ts: Number.isFinite(Number(e.ts)) && Number(e.ts) > 0 ? Number(e.ts) : Date.now(),
+      uid: /^[a-z0-9-]{8,64}$/i.test(String(e.uid || '')) ? e.uid : undefined,
+      ...cleanLoopProperties(e),
+    } : e;
+    const clean = JSON.stringify(cleanEvent);
     if (clean.length > MAX_EVENT_BYTES) continue;
     cmds.push(["LPUSH", `an:log:${day}`, clean]);
     cmds.push(["HINCRBY", `an:counts:${day}`, e.event, 1]);
-    if (e.uid) cmds.push(["PFADD", `an:uniq:${day}:${e.event}`, e.uid]);
+    if (cleanEvent.uid) cmds.push(["PFADD", `an:uniq:${day}:${e.event}`, cleanEvent.uid]);
     if (wave2.ok && study.has(e.event)) {
       const cohort = wave2.cohort ?? cohortOf(wave2.testerId);
       cmds.push(["HINCRBY", wave2PartitionKey(WAVE2.waveId, cohort, wave2.testerId, e.build), e.event, 1]);

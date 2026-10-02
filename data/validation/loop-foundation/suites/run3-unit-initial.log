@@ -1,0 +1,1043 @@
+
+ RUN  v4.1.11 /private/tmp/eraclash-run3-final-20261002
+
+ ❯ tests/v6c2c6-orientation-and-sidebias.test.js (39 tests | 1 failed) 4001ms
+     × was read from the artifact, not inferred 4ms
+     ✓ records the exact identity, rosters and coaches 1ms
+     ✓ proves the v1 statistic was HALF the paired effect 0ms
+     ✓ verifies the scale relationship live, not just from the artifact  1066ms
+     ✓ complement now relabels its perspective  396ms
+     ✓ applies the complement exactly once  966ms
+     ✓ keeps side bias perspective-independent under reversal  794ms
+     ✓ canonicalises both request orders to one matchup 0ms
+     ✓ reports the paired standard error, not a single-proportion one  752ms
+     ✓ no longer gates side bias inside the reliability suite 8ms
+     ✓ verifies as an artifact and separates the three questions 1ms
+     ✓ ran at least twelve semantic checks 0ms
+     ✓ records the defects it found without claiming they changed a number 0ms
+     ✓ establishes the actual-game control as equivalent on fresh seeds 0ms
+     ✓ classifies the v1 failure as sampling noise and does not block the lock 0ms
+     ✓ distinguishes a realization difference from a bias for roster order 0ms
+     ✓ used reserved, non-overlapping seed index blocks 0ms
+     ✓ verifies as an artifact 2ms
+     ✓ ran under the policy that was frozen before it 1ms
+     ✓ classifies every cell and reconciles to the family size 0ms
+     ✓ leaves no cell materially biased or inconclusive 0ms
+     ✓ keeps the aggregate inside the tighter aggregate margin 0ms
+     ✓ finds no systematic stratum in any dimension 0ms
+     ✓ preserves every stage of every cell, discarding none 2ms
+     ✓ resolves the previously failing cell as equivalent on fresh seeds 0ms
+     ✓ finds every mirror cell equivalent — the purest side probe 0ms
+     ✓ records zero invariant violations and zero ties 0ms
+     ✓ touches no sealed holdout fixture 1ms
+     ✓ applied a simultaneous alpha reflecting the whole family 0ms
+     ✓ verifies and reads its parameter ids from the artifact 2ms
+     ✓ declares a direction claim for every resolved parameter 0ms
+     ✓ confirms each mechanic responds in its predeclared direction 0ms
+     ✓ refuses to claim a magnitude from a direction 0ms
+     ✓ freezes every affected parameter at its registry default 0ms
+     ✓ ran no parameter search 0ms
+     ✓ reconciles readiness to the active parameter count 0ms
+     ✓ uses only the declared visibility classes 0ms
+     ✓ explains why the prior readiness class was wrong 0ms
+     ✓ every active parameter still holds its registry default 0ms
+ ❯ tests/v6c2c4-scoped-calibration.test.js (0 test)
+ ❯ tests/v6c2c6-side-bias-policy.test.js (35 tests | 1 failed) 5688ms
+     ✓ has not changed since it was frozen 1ms
+     ✓ declares itself frozen before results 1ms
+     ✓ preserves the v1 margin rather than moving it to clear 0.0781 0ms
+     ✓ discloses that the corrected scale makes the gate stricter, not looser 0ms
+     × keeps the v1 policy unedited 3ms
+     ✓ requires a signed perspective for every reported effect 0ms
+     ✓ declares a cumulative ladder that cannot drop a stage 1ms
+     ✓ treats INCONCLUSIVE as a failure to pass 0ms
+     ✓ applies family-wise control in both directions 0ms
+     ✓ erf matches published values 0ms
+     ✓ zFor matches published normal quantiles 0ms
+     ✓ pairedSummary matches a hand-calculated fixture 0ms
+     ✓ pairedSummary is exact on an all-zero (mirror) sample 0ms
+     ✓ TOST p is the larger of the two one-sided p-values 0ms
+     ✓ TOST refuses equivalence when the SE is large 0ms
+     ✓ twoSidedZTest agrees with the normal tail 0ms
+     ✓ waldInterval is symmetric about the mean 0ms
+     ✓ bootstrap resamples pairs and is deterministic 115ms
+     ✓ holm is step-down and monotone 0ms
+     ✓ calls a well-sampled known null EQUIVALENT  2194ms
+     ✓ calls an exact mirror EQUIVALENT 96ms
+     ✓ refuses to call an UNDER-sampled null equivalent 24ms
+     ✓ detects a known positive side effect  410ms
+     ✓ detects a known negative side effect  385ms
+     ✓ calls an effect sitting exactly on the margin INCONCLUSIVE  1558ms
+     ✓ requires the Wald and bootstrap intervals to agree  398ms
+     ✓ a tighter (Holm-adjusted) alpha makes equivalence harder, never easier  387ms
+     ✓ verifies as an artifact 1ms
+     ✓ is disjoint from every prior seed domain at the maximum sample 90ms
+     ✓ draws distinct seeds across the whole ladder 16ms
+     ✓ records pair counts per stage matching the ladder 0ms
+     ✓ reconciles and excludes every sealed fixture 0ms
+     ✓ includes exact mirrors, which 6C2C5's family lacked 0ms
+     ✓ spans more than one era so the era stratum is evaluable 0ms
+     ✓ names a perspective team for every cell 1ms
+ ✓ tests/v6a-possession-core.test.js (80 tests) 16359ms
+     ✓ no game ever ends level, across many seeds  1413ms
+     ✓ a tie at the end of regulation goes to overtime  2153ms
+     ✓ multiple overtimes are supported and still reconcile  3841ms
+     ✓ hold across a large sweep with zero violations  1551ms
+     ✓ hold across every era  1069ms
+     ✓ a pre-three-point era produces ZERO threes, in every game  442ms
+     ✓ outside skill is retained structurally when the three is unavailable  337ms
+     ✓ realised shooting tracks expectation without bias  399ms
+     ✓ the better-expected team wins more often across matchups  2388ms
+     ✓ confidence travels with the result and is not variance  1194ms
+ ✓ tests/v6c2c1-monte-carlo-probability.test.js (40 tests) 22854ms
+     ✓ labels the output as model-implied and never as true probability  617ms
+     ✓ returns probabilities that sum to one with matching win counts  404ms
+     ✓ is deterministic across repeated uncached calls  829ms
+     ✓ places the point estimate inside its own confidence interval  399ms
+     ✓ narrows the interval as the sample tier grows  2324ms
+     ✓ returns exactly one half for a mirror matchup  481ms
+     ✓ still reports the raw gold-slot advantage that pairing removed  446ms
+     ✓ keeps the mirror's raw side bias small enough to be sampling noise  14144ms
+     ✓ splits each estimate evenly between the two orientations  455ms
+     ✓ gives the exact complement rather than a second sample  738ms
+     ✓ reuses the cached estimate instead of simulating again  451ms
+     ✓ mirrors the confidence interval about a half  441ms
+     ✓ is its own inverse  353ms
+     ✓ carries fingerprints and versions but no roster payload  344ms
+     ✓ reports the interval width and the side bias it measured  352ms
+ ✓ tests/v6b2-actions-and-zone.test.js (52 tests) 6568ms
+     ✓ zone possessions reconcile statistically  442ms
+     ✓ coach systems change the action mix  579ms
+     ✓ neither post-up nor isolation is universally optimal  495ms
+     ✓ conservation holds across eras, coaches, rosters and both defences  919ms
+     ✓ no NaN, Infinity or negative statistic anywhere  533ms
+     ✓ no coach, action, shell or era universally dominates  759ms
+ ✓ tests/v8a-enhanced-recap.test.js (9 tests) 16074ms
+     ✓ polls a 202 through to READY instead of reporting success with nothing  3006ms
+     ✓ gives up after a finite number of polls — the spinner can never hang  13011ms
+ ✓ tests/v6b1-defensive-matchups.test.js (73 tests) 5145ms
+     ✓ all Phase 6A invariants still hold with defence on  1317ms
+     ✓ invariants hold across every era with defence on  579ms
+     ✓ defence changes outcomes without adding points directly  859ms
+     ✓ no universal best defence exists  1391ms
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > core result exists and is complete even when narration 500s
+{"t":"2026-10-02T13:10:49.324Z","requestId":"9c1b71fcd8d6","route":"game","mode":"single","status":200,"ms":21,"resultId":"5i4yttvg02","sim":"chaos-1-1790","persisted":true}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > core result exists and is complete even when narration 500s
+{"t":"2026-10-02T13:10:49.329Z","route":"cache","namespace":"narrative","resultId":"5i4yttvg02","requestId":"21c446aae1f3","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > core result exists and is complete even when narration 500s
+{"t":"2026-10-02T13:10:49.741Z","route":"cache","namespace":"narrative","resultId":"5i4yttvg02","requestId":"21c446aae1f3","errorCode":"MODEL_UNAVAILABLE","providerFailure":true,"providerCall":true,"narrativeRequest":false,"event":"cache_error"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > core result exists and is complete even when narration 500s
+{"t":"2026-10-02T13:10:49.742Z","requestId":"21c446aae1f3","route":"narrative","status":503,"ms":414,"error_code":"MODEL_UNAVAILABLE","circuit":"HALF_OPEN"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > AI timeout aborts within the configured budget and reports MODEL_TIMEOUT
+{"t":"2026-10-02T13:10:49.749Z","requestId":"51e77eb551f8","route":"game","mode":"single","status":200,"ms":6,"resultId":"zqoq0b5z5k","sim":"chaos-2-1790","persisted":true}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > AI timeout aborts within the configured budget and reports MODEL_TIMEOUT
+{"t":"2026-10-02T13:10:49.749Z","route":"cache","namespace":"narrative","resultId":"zqoq0b5z5k","requestId":"c8e18b231e43","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > AI timeout aborts within the configured budget and reports MODEL_TIMEOUT
+{"t":"2026-10-02T13:10:51.630Z","route":"cache","namespace":"narrative","resultId":"zqoq0b5z5k","requestId":"c8e18b231e43","errorCode":"MODEL_TIMEOUT","providerFailure":true,"providerCall":true,"narrativeRequest":false,"event":"cache_error"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > AI timeout aborts within the configured budget and reports MODEL_TIMEOUT
+{"t":"2026-10-02T13:10:51.632Z","requestId":"c8e18b231e43","route":"narrative","status":503,"ms":1883,"error_code":"MODEL_TIMEOUT","circuit":"HALF_OPEN"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:51.647Z","requestId":"5d81eae05f52","route":"game","mode":"single","status":200,"ms":12,"resultId":"ptuw2tmepu","sim":"chaos-3-1790","persisted":true}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:51.649Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"c55a2404d58b","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.205Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"c55a2404d58b","errorCode":"MODEL_UNAVAILABLE","providerFailure":true,"providerCall":true,"narrativeRequest":false,"event":"cache_error"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.205Z","requestId":"c55a2404d58b","route":"narrative","status":503,"ms":557,"error_code":"MODEL_UNAVAILABLE","circuit":"HALF_OPEN"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.205Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"41f899c255e1","priorFailure":"MODEL_UNAVAILABLE","event":"cache_stale"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.206Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"41f899c255e1","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.763Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"41f899c255e1","errorCode":"MODEL_UNAVAILABLE","providerFailure":true,"providerCall":true,"narrativeRequest":false,"event":"cache_error"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.763Z","requestId":"41f899c255e1","route":"narrative","status":503,"ms":558,"error_code":"MODEL_UNAVAILABLE","circuit":"OPEN"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.764Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"c060fd1f6110","priorFailure":"MODEL_UNAVAILABLE","event":"cache_stale"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.764Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"c060fd1f6110","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.764Z","route":"cache","namespace":"narrative","resultId":"ptuw2tmepu","requestId":"c060fd1f6110","errorCode":"MODEL_UNAVAILABLE","providerFailure":true,"providerCall":true,"narrativeRequest":false,"event":"cache_error"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > circuit breaker opens after repeated failures and skips provider calls
+{"t":"2026-10-02T13:10:52.764Z","requestId":"c060fd1f6110","route":"narrative","status":503,"ms":1,"error_code":"MODEL_UNAVAILABLE","circuit":"OPEN"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > daily AI budget exhaustion disables narration only — never the game
+{"t":"2026-10-02T13:10:52.789Z","requestId":"52b792439c16","route":"game","mode":"daily","status":200,"ms":22,"resultId":"t3shfcrocw","sim":"chaos-4-1790","persisted":true}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > daily AI budget exhaustion disables narration only — never the game
+{"t":"2026-10-02T13:10:52.790Z","route":"cache","namespace":"narrative","resultId":"t3shfcrocw","requestId":"44e646d6d5e6","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > daily AI budget exhaustion disables narration only — never the game
+{"t":"2026-10-02T13:10:52.790Z","route":"cache","namespace":"narrative","resultId":"t3shfcrocw","requestId":"44e646d6d5e6","errorCode":"MODEL_RATE_LIMITED","providerFailure":true,"providerCall":true,"narrativeRequest":false,"event":"cache_error"}
+
+stdout | tests/chaos.test.js > AI failure never becomes a game failure > daily AI budget exhaustion disables narration only — never the game
+{"t":"2026-10-02T13:10:52.790Z","requestId":"44e646d6d5e6","route":"narrative","status":503,"ms":0,"error_code":"MODEL_RATE_LIMITED","circuit":"CLOSED"}
+
+stdout | tests/chaos.test.js > KV failure honesty > kv-down: the game completes but nothing claims to be saved
+{"t":"2026-10-02T13:10:52.802Z","requestId":"062d723175c1","route":"game","mode":"single","status":200,"ms":11,"resultId":"lela741occ","sim":"chaos-5-1790","persisted":false}
+
+stdout | tests/chaos.test.js > KV failure honesty > challenge write failure does not fabricate a completed persistent challenge
+{"t":"2026-10-02T13:10:52.814Z","requestId":"9ec0e00400c6","route":"game","mode":"challenge","status":200,"ms":4,"resultId":"b8vayyrys4","sim":"chaos-6-1790","persisted":true}
+
+ ✓ tests/chaos.test.js (6 tests) 3515ms
+     ✓ core result exists and is complete even when narration 500s  442ms
+     ✓ AI timeout aborts within the configured budget and reports MODEL_TIMEOUT  1891ms
+     ✓ circuit breaker opens after repeated failures and skips provider calls  1131ms
+ ✓ tests/v6c2a-opportunity-allocation.test.js (45 tests) 2725ms
+     ✓ materially reduces the Kareem/Oscar distortion  513ms
+     ✓ keeps an extraordinary game possible  648ms
+     ✓ preserves conservation and produces no ties  399ms
+     ✓ survives a roster reordering without moving the distribution  797ms
+ ✓ tests/chaos-synchronized-draft.test.js (45 tests) 2562ms
+ ✓ tests/v3-modes.test.js (19 tests) 3159ms
+     ✓ an all-time five posts an all-time record on the default setting  303ms
+     ✓ difficulty monotonically raises the bar  430ms
+     ✓ Rookie is genuinely forgiving for a modest roster  722ms
+     ✓ Pro is a genuine middle — a real league, not a gauntlet  1022ms
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > starts a run at Roll 1 with both rosters revealed and the CPU committed
+{"t":"2026-10-02T13:11:02.961Z","requestId":"404eb0131b64","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > hides the CPU's holds until the user has locked their own
+{"t":"2026-10-02T13:11:03.014Z","requestId":"298fa73fe0ac","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > keeps the era hidden through the rolls and reveals it with the hire (sequence 3)
+{"t":"2026-10-02T13:11:03.057Z","requestId":"6ca85896e8b6","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > puts three distinct coach offers on the table with the first five
+{"t":"2026-10-02T13:11:03.139Z","requestId":"57a807508c0f","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > puts three distinct coach offers on the table with the first five
+{"t":"2026-10-02T13:11:03.223Z","requestId":"05768f354252","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > holds and burns coaches across the same three rolls, and refuses a fourth
+{"t":"2026-10-02T13:11:03.262Z","requestId":"389b598d0a8d","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > runs exactly three rolls and refuses a fourth
+{"t":"2026-10-02T13:11:03.339Z","requestId":"bfdd3d7ddfae","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > refuses a coach that was not offered
+{"t":"2026-10-02T13:11:03.412Z","requestId":"b2f5c96d51a5","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > keeps one user's draft state away from another session
+{"t":"2026-10-02T13:11:03.490Z","requestId":"8ad44202b2ad","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > ignores client-supplied player ids, era and coaches at simulate time
+{"t":"2026-10-02T13:11:03.527Z","requestId":"b2fe59eff080","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > ignores client-supplied player ids, era and coaches at simulate time
+{"t":"2026-10-02T13:11:03.583Z","requestId":"018edd830362","route":"game","mode":"single","status":200,"ms":19,"resultId":"58acjtfqla","sim":"ssssssssssss","persisted":true}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > stores draft history without any unrevealed future card
+{"t":"2026-10-02T13:11:03.621Z","requestId":"0146c7b8656e","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > stores draft history without any unrevealed future card
+{"t":"2026-10-02T13:11:03.673Z","requestId":"138e351c0dbb","route":"game","mode":"single","status":200,"ms":12,"resultId":"5le43700ep","sim":"tttttttttttt","persisted":true}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > refuses to simulate a run that is not READY
+{"t":"2026-10-02T13:11:03.712Z","requestId":"20e228d9e1ce","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > never lets a burned person return, and never duplicates a person
+{"t":"2026-10-02T13:11:03.751Z","requestId":"c3090f9b1718","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > reproduces the same starting chaos from a challenge id and branches on different decisions
+{"t":"2026-10-02T13:11:03.828Z","requestId":"69befac36ea6","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > reproduces the same starting chaos from a challenge id and branches on different decisions
+{"t":"2026-10-02T13:11:03.907Z","requestId":"c7782e29e72f","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > reproduces the same starting chaos from a challenge id and branches on different decisions
+{"t":"2026-10-02T13:11:03.945Z","requestId":"5036ea7098a6","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — server-authoritative draft > never exposes the raw seed to the client
+{"t":"2026-10-02T13:11:04.056Z","requestId":"7c7faff8b056","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > gives a guest a bounded number of runs, server-side
+{"t":"2026-10-02T13:11:04.095Z","requestId":"10b7edacbf05","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > gives a guest a bounded number of runs, server-side
+{"t":"2026-10-02T13:11:04.133Z","requestId":"9d2ed8b5aaa3","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > gives a guest a bounded number of runs, server-side
+{"t":"2026-10-02T13:11:04.173Z","requestId":"d329c0a17007","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > does not limit a signed-in account
+{"t":"2026-10-02T13:11:04.211Z","requestId":"82ab1067ddf1","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > does not limit a signed-in account
+{"t":"2026-10-02T13:11:04.248Z","requestId":"d1d1d5894fbb","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > does not limit a signed-in account
+{"t":"2026-10-02T13:11:04.285Z","requestId":"fc047fb23bc0","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > does not limit a signed-in account
+{"t":"2026-10-02T13:11:04.323Z","requestId":"0b3f249ca9ef","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > does not limit a signed-in account
+{"t":"2026-10-02T13:11:04.363Z","requestId":"279d49b960ed","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > draws an IDENTICAL roster for every tier from the same seed and decisions
+{"t":"2026-10-02T13:11:04.403Z","requestId":"1e0294a43317","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > draws an IDENTICAL roster for every tier from the same seed and decisions
+{"t":"2026-10-02T13:11:04.440Z","requestId":"abd0c081bf6b","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > draws an IDENTICAL roster for every tier from the same seed and decisions
+{"t":"2026-10-02T13:11:04.528Z","requestId":"9aac0960974b","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > draws an IDENTICAL roster for every tier from the same seed and decisions
+{"t":"2026-10-02T13:11:04.603Z","requestId":"96ed32096e86","route":"game","mode":"chaos","action":"start","status":200}
+
+stdout | tests/v8a-chaos-api.test.js > Chaos Clash — entitlements never touch the draft > draws an IDENTICAL roster for every tier from the same seed and decisions
+{"t":"2026-10-02T13:11:04.678Z","requestId":"a98300a6ba12","route":"game","mode":"chaos","action":"start","status":200}
+
+ ✓ tests/v8a-chaos-api.test.js (17 tests) 1836ms
+     ✓ draws an IDENTICAL roster for every tier from the same seed and decisions  352ms
+ ✓ tests/v6c2c3-runtime-parameters.test.js (47 tests) 1908ms
+     ✓ null parameterSet and compiled defaults are byte-identical across the whole corpus  316ms
+     ✓ preserves invariants at every parameter bound  441ms
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > persists real Candidate4 identity, score, rosters and saved-row identity without session exposure
+{"t":"2026-10-02T13:11:07.298Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":48,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > returns the same immutable result for a successful retry, even if inputs change
+{"t":"2026-10-02T13:11:07.374Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":19,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > shares the existing simulation budget while a completed retry costs no allowance
+{"t":"2026-10-02T13:11:07.449Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":21,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > keeps Lab exploration off every leaderboard and sanitizes its free-text scenario
+{"t":"2026-10-02T13:11:07.536Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":14,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > runs any-five and tags its casual board without competitive rating
+{"t":"2026-10-02T13:11:07.629Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":15,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > runs one-franchise and tags its casual board without competitive rating
+{"t":"2026-10-02T13:11:07.680Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > runs one-per-era and tags its casual board without competitive rating
+{"t":"2026-10-02T13:11:07.730Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > runs no-mvps and tags its casual board without competitive rating
+{"t":"2026-10-02T13:11:07.781Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > runs franchise and tags its casual board without competitive rating
+{"t":"2026-10-02T13:11:07.831Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Loop adapters preserve authoritative results and retry semantics > runs tonight and tags its casual board without competitive rating
+{"t":"2026-10-02T13:11:07.881Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Daily calendar, signed claims and account streaks > allows one completion; same request retry replays, a different attempt is blocked
+{"t":"2026-10-02T13:11:08.226Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Daily calendar, signed claims and account streaks > server-enforces the account claim across sessions and increments next-day streak
+{"t":"2026-10-02T13:11:08.389Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Daily calendar, signed claims and account streaks > server-enforces the account claim across sessions and increments next-day streak
+{"t":"2026-10-02T13:11:08.622Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Spin, resumable Gauntlet and private-room concurrency > resumes an account Gauntlet without supplying a new team and rejects other-owner tokens
+{"t":"2026-10-02T13:11:08.653Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":14,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Spin, resumable Gauntlet and private-room concurrency > hides room data from nonmembers and preserves simultaneous join retries
+{"t":"2026-10-02T13:11:08.703Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":10,"invariantViolations":0}
+
+stdout | tests/loop-foundation-server.test.js > Spin, resumable Gauntlet and private-room concurrency > preserves two-account room membership across devices and shares only owned live governed Challenges
+{"t":"2026-10-02T13:11:08.752Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":10,"invariantViolations":0}
+
+ ✓ tests/loop-foundation-server.test.js (24 tests) 1577ms
+     ✓ server-enforces the account claim across sessions and increments next-day streak  358ms
+ ✓ tests/v6b2-assignment-quality.test.js (29 tests) 1443ms
+     ✓ statistical invariants are unchanged by the corrections  739ms
+     ✓ possession probabilities stay bounded after clustering  447ms
+stdout | tests/v8b-owner-corrections.test.js
+{"t":"2026-10-02T13:11:10.700Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":58,"invariantViolations":0}
+
+stdout | tests/v8b-owner-corrections.test.js > expanded analysis is always available > builds a multi-section analysis with an honest source label
+{"t":"2026-10-02T13:11:11.956Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":23,"invariantViolations":0}
+
+stdout | tests/v8b-owner-corrections.test.js > quarter stories > carries two or three events per quarter with no fabricated clock
+{"t":"2026-10-02T13:11:11.977Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":17,"invariantViolations":0}
+
+stdout | tests/v8b-owner-corrections.test.js > coaching report > groups a repeated adjustment into one line
+{"t":"2026-10-02T13:11:11.991Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/v8b-owner-corrections.test.js > coaching report > prints no raw enum and never says 'the staff'
+{"t":"2026-10-02T13:11:12.007Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":14,"invariantViolations":0}
+
+ ✓ tests/v8b-owner-corrections.test.js (23 tests) 1305ms
+     ✓ accepts every hold cardinality from none to all five  429ms
+ ✓ tests/v6c2c2-side-symmetry.test.js (21 tests) 3724ms
+     ✓ does not give gold the first possession of every game  1301ms
+     ✓ produces a complementary long-run record under side swap  1851ms
+ ✓ tests/v8a-chaos-draft.test.js (32 tests) 1164ms
+     ✓ beats a random-hold policy on expected roster value  854ms
+stdout | tests/v35-versioning-cache.test.js > narrative cache > first request misses and calls the provider exactly once; the second hits cache
+{"t":"2026-10-02T13:11:13.395Z","requestId":"5d8dda87d22d","route":"game","mode":"single","status":200,"ms":18,"resultId":"gd3hfqbjib","sim":"v35-1-179094","persisted":true}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > first request misses and calls the provider exactly once; the second hits cache
+{"t":"2026-10-02T13:11:13.396Z","route":"cache","namespace":"narrative","resultId":"gd3hfqbjib","requestId":"2b57d02a5fbf","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > first request misses and calls the provider exactly once; the second hits cache
+{"t":"2026-10-02T13:11:13.399Z","route":"cache","namespace":"narrative","resultId":"gd3hfqbjib","requestId":"2b57d02a5fbf","provider":"anthropic","model":"claude-sonnet-4-6","providerCall":true,"inputTokens":1250,"outputTokens":380,"event":"cache_write"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > first request misses and calls the provider exactly once; the second hits cache
+{"t":"2026-10-02T13:11:13.399Z","requestId":"2b57d02a5fbf","route":"narrative","status":200,"ms":3,"tokens":1630,"retries":0}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > first request misses and calls the provider exactly once; the second hits cache
+{"t":"2026-10-02T13:11:13.399Z","route":"cache","namespace":"narrative","resultId":"gd3hfqbjib","provider":"anthropic","model":"claude-sonnet-4-6","hitSource":"kv","requestId":"62a7b900ecdc","narrativeRequest":true,"latency":0,"tokensAvoidedInput":1250,"tokensAvoidedOutput":380,"costAvoidedUsd":0.00945,"event":"cache_hit"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.407Z","requestId":"9034f328d14b","route":"game","mode":"single","status":200,"ms":7,"resultId":"vkr3cee2ud","sim":"v35-2-179094","persisted":true}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.408Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"fa1c40bf2286","narrativeRequest":true,"event":"cache_miss"}
+{"t":"2026-10-02T13:11:13.408Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"9bda766a0af4","narrativeRequest":true,"event":"cache_miss"}
+{"t":"2026-10-02T13:11:13.408Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"4e74cf988041","narrativeRequest":true,"event":"cache_miss"}
+{"t":"2026-10-02T13:11:13.408Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"e742210a5cd9","narrativeRequest":true,"event":"cache_miss"}
+{"t":"2026-10-02T13:11:13.409Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"4c166098a51f","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.410Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"fa1c40bf2286","provider":"anthropic","model":"claude-sonnet-4-6","providerCall":true,"inputTokens":1250,"outputTokens":380,"event":"cache_write"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.410Z","requestId":"fa1c40bf2286","route":"narrative","status":200,"ms":2,"tokens":1630,"retries":0}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.811Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"9bda766a0af4","resolved":true,"lockWaitMs":401,"tokensAvoidedInput":1250,"tokensAvoidedOutput":380,"costAvoidedUsd":0.00945,"event":"cache_lock_wait"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.811Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"4e74cf988041","resolved":true,"lockWaitMs":402,"tokensAvoidedInput":1250,"tokensAvoidedOutput":380,"costAvoidedUsd":0.00945,"event":"cache_lock_wait"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.811Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"e742210a5cd9","resolved":true,"lockWaitMs":402,"tokensAvoidedInput":1250,"tokensAvoidedOutput":380,"costAvoidedUsd":0.00945,"event":"cache_lock_wait"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > CONCURRENT requests produce exactly one provider call
+{"t":"2026-10-02T13:11:13.811Z","route":"cache","namespace":"narrative","resultId":"vkr3cee2ud","requestId":"4c166098a51f","resolved":true,"lockWaitMs":402,"tokensAvoidedInput":1250,"tokensAvoidedOutput":380,"costAvoidedUsd":0.00945,"event":"cache_lock_wait"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > invalid model output is never cached as a narrative
+{"t":"2026-10-02T13:11:13.817Z","requestId":"dfa993229789","route":"game","mode":"single","status":200,"ms":5,"resultId":"qtj7afttb8","sim":"v35-3-179094","persisted":true}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > invalid model output is never cached as a narrative
+{"t":"2026-10-02T13:11:13.817Z","route":"cache","namespace":"narrative","resultId":"qtj7afttb8","requestId":"471549b7e541","narrativeRequest":true,"event":"cache_miss"}
+
+ ✓ tests/v3-engine.test.js (18 tests) 790ms
+     ✓ hold across 200 games spanning teams and eras  370ms
+stdout | tests/v35-versioning-cache.test.js > narrative cache > invalid model output is never cached as a narrative
+{"t":"2026-10-02T13:11:14.303Z","route":"cache","namespace":"narrative","resultId":"qtj7afttb8","requestId":"471549b7e541","errorCode":"MODEL_INVALID_OUTPUT","providerFailure":true,"providerCall":true,"narrativeRequest":false,"event":"cache_error"}
+
+stdout | tests/v35-versioning-cache.test.js > narrative cache > invalid model output is never cached as a narrative
+{"t":"2026-10-02T13:11:14.303Z","requestId":"471549b7e541","route":"narrative","status":503,"ms":486,"error_code":"MODEL_INVALID_OUTPUT","circuit":"HALF_OPEN"}
+
+stdout | tests/v35-versioning-cache.test.js > cache telemetry & cost report > records events and reconciles them into a report
+{"t":"2026-10-02T13:11:14.304Z","route":"cache","namespace":"narrative","narrativeRequest":true,"providerCall":true,"event":"cache_miss"}
+
+stdout | tests/v35-versioning-cache.test.js > cache telemetry & cost report > records events and reconciles them into a report
+{"t":"2026-10-02T13:11:14.304Z","route":"cache","namespace":"narrative","narrativeRequest":true,"model":"claude-sonnet-4-6","tokensAvoidedInput":1000,"tokensAvoidedOutput":300,"costAvoidedUsd":0.0075,"event":"cache_hit"}
+
+stdout | tests/v35-versioning-cache.test.js > cache telemetry & cost report > records events and reconciles them into a report
+{"t":"2026-10-02T13:11:14.304Z","route":"cache","namespace":"narrative","narrativeRequest":true,"model":"claude-sonnet-4-6","tokensAvoidedInput":1000,"tokensAvoidedOutput":300,"costAvoidedUsd":0.0075,"event":"cache_hit"}
+
+stdout | tests/v35-versioning-cache.test.js > cache telemetry & cost report > records events and reconciles them into a report
+{"t":"2026-10-02T13:11:14.304Z","route":"cache","namespace":"narrative","narrativeRequest":true,"model":"claude-sonnet-4-6","tokensAvoidedInput":1000,"tokensAvoidedOutput":300,"costAvoidedUsd":0.0075,"event":"cache_hit"}
+
+ ✓ tests/v35-versioning-cache.test.js (51 tests) 950ms
+     ✓ CONCURRENT requests produce exactly one provider call  412ms
+     ✓ invalid model output is never cached as a narrative  491ms
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves any-five in the lightweight History projection as loop_any_five
+{"t":"2026-10-02T13:11:14.662Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":48,"invariantViolations":0}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves daily in the lightweight History projection as loop_daily
+{"t":"2026-10-02T13:11:14.736Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":19,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > keeps the new Loop GET projection as private as its POST response without changing its stored record
+{"t":"2026-10-02T13:11:14.756Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":51,"invariantViolations":0}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves spin in the lightweight History projection as loop_spin
+{"t":"2026-10-02T13:11:14.793Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":14,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > never publishes owner-entered Lab scenario text through the unauthenticated full-result GET
+{"t":"2026-10-02T13:11:14.828Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":20,"invariantViolations":0}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves one-franchise in the lightweight History projection as loop_one_franchise
+{"t":"2026-10-02T13:11:14.849Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":13,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > preserves the absorbed legacy GET projection, including its existing seed field
+{"t":"2026-10-02T13:11:14.831Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.831Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.850Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":19,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.851Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":20,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > preserves the absorbed legacy GET projection, including its existing seed field
+{"t":"2026-10-02T13:11:14.852Z","requestId":"e771e8d8557d","route":"game","mode":"single","status":200,"ms":22,"resultId":"pv_jdhq0qfcl0","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > publishes a freshly generated Candidate 4 score and performers, never a browser snapshot
+{"t":"2026-10-02T13:11:14.853Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.853Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.868Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":14,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.869Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":16,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > publishes a freshly generated Candidate 4 score and performers, never a browser snapshot
+{"t":"2026-10-02T13:11:14.869Z","requestId":"3a521a4f32dd","route":"game","mode":"single","status":200,"ms":16,"resultId":"pv_4dprvhmm6w","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > requires explicit disclosure consent, ownership and same origin
+{"t":"2026-10-02T13:11:14.871Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.871Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.884Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":13,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.885Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":14,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > requires explicit disclosure consent, ownership and same origin
+{"t":"2026-10-02T13:11:14.885Z","requestId":"cba3c06b0139","route":"game","mode":"single","status":200,"ms":14,"resultId":"pv_ucspejbqcq","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > concurrent publications return one stable URL and leave the engine record untouched
+{"t":"2026-10-02T13:11:14.886Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.886Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.897Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.897Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":11,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > concurrent publications return one stable URL and leave the engine record untouched
+{"t":"2026-10-02T13:11:14.898Z","requestId":"93924f54725a","route":"game","mode":"single","status":200,"ms":12,"resultId":"pv_dsltm7tnos","sim":"share-single","persisted":true}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves one-per-era in the lightweight History projection as loop_one_per_era
+{"t":"2026-10-02T13:11:14.905Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":13,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > does not claim a successful publication after a failed persistence write
+{"t":"2026-10-02T13:11:14.900Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.900Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.911Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.912Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":12,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > does not claim a successful publication after a failed persistence write
+{"t":"2026-10-02T13:11:14.912Z","requestId":"40d19ebdbad3","route":"game","mode":"single","status":200,"ms":12,"resultId":"pv_99xrkcco7d","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > a run publication reads its completed owned result and not a caller's replacement resultId
+{"t":"2026-10-02T13:11:14.913Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.913Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.924Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.924Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":11,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > public recap ownership, privacy and immutable authority > a run publication reads its completed owned result and not a caller's replacement resultId
+{"t":"2026-10-02T13:11:14.925Z","requestId":"f1c1e9790243","route":"game","mode":"single","status":200,"ms":12,"resultId":"pv_18h192cswt","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > displays a validated Daily date as MM-DD-YYYY while preserving the ISO machine day
+{"t":"2026-10-02T13:11:14.926Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.926Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.937Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.938Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":12,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > displays a validated Daily date as MM-DD-YYYY while preserving the ISO machine day
+{"t":"2026-10-02T13:11:14.939Z","requestId":"18e5d77ad379","route":"game","mode":"single","status":200,"ms":13,"resultId":"pv_9f0v3c6dfn","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > projects only valid server Gauntlet counts with an honest stage-score scope
+{"t":"2026-10-02T13:11:14.940Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:14.940Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:14.952Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+{"t":"2026-10-02T13:11:14.953Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":13,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > projects only valid server Gauntlet counts with an honest stage-score scope
+{"t":"2026-10-02T13:11:14.953Z","requestId":"f0dcad80f7de","route":"game","mode":"single","status":200,"ms":14,"resultId":"pv_o3vz6uoukz","sim":"share-single","persisted":true}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves no-mvps in the lightweight History projection as loop_no_mvps
+{"t":"2026-10-02T13:11:14.958Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":13,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > publishes real Gauntlet progress derived after an unchanged server simulation
+{"t":"2026-10-02T13:11:14.979Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":23,"invariantViolations":0}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves gauntlet in the lightweight History projection as loop_gauntlet
+{"t":"2026-10-02T13:11:15.015Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > projects a freshly computed single record
+{"t":"2026-10-02T13:11:15.022Z","requestId":"870fc90898ee","route":"game","mode":"single","status":200,"ms":6,"resultId":"7ghkkd5xel","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > projects a freshly computed best7 record
+{"t":"2026-10-02T13:11:15.030Z","requestId":"400fa7c8a6f1","route":"game","mode":"best7","status":200,"ms":7,"resultId":"h368fg6ftv","sim":"share-best7-","persisted":true}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves lab in the lightweight History projection as loop_lab
+{"t":"2026-10-02T13:11:15.068Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves franchise in the lightweight History projection as loop_franchise
+{"t":"2026-10-02T13:11:15.124Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > projects a freshly computed 82 record
+{"t":"2026-10-02T13:11:15.147Z","requestId":"5a30175ffcb9","route":"game","mode":"82","status":200,"ms":116,"resultId":"dfmq3nw2mp","sim":"share-82-fe6","persisted":true}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > projects a freshly computed tournament record
+{"t":"2026-10-02T13:11:15.170Z","requestId":"220b07a54573","route":"game","mode":"tournament","status":200,"ms":22,"resultId":"z0fzuuf6dw","sim":"share-tourna","persisted":true}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > preserves tonight in the lightweight History projection as loop_tonight
+{"t":"2026-10-02T13:11:15.176Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > publishes a real any-five adapter result with a closed mode label
+{"t":"2026-10-02T13:11:15.228Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":16,"invariantViolations":0}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > a fresh casual rematch preserves exact teams, era and coaches and gets a new server seed
+{"t":"2026-10-02T13:11:15.229Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":16,"invariantViolations":0}
+
+stdout | tests/loop-sharing.test.js > real engine modes have honest score and stat scopes > publishes a real lab adapter result with a closed mode label
+{"t":"2026-10-02T13:11:15.280Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+
+stdout | tests/loop-modes-career.test.js > saved Loop career identities and explicit fresh casual rematches > a fresh casual rematch preserves exact teams, era and coaches and gets a new server seed
+{"t":"2026-10-02T13:11:15.284Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":16,"invariantViolations":0}
+
+ ✓ tests/loop-modes-career.test.js (13 tests) 737ms
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > three real game URLs serve result HTML to all three crawler user agents
+{"t":"2026-10-02T13:11:15.283Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:15.283Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:15.296Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":13,"invariantViolations":0}
+{"t":"2026-10-02T13:11:15.297Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":14,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > three real game URLs serve result HTML to all three crawler user agents
+{"t":"2026-10-02T13:11:15.297Z","requestId":"4b04c0dc7cfc","route":"game","mode":"single","status":200,"ms":14,"resultId":"pv_j1yyfst0na","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > three real game URLs serve result HTML to all three crawler user agents
+{"t":"2026-10-02T13:11:15.323Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:15.323Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:15.334Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":11,"invariantViolations":0}
+{"t":"2026-10-02T13:11:15.334Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":11,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > three real game URLs serve result HTML to all three crawler user agents
+{"t":"2026-10-02T13:11:15.335Z","requestId":"72fd31e5260f","route":"game","mode":"single","status":200,"ms":12,"resultId":"pv_3bfv41liu1","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > three real game URLs serve result HTML to all three crawler user agents
+{"t":"2026-10-02T13:11:15.358Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:15.358Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:15.368Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":10,"invariantViolations":0}
+{"t":"2026-10-02T13:11:15.369Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":11,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > three real game URLs serve result HTML to all three crawler user agents
+{"t":"2026-10-02T13:11:15.369Z","requestId":"3cbbc7b86d54","route":"game","mode":"single","status":200,"ms":11,"resultId":"pv_i72ironvjl","sim":"share-single","persisted":true}
+
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > warm image generation is byte-identical and below one second
+{"t":"2026-10-02T13:11:15.395Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:15.395Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:15.407Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":12,"invariantViolations":0}
+{"t":"2026-10-02T13:11:15.408Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":13,"fallbackUsed":false}
+
+stdout | tests/loop-sharing.test.js > crawlable real-result HTML and deterministic PNG > warm image generation is byte-identical and below one second
+{"t":"2026-10-02T13:11:15.408Z","requestId":"86f74d10cebd","route":"game","mode":"single","status":200,"ms":13,"resultId":"pv_sr4z062atx","sim":"share-single","persisted":true}
+
+ ✓ tests/loop-sharing.test.js (22 tests) 801ms
+ ✓ tests/loop-modes-draft.test.js (99 tests) 755ms
+ ✓ tests/v6c2c2-parameter-wiring.test.js (19 tests) 652ms
+     ✓ WIRED: the engine imports the registry through the runtime binding  432ms
+stdout | tests/loop-franchises-content.test.js > nightly content uses deterministic actual engine scores > follows the same preview flag as the public path and rejects a mismatched engine
+{"t":"2026-10-02T13:11:16.930Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":53,"invariantViolations":0}
+
+ ✓ tests/loop-franchises-content.test.js (7 tests) 431ms
+ ✓ tests/v9c-challenges.test.js (28 tests) 562ms
+ ✓ tests/v9b1-accounts.test.js (99 tests) 283ms
+ ✓ tests/v3-intelligence.test.js (31 tests) 395ms
+ ❯ tests/v9a3p-play-lobby-polish.test.js (37 tests | 1 failed) 272ms
+     ✓ is recorded with the exact text, the branch-preview scope and the build it was reviewed on 2ms
+     ✓ authorises no promotion, merge, distribution or Phase 9B without its own authorization record 1ms
+     ✓ did not move the frozen builds 0ms
+     ✓ does not claim live tester activity it could not read 0ms
+     ✓ bumped its version for the presentation fields 0ms
+     ✓ every mode declares actionLabel, actionVerb, actionHierarchy, visualSignature and accentRole 1ms
+     ✓ uses the exact action labels the specification names 0ms
+     ✓ every mode has its own signature and accent role, and no two modes share a signature 0ms
+     ✓ Chaos Clash is the ONLY primary action; every other playable mode is secondary; Era Gauntlet is unavailable 1ms
+     ✓ labels resolve per status: the mode's verb when playable or account-gated, Learn more when coming soon 0ms
+     ✓ no status resolves to Open, Continue, Enter or Go as a bare action word 1ms
+     ✓ accessible names say the purpose, the mode and the access fact 0ms
+     ✓ routes, entitlements, availability, continuation and order are exactly the Phase 9A record 1ms
+     ✓ the seven labels live in src/navigation.js and nowhere else in src/ 101ms
+     ✓ the lobby renders labels, hierarchy and names through the registry's resolvers and defines none 0ms
+     ✓ the header and the Play dropdown still read the same registry 0ms
+     ✓ the header renders exactly one image: EraClash Logo Mk1, manifested 1ms
+     ✓ no NBA or other league mark is referenced by any header, lobby or brand component, or shipped in public/ 3ms
+     ✓ historical league data in player, team and statistical records is untouched 22ms
+     ✓ is one pure decision with three states 0ms
+     ✓ is decided before the first paint from existing state — no new storage, no cookie, no API 0ms
+     ✓ cannot start, delete or reveal a run: the lobby still only reads a remembered run 0ms
+     ✓ the Continue card renders above the mode grid, and the compact band keeps the one fracture moment 0ms
+     ✓ the theme lab can render every hero state deterministically with production components 0ms
+     ✓ seven original motifs in one grammar: thin strokes, currentColor, one viewBox, no imagery 0ms
+     ✓ is decorative: hidden from assistive tech, unfocusable, no pointer events, low opacity, restrained on hover 0ms
+     ✓ uses only the semantic accent families the theme already defines 0ms
+     ✓ exactly one filled-Gold rule, keyed by the primary hierarchy 0ms
+     ✓ secondary is bordered, ink-on-ivory, arrowed, lifts on hover; unavailable is dashed, muted and never lifts 0ms
+     ✓ the unavailable action is aria-disabled only when it is a button without a destination 0ms
+     ✓ adds no event of its own, removes none, and carries its two bounded properties on the existing lobby event 1ms
+     × Wave 2 study constants, credentials, feedback schema and frozen plan are byte-identical to the parent 35ms
+     ✓ the Wave 2 telemetry partition still keys on wave, cohort, tester and build 0ms
+     ✓ API surface: twelve routes plus middleware, none touched 0ms
+     ✓ Wave 2 access config is the distributed one (hash-pinned) and Wave 1 stays on its own branch 54ms
+     ✓ game, draft and placement logic are untouched 24ms
+     ✓ the Night Court theme contract the lobby polish relies on is untouched: master brand, scopes, semantics 19ms
+ ✓ tests/v6c4c2-v6-freeze-and-seal.test.js (81 tests) 294ms
+stdout | tests/v5d-daily-coach-era.test.js > the Daily never takes its setup from the caller > ignores a caller-supplied coach, opponent coach and era with the feature OFF
+{"t":"2026-10-02T13:11:18.191Z","requestId":"bcc73dc9e8f1","route":"game","mode":"daily","status":200,"ms":19,"resultId":"zfrzlxje2f","sim":"d5d-1-179094","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > the Daily never takes its setup from the caller > ignores a caller-supplied coach, opponent coach and era with the feature OFF
+{"t":"2026-10-02T13:11:18.203Z","requestId":"fb6b49588f56","route":"game","mode":"daily","status":200,"ms":10,"resultId":"ed2d1kzota","sim":"d5d-2-179094","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > the Daily never takes its setup from the caller > the era the caller sent has no effect on the game that is scored
+{"t":"2026-10-02T13:11:18.211Z","requestId":"ca21f8b848a6","route":"game","mode":"daily","status":200,"ms":6,"resultId":"ycll7mewae","sim":"d5d-3-179094","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > the Daily never takes its setup from the caller > the era the caller sent has no effect on the game that is scored
+{"t":"2026-10-02T13:11:18.217Z","requestId":"c7c7e6ee676d","route":"game","mode":"daily","status":200,"ms":5,"resultId":"l8qoxhg7rb","sim":"d5d-4-179094","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > the Daily never takes its setup from the caller > the era the caller sent has no effect on the game that is scored
+{"t":"2026-10-02T13:11:18.223Z","requestId":"969e8f68c57a","route":"game","mode":"daily","status":200,"ms":5,"resultId":"yu8bdgqiim","sim":"d5d-5-179094","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily validation > the server rejects an illegal coach through the real endpoint
+{"t":"2026-10-02T13:11:18.229Z","requestId":"2aead7ebd87e","route":"game","mode":"daily","status":400,"error_code":"DAILY_INVALID_COACH","submitted":"billy-cunningham"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily validation > the server rejects a tampered era through the real endpoint
+{"t":"2026-10-02T13:11:18.231Z","requestId":"0b3190182f2a","route":"game","mode":"daily","status":400,"error_code":"DAILY_INVALID_ERA","submitted":"rick-adelman"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily validation > an illegal roster is still rejected without consuming the attempt
+{"t":"2026-10-02T13:11:18.232Z","requestId":"bed1c67f71e6","route":"game","mode":"daily","status":400,"error_code":"DAILY_INVALID_LINEUP","reason":"lineup_not_reachable"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily validation > the attempt is consumed exactly once
+{"t":"2026-10-02T13:11:18.238Z","requestId":"f010136e2dd6","route":"game","mode":"daily","status":200,"ms":5,"resultId":"6klejk1ecl","sim":"d5d-9-179094","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily validation > concurrent tabs produce exactly one claim
+{"t":"2026-10-02T13:11:18.266Z","requestId":"a064a4f21e43","route":"game","mode":"daily","status":200,"ms":25,"resultId":"nkflmnae6q","sim":"d5d-13-17909","persisted":true}
+{"t":"2026-10-02T13:11:18.267Z","requestId":"5f911f8f91fa","route":"game","mode":"daily","status":200,"ms":25,"resultId":"cjawzatvqw","sim":"d5d-14-17909","persisted":true}
+{"t":"2026-10-02T13:11:18.267Z","requestId":"8ac2c977e796","route":"game","mode":"daily","status":200,"ms":27,"resultId":"ie9b5b5xvh","sim":"d5d-11-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily validation > concurrent tabs produce exactly one claim
+{"t":"2026-10-02T13:11:18.268Z","requestId":"3c869cec59e3","route":"game","mode":"daily","status":200,"ms":27,"resultId":"pj85q975io","sim":"d5d-12-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily fairness > two different sessions making the same choices get the same result
+{"t":"2026-10-02T13:11:18.276Z","requestId":"db31cb6142d5","route":"game","mode":"daily","status":200,"ms":7,"resultId":"gzmh1anhc3","sim":"d5d-15-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily fairness > two different sessions making the same choices get the same result
+{"t":"2026-10-02T13:11:18.282Z","requestId":"0e72b1939a94","route":"game","mode":"daily","status":200,"ms":5,"resultId":"1qgtds2n75","sim":"d5d-16-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily fairness > different legal coach choices can produce different outcomes
+{"t":"2026-10-02T13:11:18.288Z","requestId":"cf50a586fd12","route":"game","mode":"daily","status":200,"ms":6,"resultId":"tdf6sgowxy","sim":"d5d-17-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily fairness > different legal coach choices can produce different outcomes
+{"t":"2026-10-02T13:11:18.293Z","requestId":"94787494488c","route":"game","mode":"daily","status":200,"ms":4,"resultId":"vm1kimkdug","sim":"d5d-18-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily fairness > different legal coach choices can produce different outcomes
+{"t":"2026-10-02T13:11:18.301Z","requestId":"ac57f776852d","route":"game","mode":"daily","status":200,"ms":7,"resultId":"4w557n5cmk","sim":"d5d-19-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily fairness > the daily seed is derived once, by the caller, versions included
+{"t":"2026-10-02T13:11:18.308Z","requestId":"1806a02a4b4d","route":"game","mode":"daily","status":200,"ms":7,"resultId":"g0lpxsmzxv","sim":"d5d-20-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily failure behaviour > a failed core simulation does not consume the attempt
+{"t":"2026-10-02T13:11:18.355Z","requestId":"a3e08b44a86f","route":"game","status":500,"ms":1,"error_code":"ENGINE_FAILURE","msg":"chaos engine failure"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily isolation & rollback > with the flag OFF the Daily behaves exactly as before
+{"t":"2026-10-02T13:11:18.368Z","requestId":"116459d890c9","route":"game","mode":"daily","status":200,"ms":12,"resultId":"x513mvf28r","sim":"d5d-22-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily isolation & rollback > with the flag OFF a foreign coach is NOT rejected as a daily-coach error
+{"t":"2026-10-02T13:11:18.379Z","requestId":"74d27a9ec74a","route":"game","mode":"daily","status":200,"ms":10,"resultId":"jrts3yjwel","sim":"d5d-23-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily isolation & rollback > normal modes are unaffected
+{"t":"2026-10-02T13:11:18.384Z","requestId":"105ec70c13ef","route":"game","mode":"single","status":200,"ms":4,"resultId":"vnq1pq6p4f","sim":"iso-24-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > two players who make the same official choices share ONE generation
+{"t":"2026-10-02T13:11:18.391Z","requestId":"5153ea1e75f2","route":"game","mode":"daily","status":200,"ms":5,"resultId":"dyh6em1lf2","sim":"d5d-25-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > two players who make the same official choices share ONE generation
+{"t":"2026-10-02T13:11:18.392Z","route":"cache","namespace":"narrative","resultId":"dyh6em1lf2","requestId":"487cda3223bd","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > two players who make the same official choices share ONE generation
+{"t":"2026-10-02T13:11:18.394Z","route":"cache","namespace":"narrative","resultId":"dyh6em1lf2","requestId":"487cda3223bd","provider":"anthropic","model":"claude-sonnet-4-6","providerCall":true,"inputTokens":1300,"outputTokens":400,"event":"cache_write"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > two players who make the same official choices share ONE generation
+{"t":"2026-10-02T13:11:18.394Z","requestId":"487cda3223bd","route":"narrative","status":200,"ms":2,"tokens":1700,"retries":0}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > two players who make the same official choices share ONE generation
+{"t":"2026-10-02T13:11:18.400Z","requestId":"172b47c39dcf","route":"game","mode":"daily","status":200,"ms":5,"resultId":"yq95m9spsy","sim":"d5d-26-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > two players who make the same official choices share ONE generation
+{"t":"2026-10-02T13:11:18.400Z","route":"cache","namespace":"narrative","resultId":"yq95m9spsy","provider":"anthropic","model":"claude-sonnet-4-6","hitSource":"kv","requestId":"151924aba14f","narrativeRequest":true,"latency":0,"tokensAvoidedInput":1300,"tokensAvoidedOutput":400,"costAvoidedUsd":0.0099,"event":"cache_hit"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.406Z","requestId":"62f5822da779","route":"game","mode":"daily","status":200,"ms":5,"resultId":"my9eoz2rsg","sim":"d5d-27-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.406Z","route":"cache","namespace":"narrative","resultId":"my9eoz2rsg","requestId":"bdeed893a7da","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.407Z","route":"cache","namespace":"narrative","resultId":"my9eoz2rsg","requestId":"bdeed893a7da","provider":"anthropic","model":"claude-sonnet-4-6","providerCall":true,"inputTokens":1300,"outputTokens":400,"event":"cache_write"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.407Z","requestId":"bdeed893a7da","route":"narrative","status":200,"ms":1,"tokens":1700,"retries":0}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.413Z","requestId":"4019093e2a9a","route":"game","mode":"daily","status":200,"ms":5,"resultId":"l9epxpernd","sim":"d5d-28-17909","persisted":true}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.413Z","route":"cache","namespace":"narrative","resultId":"l9epxpernd","requestId":"e9f8069eec7d","narrativeRequest":true,"event":"cache_miss"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.413Z","route":"cache","namespace":"narrative","resultId":"l9epxpernd","requestId":"e9f8069eec7d","provider":"anthropic","model":"claude-sonnet-4-6","providerCall":true,"inputTokens":1300,"outputTokens":400,"event":"cache_write"}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > a different coach choice is a different game and IS narrated separately
+{"t":"2026-10-02T13:11:18.413Z","requestId":"e9f8069eec7d","route":"narrative","status":200,"ms":0,"tokens":1700,"retries":0}
+
+stdout | tests/v5d-daily-coach-era.test.js > daily narrative reuse > non-daily modes keep per-result narrative identity
+{"t":"2026-10-02T13:11:18.419Z","requestId":"ce2e2389cc75","route":"game","mode":"single","status":200,"ms":4,"resultId":"qs53r8s2h7","sim":"nar-17909466","persisted":true}
+
+ ✓ tests/v5d-daily-coach-era.test.js (43 tests) 254ms
+ ✓ tests/v3-addendum.test.js (21 tests) 236ms
+stdout | tests/server.test.js > server-authoritative /api/game > computes a valid core result and ignores fabricated client authority
+{"t":"2026-10-02T13:11:18.721Z","requestId":"9fde8d5c3515","route":"game","mode":"single","status":200,"ms":16,"resultId":"g3bo3cduv8","sim":"test-sim-1-b","persisted":true}
+
+stdout | tests/v7a-build-stamp.test.js > build stamp > stamps the resolved relative output and preserves a separate build
+[provider binding] environment=local project=unconfigured
+
+ ✓ tests/v7a-build-stamp.test.js (7 tests) 146ms
+stdout | tests/server.test.js > server-authoritative /api/game > is idempotent: one simulationId → exactly one result
+{"t":"2026-10-02T13:11:18.733Z","requestId":"f2fd9462834e","route":"game","mode":"single","status":200,"ms":9,"resultId":"7yqend7rj1","sim":"test-sim-9-v","persisted":true}
+
+stdout | tests/server.test.js > server-authoritative /api/game > engine failure records nothing and does not burn the Daily attempt
+{"t":"2026-10-02T13:11:18.738Z","requestId":"e35e26afa20e","route":"game","status":500,"ms":2,"error_code":"ENGINE_FAILURE","msg":"chaos engine failure"}
+
+stdout | tests/server.test.js > server-authoritative /api/game > engine failure records nothing and does not burn the Daily attempt
+{"t":"2026-10-02T13:11:18.750Z","requestId":"d7a8c93cd8e3","route":"game","mode":"daily","status":200,"ms":12,"resultId":"ful9l40cyg","sim":"test-sim-11-","persisted":true}
+
+stdout | tests/server.test.js > server-authoritative /api/game > daily: one official attempt per session; replays and refreshes rejected; other sessions unaffected
+{"t":"2026-10-02T13:11:18.759Z","requestId":"0b4a68f53c08","route":"game","mode":"daily","status":200,"ms":9,"resultId":"pmrui035wy","sim":"test-sim-12-","persisted":true}
+
+stdout | tests/server.test.js > server-authoritative /api/game > daily: one official attempt per session; replays and refreshes rejected; other sessions unaffected
+{"t":"2026-10-02T13:11:18.767Z","requestId":"4850398cd589","route":"game","mode":"daily","status":200,"ms":6,"resultId":"ccrw0f3sej","sim":"test-sim-14-","persisted":true}
+
+stdout | tests/server.test.js > server-authoritative /api/game > 82-game season is computed entirely server-side
+{"t":"2026-10-02T13:11:18.878Z","requestId":"df5a8a150143","route":"game","mode":"82","status":200,"ms":110,"resultId":"9j7vcbezea","sim":"test-sim-15-","persisted":true}
+
+stdout | tests/server.test.js > challenge integrity > completion goes through /api/game; client blueIds are ignored for challenges
+{"t":"2026-10-02T13:11:18.884Z","requestId":"da9e47f00a88","route":"game","mode":"challenge","status":200,"ms":5,"resultId":"lpcr0hnwmy","sim":"test-sim-16-","persisted":true}
+
+stdout | tests/server.test.js > challenge integrity > completed games are immutable; rematches append to the rivalry chain
+{"t":"2026-10-02T13:11:18.888Z","requestId":"f4b3aedd9fc4","route":"game","mode":"challenge","status":200,"ms":4,"resultId":"gqp1dr3qw5","sim":"test-sim-17-","persisted":true}
+
+stdout | tests/server.test.js > challenge integrity > completed games are immutable; rematches append to the rivalry chain
+{"t":"2026-10-02T13:11:18.893Z","requestId":"beb6eae22837","route":"game","mode":"challenge","status":200,"ms":4,"resultId":"o3phpn6qo5","sim":"test-sim-18-","persisted":true}
+
+ ✓ tests/server.test.js (15 tests) 195ms
+ ✓ tests/v6c1-migration-and-accolades.test.js (22 tests) 163ms
+ ✓ tests/v6c4a-candidate1.test.js (65 tests) 130ms
+ ✓ tests/v5c-pick-and-roll.test.js (28 tests) 122ms
+ ✓ tests/v8c-arena-navigation.test.js (27 tests) 123ms
+ ✓ tests/loop-franchises.test.js (8 tests) 132ms
+ ✓ tests/v6c4b1-v5-preparation.test.js (91 tests) 123ms
+stdout | tests/saved-clash-field-mapping.test.js > buildSavedClash tracks the engines' live output, not a frozen copy > a freshly computed preview result maps its candidate and coaches
+{"t":"2026-10-02T13:11:19.929Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":56,"invariantViolations":0}
+
+ ✓ tests/saved-clash-field-mapping.test.js (19 tests) 107ms
+stdout | tests/v6c4d0-preview-candidate.test.js > preview engine behaviour > computes a single game and stamps the locked identity in the fingerprint
+{"t":"2026-10-02T13:11:20.039Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":58,"invariantViolations":0}
+
+stdout | tests/v6c4d0-preview-candidate.test.js > preview engine behaviour > is deterministic under replay
+{"t":"2026-10-02T13:11:20.066Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":21,"invariantViolations":0}
+{"t":"2026-10-02T13:11:20.086Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":18,"invariantViolations":0}
+
+stdout | tests/v6c4d0-preview-candidate.test.js > preview telemetry > strips secret-bearing keys and never logs personal data
+{"t":"2026-10-02T13:11:20.088Z","scope":"preview","event":"simulation_started","mode":"single"}
+
+ ✓ tests/v6c4d0-preview-candidate.test.js (17 tests) 114ms
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > accepts a legitimately drafted daily lineup and claims once
+{"t":"2026-10-02T13:11:20.252Z","requestId":"079ff213a017","route":"game","mode":"daily","status":200,"ms":23,"resultId":"6ahvnsnx17","sim":"daily-verify","persisted":true}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > rejects an illegal dream team without consuming the attempt
+{"t":"2026-10-02T13:11:20.254Z","requestId":"3ca6160dc352","route":"game","mode":"daily","status":400,"error_code":"DAILY_INVALID_LINEUP","reason":"lineup_not_reachable"}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > rejects an illegal dream team without consuming the attempt
+{"t":"2026-10-02T13:11:20.265Z","requestId":"3d0b690d81d9","route":"game","mode":"daily","status":200,"ms":10,"resultId":"oc0ofx0dnu","sim":"daily-verify","persisted":true}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > rejects decision tampering that doesn't reproduce the submitted five
+{"t":"2026-10-02T13:11:20.267Z","requestId":"7df8940d0843","route":"game","mode":"daily","status":400,"error_code":"DAILY_INVALID_LINEUP","reason":"lineup_not_reachable"}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > ignores client-supplied seeds and dates — server UTC date is the authority
+{"t":"2026-10-02T13:11:20.269Z","requestId":"79ce57d1d8bd","route":"game","mode":"daily","status":400,"error_code":"DAILY_INVALID_LINEUP","reason":"lineup_not_reachable"}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > rejects missing decisions outright
+{"t":"2026-10-02T13:11:20.270Z","requestId":"21e2b75f2054","route":"game","mode":"daily","status":400,"error_code":"DAILY_INVALID_LINEUP","reason":"bad_decisions"}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > multiple tabs / replays: exactly one official completion
+{"t":"2026-10-02T13:11:20.327Z","requestId":"654c40875011","route":"game","mode":"daily","status":200,"ms":56,"resultId":"6zfbadqaer","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"cc7f3e3a3f02","route":"game","mode":"daily","status":200,"ms":57,"resultId":"httehudyd6","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"c56bacd1263e","route":"game","mode":"daily","status":200,"ms":57,"resultId":"xqsarnd4ce","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"814c6df70200","route":"game","mode":"daily","status":200,"ms":57,"resultId":"ceemgyw8yr","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"68c73864e7ec","route":"game","mode":"daily","status":200,"ms":57,"resultId":"2kq1xbyscq","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"8531aa0c9221","route":"game","mode":"daily","status":200,"ms":57,"resultId":"hcdtgijwaj","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"4133596a3155","route":"game","mode":"daily","status":200,"ms":57,"resultId":"qs4m9qlakb","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"ba1e0e81360e","route":"game","mode":"daily","status":200,"ms":57,"resultId":"w8k0lni416","sim":"daily-verify","persisted":true}
+{"t":"2026-10-02T13:11:20.328Z","requestId":"95c342958366","route":"game","mode":"daily","status":200,"ms":57,"resultId":"1mtn9lz56g","sim":"daily-verify","persisted":true}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > multiple tabs / replays: exactly one official completion
+{"t":"2026-10-02T13:11:20.328Z","requestId":"08671be49a10","route":"game","mode":"daily","status":200,"ms":57,"resultId":"ng2dy9siwd","sim":"daily-verify","persisted":true}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > engine failure before a result never consumes the verified attempt
+{"t":"2026-10-02T13:11:20.330Z","requestId":"d3a45c8dcd8c","route":"game","status":500,"ms":1,"error_code":"ENGINE_FAILURE","msg":"chaos engine failure"}
+
+stdout | tests/daily-verification.test.js > server-side daily lineup verification (/api/game) > engine failure before a result never consumes the verified attempt
+{"t":"2026-10-02T13:11:20.335Z","requestId":"b1f3d3f1818b","route":"game","mode":"daily","status":200,"ms":5,"resultId":"j0bwd38kco","sim":"daily-verify","persisted":true}
+
+ ✓ tests/daily-verification.test.js (13 tests) 121ms
+stdout | tests/result-contract.test.js
+{"t":"2026-10-02T13:11:20.352Z","scope":"preview","event":"simulation_started","mode":"single"}
+{"t":"2026-10-02T13:11:20.353Z","scope":"preview","event":"preview_game_started","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed"}
+{"t":"2026-10-02T13:11:20.404Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":51,"invariantViolations":0}
+{"t":"2026-10-02T13:11:20.408Z","scope":"preview","event":"preview_game_completed","mode":"single","waveId":"candidate4-night-court-wave2","testerId":"unattributed","candidateId":"Candidate 4","calibrationVersion":"1.4.0","simulationLatency":56,"fallbackUsed":false}
+
+stdout | tests/result-contract.test.js
+{"t":"2026-10-02T13:11:20.410Z","requestId":"5a468f0fe199","route":"game","mode":"single","status":200,"ms":58,"resultId":"pv_zy4xd0xrim","sim":"contract-179","persisted":true}
+
+ ✓ tests/result-contract.test.js (19 tests) 94ms
+ ✓ tests/v6c3-formal-holdout.test.js (39 tests) 104ms
+ ✓ tests/v9e-competitive.test.js (21 tests) 96ms
+ ✓ tests/v9d-progression.test.js (26 tests) 86ms
+ ✓ tests/v6c3r-validation-repair.test.js (39 tests) 78ms
+ ✓ tests/rating.test.js (15 tests) 91ms
+ ✓ tests/ux-regressions.test.js (7 tests) 70ms
+stdout | tests/v5a-hygiene-verification.test.js
+[provider binding] environment=local project=unconfigured
+
+ ✓ tests/v6c4b1s-synthetic-package.test.js (53 tests) 62ms
+ ✓ tests/v5a-hygiene-verification.test.js (31 tests) 60ms
+ ✓ tests/v3-coach-intelligence.test.js (34 tests) 72ms
+ ✓ tests/v9a-lineup-placement.test.js (23 tests) 63ms
+ ✓ tests/preview-project-pin.test.js (6 tests) 53ms
+ ✓ tests/v3-player-data.test.js (30 tests) 51ms
+ ✓ tests/v6c2c1-calibration-data.test.js (45 tests) 47ms
+ ✓ tests/v9a3-wave2.test.js (12 tests) 48ms
+ ✓ tests/v6c2a-target-ingestion.test.js (36 tests) 41ms
+ ✓ tests/loop-rights.test.js (8 tests) 40ms
+ ✓ tests/engine.test.js (9 tests) 38ms
+stdout | tests/v7b-ui-truth.test.js
+{"t":"2026-10-02T13:11:22.521Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":55,"invariantViolations":0}
+
+stdout | tests/v7b-ui-truth.test.js > coaching detail and moments > qualifies a person who appears on both rosters
+{"t":"2026-10-02T13:11:22.564Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":22,"invariantViolations":0}
+
+ ✓ tests/v7b-ui-truth.test.js (19 tests) 39ms
+ ✓ tests/v9b2-career.test.js (36 tests) 32ms
+ ✓ tests/v3-team-intelligence.test.js (48 tests) 35ms
+ ✓ tests/misc.test.js (13 tests) 33ms
+ ✓ tests/v6c4b2r-formal-execution.test.js (39 tests) 29ms
+stdout | tests/v6c5-preview-activation.test.js
+{"t":"2026-10-02T13:11:23.000Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":55,"invariantViolations":0}
+
+stdout | tests/v6c5-preview-activation.test.js > production-shaped preview record > carries the preview identity and stays deterministic
+{"t":"2026-10-02T13:11:23.031Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":18,"invariantViolations":0}
+
+stdout | tests/v6c5-preview-activation.test.js > deployed-preview telemetry vocabulary > still strips secret keys on the new events
+{"t":"2026-10-02T13:11:23.034Z","scope":"preview","event":"preview_game_completed","candidateId":"Candidate 3"}
+
+ ✓ tests/v6c5-preview-activation.test.js (18 tests) 28ms
+stdout | tests/v7a-concept-ui.test.js
+{"t":"2026-10-02T13:11:23.208Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":58,"invariantViolations":0}
+
+ ✓ tests/v6c2b-parameters-and-probability.test.js (40 tests) 29ms
+stdout | tests/v7a-concept-ui.test.js > key moments come from the ledger, not from invention > the ledger flag is recording-only: same seed → same game
+{"t":"2026-10-02T13:11:23.239Z","scope":"preview","event":"simulation_completed","mode":"single","latencyMs":21,"invariantViolations":0}
+
+ ✓ tests/v7a-concept-ui.test.js (11 tests) 27ms
+ ✓ tests/v6c2b-corpus-and-holdouts.test.js (36 tests) 30ms
+ ✓ tests/v6c6-wave1.test.js (20 tests) 31ms
+ ✓ tests/v6a-workstream0.test.js (33 tests) 26ms
+ ✓ tests/v6c2c5-targeted-calibration.test.js (64 tests) 24ms
+ ✓ tests/v6c2c2-acceptance-policy.test.js (40 tests) 23ms
+ ✓ tests/v9a2-night-court-production.test.js (15 tests) 19ms
+ ✓ tests/v5b-era-style.test.js (28 tests) 19ms
+ ✓ tests/v6c4c1-candidate2.test.js (40 tests) 19ms
+ ✓ tests/social-v1.test.js (37 tests) 20ms
+ ✓ tests/loop-browser-audit.test.js (7 tests) 18ms
+ ✓ tests/v9a-play-lobby.test.js (30 tests) 17ms
+ ✓ tests/clash-breakdown-v1.test.js (49 tests) 18ms
+ ✓ tests/v9f-profiles.test.js (31 tests) 17ms
+ ✓ tests/v6c1-calibration-framework.test.js (46 tests) 15ms
+ ✓ tests/loop-browser-owner-scope.test.js (2 tests) 13ms
+ ✓ tests/v9a1-theme-architecture.test.js (19 tests) 13ms
+ ✓ tests/v6c4c3-formal-execution.test.js (71 tests) 13ms
+ ✓ tests/v6c4b2-formal-revalidation.test.js (28 tests) 12ms
+ ✓ tests/v6c2c6-status-reconciliation.test.js (40 tests) 12ms
+ ✓ tests/v8a-component-integrity.test.js (41 tests) 9ms
+ ✓ tests/health-operator-access.test.js (7 tests) 8ms
+ ✓ tests/loop-modes-client.test.js (7 tests) 7ms
+ ✓ tests/v8a-postgame-story.test.js (9 tests) 7ms
+ ✓ tests/v9b3-guided-flow.test.js (23 tests) 6ms
+ ✓ tests/auth-email-messaging.test.js (15 tests) 5ms
+ ✓ tests/ui-v22.test.js (9 tests) 5ms
+ ✓ tests/v6c2a-structural-baseline.test.js (8 tests) 5ms
+ ✓ tests/candidateIdentityReporting.test.js (5 tests) 5ms
+ ✓ tests/audit-known-routes.test.js (3 tests) 3ms
+ ✓ tests/simclient.test.js (6 tests) 3ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/v6c2c4-scoped-calibration.test.js [ tests/v6c2c4-scoped-calibration.test.js ]
+Error: run `npm run calibration:identifiability` first — readiness is derived from measured identifiability, not asserted
+ ❯ buildReadiness scripts/calibration/readiness.mjs:90:32
+     88|
+     89| export const buildReadiness = () => {
+     90|   if (!existsSync(IDV2)) throw new Error("run `npm run calibration:ide…
+       |                                ^
+     91|   const idv2 = JSON.parse(readFileSync(IDV2, "utf8"));
+     92|   const support = JSON.parse(readFileSync(SUPPORT, "utf8"));
+ ❯ tests/v6c2c4-scoped-calibration.test.js:120:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/v6c2c6-orientation-and-sidebias.test.js > prior failing cell > was read from the artifact, not inferred
+Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'
+ ❯ tests/v6c2c6-orientation-and-sidebias.test.js:19:27
+     17|     const d = C6("prior-failing-cell").data;
+     18|     // The v1 artifact's reported maximum must be this cell's value.
+     19|     const v1 = JSON.parse(readFileSync(".cache/calibration/probability…
+       |                           ^
+     20|     expect(Math.abs(d.v1PointEstimate)).toBeCloseTo(0.0781, 4);
+     21|     expect(d.v1Threshold).toBe(0.05);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/v6c2c6-side-bias-policy.test.js > side-bias policy v2 is frozen > keeps the v1 policy unedited
+Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'
+ ❯ tests/v6c2c6-side-bias-policy.test.js:48:27
+     46|     expect(POLICY.supersedes.preservedUnedited).toBe(true);
+     47|     // v1's threshold still lives in the untouched probability thresho…
+     48|     const v1 = JSON.parse(readFileSync(".cache/calibration/probability…
+       |                           ^
+     49|     expect(v1.thresholds.maxSideBiasDifference).toBe(0.05);
+     50|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/v9a3p-play-lobby-polish.test.js > telemetry preservation > Wave 2 study constants, credentials, feedback schema and frozen plan are byte-identical to the parent
+TypeError: Cannot read properties of null (reading 'trim')
+ ❯ tests/v9a3p-play-lobby-polish.test.js:311:48
+    309|     // endpoint is the integration baseline for the additive Loop disp…
+    310|     const parentGame = git('git show 16ea9085a9f864c607cad226e65771770…
+    311|     expect(currentGame.trim()).toBe(parentGame.trim());
+       |                                                ^
+    312|   });
+    313|   it("the Wave 2 telemetry partition still keys on wave, cohort, teste…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  4 failed | 96 passed (100)
+      Tests  3 failed | 2960 passed (2963)
+   Start at  09:10:08
+   Duration  77.10s (transform 2.09s, setup 0ms, import 30.26s, tests 112.36s, environment 5ms)
+
+JSON report written to /private/tmp/loop-unit-run3-final-dc926ad.json

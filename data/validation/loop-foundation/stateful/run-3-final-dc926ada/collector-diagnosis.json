@@ -1,0 +1,15 @@
+{
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "initialResult": "27PASS1FAIL preserved; missingnormalPageresponseforguestbeacon",
+  "boundedTraceDirectories": [
+    "run-3-final-dc926ada-event-transport-probe",
+    "run-3-final-dc926ada-event-transport-extra"
+  ],
+  "actualObservation": "EnhancedCDP traces each have2requestWillBeSent and2HTTP204responseExtraInfo, while normalPage/context/responseReceived exposes1 after documentnavigation.0requestfailures.",
+  "beforeRunner": "tests/loop-stateful-browser.mjs",
+  "beforeSHA256": "d5bf646ef19a12501e7a781737437407cf09e8d62e9111e54c1ebc52d31bad3e",
+  "afterRunner": "tests/loop-stateful-browser-cdp.mjs",
+  "afterSHA256": "29d4202a33c7858288c16c6fa7a37610112f8c6bbe57780684eb2a500c6e1262",
+  "correction": "Test-only actualNetwork.responseReceivedExtraInfo receipt observer across navigation; normalPage receipts retained separately, not doublecounted. Nativepayloads unchanged; no fabricated response, product/handler/transport/engine change.",
+  "next": "Fullfreshnamespaced replay on freshlyresetownedcompanion, preserve allinitialreports."
+}

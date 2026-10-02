@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T13:25:20.244319+00:00",
+  "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "scope": "Clarifies missing guessed filenames already marked exists:false in the frozen source manifest. No missing product implementation implied.",
+  "corrections": [
+    {
+      "page": "Public profiles",
+      "unresolvedRequestedPath": "api/public-profile.js",
+      "actualPaths": [
+        "api/profile.js",
+        "api/_lib/profiles.js",
+        "src/profiles/client.js"
+      ],
+      "proof": "api/profile.js profile-public action dispatches publicProfileBySlug; client uses /api/profile."
+    },
+    {
+      "page": "Auth callbacks",
+      "unresolvedRequestedPath": "src/auth/callback.js",
+      "actualPaths": [
+        "src/components/accounts/AuthCallback.jsx",
+        "src/accounts/provider.js",
+        "src/App.jsx"
+      ],
+      "proof": "App imports/renders AuthCallback at /auth/callback; provider uses window.origin + /auth/callback."
+    }
+  ],
+  "additionalActualSourceHashes": {
+    "api/profile.js": "319b736176d8dcb8a9e71ee885f59b230d375124cb3be0cbe9d40424c802beec",
+    "api/_lib/profiles.js": "e02677b323e95865fb4fb512be0235b1efec13bd74cc5d96cd8517c02b9acc2c",
+    "src/profiles/client.js": "61c6784d4356b4440cb74cb3176837061e19a3d7a497db5a215b5664435e90c1",
+    "src/components/accounts/AuthCallback.jsx": "7b782ef360624129ace21cbe7fb0f55fbcc20f2c5b7838ab8200dd1661899e05",
+    "src/accounts/provider.js": "6dd5ac6b824507350120b441b980af99f84328590984fcf17cc9bd9ef1eb8cad",
+    "src/App.jsx": "09f5820de3ba51313d0dcbaa84660ff403bb1bec9d0b12168c0531782cb886e4"
+  },
+  "coachReferenceCorrection": {
+    "path": "src/components/CoachPick.jsx",
+    "minHeightLine": 44,
+    "note": "Initial finding line54 was approximate; actual selected Change coach minHeight42 appears at line44. The source fact and pending runtime classification are unchanged."
+  }
+}

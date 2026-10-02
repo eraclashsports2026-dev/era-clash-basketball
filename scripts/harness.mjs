@@ -7,7 +7,11 @@
 //   ECLASH_TEST_MEMORY_STORE=1 ENABLE_CHAOS_TESTS=true node scripts/harness.mjs [port]
 import { createServer } from "node:http";
 import { readFileSync, existsSync } from "node:fs";
+import { brotliCompressSync, gzipSync, constants as zlibConstants } from "node:zlib";
 import { extname, join, normalize } from "node:path";
+import { fileURLToPath } from "node:url";
+import { isKnownRoute } from '../src/navigation.js';
+const deploymentHeaders = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8')).headers?.find(h => h.source === '/(.*)')?.headers || [];
 
 process.env.ECLASH_TEST_MEMORY_STORE ||= "1";
 process.env.ENABLE_CHAOS_TESTS ||= "true";
@@ -29,7 +33,7 @@ if (process.env.ECLASH_FAKE_CLOUD === "1") {
 const PORT = Number(process.argv[2]) || 4173;
 // ECLASH_DIST points the harness at another build (Phase 9D: the dev-fixtures
 // build in dist-fixtures, so UI gates can measure fixture routes) — never deployed.
-const DIST = process.env.ECLASH_DIST ? new URL(`../${process.env.ECLASH_DIST.replace(/^\.\//, "")}`, import.meta.url).pathname : new URL("../dist", import.meta.url).pathname;
+const DIST = fileURLToPath(process.env.ECLASH_DIST ? new URL(`../${process.env.ECLASH_DIST.replace(/^\.\//, "")}`, import.meta.url) : new URL("../dist", import.meta.url));
 
 // Fail fast on a missing build. The readiness probe Playwright waits on is
 // /api/health — a live handler import — so it answers even when dist/ is absent,
@@ -55,7 +59,7 @@ const routes = {
   "/api/v3meta": (await import("../api/v3meta.js")).default,
 };
 
-const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".webp": "image/webp", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };
 
 const readBody = (req) => new Promise((resolve) => {
   const chunks = [];
@@ -77,12 +81,15 @@ const shim = (res) => ({
 });
 
 createServer(async (req, res) => {
+  for (const { key, value } of deploymentHeaders) res.setHeader(key, value);
   const url = new URL(req.url, `http://${req.headers.host}`);
   let path = url.pathname;
 
   // vercel.json rewrites
   let m;
   if ((m = path.match(/^\/result\/([a-z0-9]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "result"); url.searchParams.set("id", m[1]); }
+  if ((m = path.match(/^\/card\/([a-z0-9]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "result"); url.searchParams.set("id", m[1]); }
+  if ((m = path.match(/^\/clash\/all-time\/([a-z-]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "franchise"); url.searchParams.set("id", m[1]); }
   if ((m = path.match(/^\/challenge\/([a-z0-9]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "challenge"); url.searchParams.set("id", m[1]); }
 
   const handler = routes[path];
@@ -101,10 +108,24 @@ createServer(async (req, res) => {
   // static: dist/ with SPA fallback
   const safe = normalize(path).replace(/^(\.\.[/\\])+/, "");
   let file = join(DIST, safe === "/" ? "index.html" : safe);
-  if (!existsSync(file)) file = join(DIST, "index.html");
+  if (!existsSync(file)) {
+    if (isKnownRoute(path) || /^\/(player|__fixtures)\//.test(path)) file = join(DIST, 'index.html');
+    else { res.statusCode = 404; file = join(DIST, '404.html'); }
+  }
   try {
-    res.setHeader("Content-Type", MIME[extname(file)] || "application/octet-stream");
-    res.end(readFileSync(file));
+    const type = MIME[extname(file)] || "application/octet-stream";
+    res.setHeader("Content-Type", type);
+    let bytes = readFileSync(file);
+    // Opt-in local delivery fidelity only: the real CDN compresses text assets.
+    // Keep ordinary gates unchanged; never compress images or API responses.
+    if (process.env.ECLASH_STATIC_COMPRESSION === '1' && bytes.length > 512 && /text\/|javascript|json|svg/.test(type)) {
+      const accepts = String(req.headers['accept-encoding'] || '');
+      if (/\bbr\b/.test(accepts)) { bytes = brotliCompressSync(bytes, { params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 4 } }); res.setHeader('Content-Encoding', 'br'); }
+      else if (/\bgzip\b/.test(accepts)) { bytes = gzipSync(bytes); res.setHeader('Content-Encoding', 'gzip'); }
+      res.setHeader('Vary', 'Accept-Encoding');
+    }
+    res.setHeader('Content-Length', String(bytes.length));
+    res.end(req.method === 'HEAD' ? undefined : bytes);
   } catch {
     res.statusCode = 404; res.end("not found");
   }

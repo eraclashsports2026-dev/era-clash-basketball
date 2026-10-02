@@ -34,7 +34,7 @@ export default function StageWizard({ stage, done, onJump }) {
               }}>{isDone && !isActive ? "✓" : n}</span>
               <span style={{ textAlign: "left" }}>
                 <span style={{ display: "block", fontSize: 12, fontWeight: 900, letterSpacing: 1.5, fontFamily: FONT.ui }}>{label}</span>
-                <span style={{ display: "block", fontSize: 10, opacity: 0.85 }}>{sub}</span>
+                <span style={{ display: "block", fontSize: 10 }}>{sub}</span>
               </span>
             </button>
             {i < STAGES.length - 1 && <span aria-hidden="true" style={{ color: T.textMuted }}>→</span>}

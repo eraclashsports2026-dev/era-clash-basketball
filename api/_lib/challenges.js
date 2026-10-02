@@ -29,10 +29,8 @@ import { buildManifest } from "../../src/chaos/challenge.js";
 import { setJSON } from "./store.js";
 import { DRAFT_VERSIONS, CURRENT_SEQUENCE } from "../../src/chaos/runState.js";
 import { can, CAPABILITIES, GUEST_CHAOS_RUNS } from "../../src/entitlements.js";
-import { PLAYERS } from "../../src/players.js";
-import { COACHES } from "../../src/v3/coaches.js";
-const PLAYER_BY_ID = new Map(PLAYERS.map((p) => [p.id, p]));
-const COACH_BY_ID = new Map(COACHES.map((c) => [c.id, c]));
+// The single reader of the stored result record (engine identity, creator snapshot).
+import { engineIdentity, challengeRosterOf, challengeCoachOf, mvpOf as recordMvpOf } from "./resultContract.js";
 
 export const CHALLENGES_SERVER_VERSION = "1.0.0";
 
@@ -46,25 +44,12 @@ const q = (s) => encodeURIComponent(String(s));
 const one = (r) => (Array.isArray(r.body) && r.body.length ? r.body[0] : null);
 const failure = (r, detail) => (serverKeyRejected(r.status) ? { status: "save_failed", detail: "provider_rejected_server_key" } : { status: "save_failed", detail: `${detail}_http_${r.status}` });
 
-// The stored result record: the engines put the final score, winner and MVP
-// under `core`; older test records carry them at the top level. Read both.
-const rosterOf = (ids, record) => {
-  const byId = new Map((record?.pregame?.cards || []).map((c) => [c.id, c]));
-  return (Array.isArray(ids) ? ids : []).slice(0, 5).map((id) => { const c = byId.get(id) || PLAYER_BY_ID.get(id); return { id: String(id).slice(0, 40), name: c?.name ? String(c.name).slice(0, 40) : null, pos: (c?.pos || c?.positions?.[0]) ? String(c.pos || c.positions[0]).slice(0, 4) : null }; });
-};
-const coachOf = (c, id = null) => {
-  const cid = c?.id ?? id;
-  const known = cid ? COACH_BY_ID.get(cid) : null;
-  if (!cid && !c?.name) return null;
-  return { id: cid ? String(cid).slice(0, 40) : null, name: (c?.name || known?.name) ? String(c?.name || known.name).slice(0, 40) : null };
-};
+// The creator snapshot a recipient sees after completing is read by
+// resultContract.js (catalog names/positions, coach by id) — unchanged from
+// Phase 9C. The record never had `pregame.cards` or `coachGold`.
+const rosterOf = (ids) => challengeRosterOf(ids);
 const scoreOf = (record) => { const f = record?.core?.finalScore || record?.finalScore || {}; return { gold: Number(f.gold), blue: Number(f.blue) }; };
-const mvpOf = (record) => {
-  const m = record?.mvp ?? record?.core?.mvp;
-  if (!m) return null;
-  if (typeof m === "string") return { name: m.slice(0, 40), pts: Number(record?.core?.mvpLine?.pts) || null };
-  return { name: String(m.name || "").slice(0, 40), pts: Number(m.pts) || null };
-};
+const mvpOf = recordMvpOf;
 
 // ── Create ───────────────────────────────────────────────────────────────────
 /**
@@ -92,9 +77,14 @@ export const createChallenge = async ({ chaosRunId, userId, deviceSession, displ
 
   // The same-seed manifest (KV) the recipient's run will be created from.
   const manifest = deps.manifest || await publishChallenge(run, now);
+  // The simulation contract that produced the creator's result, from the STORED
+  // record (candidate identity is stamped only on a preview-engine record). It
+  // was read from `previewCandidate` — a browser view-model field — so every
+  // Challenge would have stored null here and hashed nulls into its fingerprint.
+  const engine = engineIdentity(record);
   const fingerprint = challengeFingerprint({
     challengeVersion: CHALLENGE_VERSION, draftModelVersion: JSON.stringify(DRAFT_VERSIONS), playerPoolVersion: run.chaosDraftVersion || DRAFT_VERSIONS.chaosDraftVersion,
-    candidateId: record.previewCandidate?.candidateId || null, parameterHash: record.previewCandidate?.candidateCoreHash || null,
+    candidateId: engine.candidateId, parameterHash: engine.candidateCoreHash,
     eraContractVersion: DRAFT_VERSIONS.eraTranslationVersion, cpuPolicyVersion: DRAFT_VERSIONS.legendCpuVersion,
     creatorChallengeSeedDomain: manifest.challengeId, chaosSequenceVersion: manifest.chaosSequenceVersion,
   });
@@ -111,13 +101,13 @@ export const createChallenge = async ({ chaosRunId, userId, deviceSession, displ
     challenge_version: CHALLENGE_VERSION, comparison_version: COMPARISON_VERSION, mode: CHALLENGE_MODE,
     chaos_manifest_id: manifest.challengeId, chaos_sequence_version: manifest.chaosSequenceVersion,
     draft_model_version: DRAFT_VERSIONS, player_pool_version: run.chaosDraftVersion || null,
-    candidate_id: record.previewCandidate?.candidateId || null, calibration_version: record.previewCandidate?.calibrationVersion || null,
-    parameter_hash: record.previewCandidate?.candidateCoreHash || null,
+    candidate_id: engine.candidateId, calibration_version: engine.calibrationVersion,
+    parameter_hash: engine.candidateCoreHash,
     era_contract_version: DRAFT_VERSIONS.eraTranslationVersion, cpu_policy_version: DRAFT_VERSIONS.legendCpuVersion,
     challenge_fingerprint: fingerprint,
     creator_outcome: outcome, creator_gold_score: score.gold, creator_blue_score: score.blue, creator_performance: performanceScore(score),
     creator_era_id: record.eraId ? String(record.eraId).slice(0, 20) : null, era_custom: !!run.eraCustom,
-    creator_roster: rosterOf(record.goldIds, record), creator_coach: coachOf(record.pregame?.coachGold || record.coachGold, record.coachIds?.gold || run.selectedCoaches?.gold || null),
+    creator_roster: rosterOf(record.goldIds), creator_coach: challengeCoachOf(record.coachIds?.gold || run.selectedCoaches?.gold || null),
     creator_mvp: mvpOf(record),
     status: STATUS.OPEN, created_at: createdAt, expires_at: expiresAt(createdAt),
   };

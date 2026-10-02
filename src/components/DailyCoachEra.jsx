@@ -1,3 +1,4 @@
+import { leagueCopy } from "../loop/rights.js";
 // ── Daily Challenge: the official Era Style + today's three coach choices ─────
 // The Daily is one shared puzzle: everybody plays the SAME era with the SAME
 // three coaches available, so a leaderboard compares decisions instead of luck.
@@ -90,12 +91,12 @@ export default function DailyCoachEra({ config, selectedCoachId, onSelectCoach, 
                   </div>
                   {o.whyDifferent && (
                     <div style={{ fontSize: 12.5, color: T.text, marginTop: 4, lineHeight: 1.4 }}>
-                      <span style={{ color: T.textDim }}>Differs: </span>{o.whyDifferent}
+                      <span style={{ color: T.textDim }}>Differs: </span>{leagueCopy(o.whyDifferent)}
                     </div>
                   )}
                   {o.systemTags?.length > 0 && (
                     <div style={{ display: "flex", gap: 5, marginTop: 7, flexWrap: "wrap" }}>
-                      {o.systemTags.map((t) => <Tag key={t}>{t}</Tag>)}
+                      {o.systemTags.map((t) => <Tag key={t}>{leagueCopy(t)}</Tag>)}
                     </div>
                   )}
                 </button>

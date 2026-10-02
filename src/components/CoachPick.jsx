@@ -1,3 +1,4 @@
+import { leagueCopy } from "../loop/rights.js";
 // ── Coach pick — the compact in-page control that opens the modal ────────────
 // The stage shows either "Choose Coach" or a one-line summary of the selection.
 // The long scouting detail lives in the modal, where it can be read on demand.
@@ -31,8 +32,8 @@ export default function CoachPick({ side, teamIds, eraStyleId, eraLabel, selecte
             <CoachAvatar name={selected.name} accent={accent} />
             <div style={{ minWidth: 0, flex: 1 }}>
               <div style={{ fontSize: 15.5, fontWeight: 900, fontFamily: FONT.display, color: T.text }}>{selected.name}</div>
-              <div style={{ fontSize: 12.5, color: T.textDim }}>{selected.span}</div>
-              <div style={{ fontSize: 12.5, color: T.text, marginTop: 3 }}>{(selected.systemTags ?? []).slice(0, 3).join(" • ")}</div>
+              <div style={{ fontSize: 12.5, color: T.textDim }}>{leagueCopy(selected.span)}</div>
+              <div style={{ fontSize: 12.5, color: T.text, marginTop: 3 }}>{leagueCopy((selected.systemTags ?? []).slice(0, 3).join(" • "))}</div>
               {recForSelected?.teamFit && (
                 <div style={{ fontSize: 12, fontWeight: 800, color: recForSelected.teamFit === "POOR" ? T.red : T.green, marginTop: 3 }}>
                   Roster fit: {recForSelected.teamFit}

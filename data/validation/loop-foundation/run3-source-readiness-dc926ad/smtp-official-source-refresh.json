@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T13:27:16.315505+00:00",
+  "scope": "Fresh public official documentation check only. No provider account, domain verification, settings change or email sent.",
+  "documentationMatchesReleaseProcedure": true,
+  "sources": [
+    {
+      "url": "https://resend.com/docs/knowledge-base/account-quotas-and-limits",
+      "facts": {
+        "freeTransactionalDailyQuota": 100,
+        "freeTransactionalMonthlyQuota": 3000,
+        "freeVerifiedDomains": 3,
+        "recipientCounting": "Each To/CC/BCC recipient counts separately; inbound counts too.",
+        "dailyWindow": "UTC calendar day, resets at midnight UTC."
+      }
+    },
+    {
+      "url": "https://resend.com/docs/send-with-smtp",
+      "facts": {
+        "host": "smtp.resend.com",
+        "username": "resend",
+        "credential": "API key",
+        "implicitTlsPort": 465,
+        "startTlsPort": 587,
+        "prerequisites": [
+          "API key",
+          "verified domain"
+        ]
+      }
+    },
+    {
+      "url": "https://supabase.com/docs/guides/auth/auth-smtp",
+      "facts": {
+        "defaultSenderAudience": "Project team addresses only.",
+        "defaultCurrentLimitPerHour": 2,
+        "publicAddressRequirement": "Custom SMTP",
+        "productionDeliveryStatus": "UNVERIFIED"
+      }
+    }
+  ],
+  "limits": [
+    "Documentation quotas may change and do not establish owner account capacity/settings.",
+    "SMTP configured status, actual receipt/redemption and callback/provider durability remain unverified.",
+    "Room notification hook requires separate injected sender and verification; auth SMTP success alone does not enable notifications."
+  ]
+}

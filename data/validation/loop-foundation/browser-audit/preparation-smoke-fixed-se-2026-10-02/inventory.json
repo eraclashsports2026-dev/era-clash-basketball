@@ -1,0 +1,329 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "kind": "application",
+      "sources": [
+        "public entrance"
+      ]
+    },
+    {
+      "path": "/auth/callback",
+      "kind": "auth-callback",
+      "sources": [
+        "App route branch"
+      ]
+    },
+    {
+      "path": "/challenges",
+      "kind": "application",
+      "sources": [
+        "KNOWN_ROUTES",
+        "LOOP_MODE_LINKS",
+        "App route branch"
+      ]
+    },
+    {
+      "path": "/clash/all-time/atlanta-vs-boston",
+      "kind": "programmatic",
+      "sources": [
+        "FRANCHISE_PAIRINGS + franchise sitemap"
+      ],
+      "pairingId": "atlanta-vs-boston"
+    },
+    {
+      "path": "/clash/any-five",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS"
+      ]
+    },
+    {
+      "path": "/clash/daily",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS"
+      ]
+    },
+    {
+      "path": "/clash/filters",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS",
+        "LoopModes branches"
+      ]
+    },
+    {
+      "path": "/clash/franchise",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS"
+      ]
+    },
+    {
+      "path": "/clash/gauntlet",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS"
+      ]
+    },
+    {
+      "path": "/clash/lab",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS"
+      ]
+    },
+    {
+      "path": "/clash/modes",
+      "kind": "loop-mode",
+      "sources": [
+        "LoopModes branches"
+      ]
+    },
+    {
+      "path": "/clash/no-mvps",
+      "kind": "loop-mode",
+      "sources": [
+        "LoopModes branches"
+      ]
+    },
+    {
+      "path": "/clash/one-franchise",
+      "kind": "loop-mode",
+      "sources": [
+        "LoopModes branches"
+      ]
+    },
+    {
+      "path": "/clash/one-per-era",
+      "kind": "loop-mode",
+      "sources": [
+        "LoopModes branches"
+      ]
+    },
+    {
+      "path": "/clash/rooms",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS",
+        "App route branch"
+      ]
+    },
+    {
+      "path": "/clash/spin",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS"
+      ]
+    },
+    {
+      "path": "/fantasy/eraclash",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS",
+        "fantasy registry"
+      ],
+      "implemented": false
+    },
+    {
+      "path": "/fantasy/live",
+      "kind": "loop-mode",
+      "sources": [
+        "LOOP_MODE_LINKS",
+        "fantasy registry"
+      ],
+      "implemented": false
+    },
+    {
+      "path": "/leaderboard",
+      "kind": "leaderboard",
+      "sources": [
+        "KNOWN_ROUTES"
+      ]
+    },
+    {
+      "path": "/membership",
+      "kind": "application",
+      "sources": [
+        "KNOWN_ROUTES"
+      ]
+    },
+    {
+      "path": "/modes/bo7",
+      "kind": "mode-information",
+      "sources": [
+        "navigation information contract"
+      ],
+      "modeId": "bo7"
+    },
+    {
+      "path": "/modes/chaos",
+      "kind": "mode-information",
+      "sources": [
+        "navigation information contract"
+      ],
+      "modeId": "chaos"
+    },
+    {
+      "path": "/modes/daily",
+      "kind": "mode-information",
+      "sources": [
+        "navigation information contract"
+      ],
+      "modeId": "daily"
+    },
+    {
+      "path": "/modes/dream",
+      "kind": "mode-information",
+      "sources": [
+        "navigation information contract"
+      ],
+      "modeId": "dream"
+    },
+    {
+      "path": "/modes/gauntlet",
+      "kind": "mode-information",
+      "sources": [
+        "navigation information contract"
+      ],
+      "modeId": "gauntlet"
+    },
+    {
+      "path": "/modes/tournament",
+      "kind": "mode-information",
+      "sources": [
+        "navigation information contract"
+      ],
+      "modeId": "tournament"
+    },
+    {
+      "path": "/modes/win82",
+      "kind": "mode-information",
+      "sources": [
+        "navigation information contract"
+      ],
+      "modeId": "win82"
+    },
+    {
+      "path": "/my-eraclash",
+      "kind": "account",
+      "sources": [
+        "KNOWN_ROUTES",
+        "App route branch"
+      ]
+    },
+    {
+      "path": "/play",
+      "kind": "application",
+      "sources": [
+        "navigation registry"
+      ]
+    },
+    {
+      "path": "/play/best-of-7",
+      "kind": "mode",
+      "sources": [
+        "PLAY_MODES",
+        "LOOP_MODE_LINKS"
+      ],
+      "modeId": "bo7",
+      "implemented": true
+    },
+    {
+      "path": "/play/chaos",
+      "kind": "mode",
+      "sources": [
+        "PLAY_MODES",
+        "LOOP_MODE_LINKS"
+      ],
+      "modeId": "chaos",
+      "implemented": true
+    },
+    {
+      "path": "/play/daily",
+      "kind": "mode",
+      "sources": [
+        "PLAY_MODES"
+      ],
+      "modeId": "daily",
+      "implemented": true
+    },
+    {
+      "path": "/play/dream",
+      "kind": "mode",
+      "sources": [
+        "PLAY_MODES",
+        "LOOP_MODE_LINKS"
+      ],
+      "modeId": "dream",
+      "implemented": true
+    },
+    {
+      "path": "/play/era-gauntlet",
+      "kind": "mode",
+      "sources": [
+        "PLAY_MODES"
+      ],
+      "modeId": "gauntlet",
+      "implemented": false
+    },
+    {
+      "path": "/play/tournament",
+      "kind": "mode",
+      "sources": [
+        "PLAY_MODES",
+        "LOOP_MODE_LINKS"
+      ],
+      "modeId": "tournament",
+      "implemented": true
+    },
+    {
+      "path": "/play/win-82",
+      "kind": "mode",
+      "sources": [
+        "PLAY_MODES",
+        "LOOP_MODE_LINKS"
+      ],
+      "modeId": "win82",
+      "implemented": true
+    },
+    {
+      "path": "/privacy",
+      "kind": "application",
+      "sources": [
+        "KNOWN_ROUTES",
+        "App route branch"
+      ]
+    },
+    {
+      "path": "/support",
+      "kind": "application",
+      "sources": [
+        "KNOWN_ROUTES",
+        "App route branch"
+      ]
+    },
+    {
+      "path": "/terms",
+      "kind": "application",
+      "sources": [
+        "KNOWN_ROUTES",
+        "App route branch"
+      ]
+    }
+  ],
+  "sitemap": {
+    "path": "artifacts/loop/franchise-pages/franchise-sitemap.xml",
+    "status": "PASS",
+    "expected": 435,
+    "found": 435,
+    "unique": 435,
+    "sha256": "06dd3fe01a847e3b9bc1051e66ada650f9bab399d805d5343059582b7da52090",
+    "declaredOrigins": [
+      "http://localhost:4320"
+    ]
+  },
+  "suppliedResults": [],
+  "sourceVersion": "loop-franchises-1.0.0"
+}

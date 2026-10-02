@@ -1,0 +1,889 @@
+{
+  "generatedAt": "2026-10-02T13:31:16.604Z",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "scope": "Read-only local production client/actual handlers; real Supabase RLS, SMTP and hosted headers not established",
+  "checks": [
+    {
+      "name": "/: real served local response contains security headers",
+      "status": "PASS",
+      "present": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "cross-origin-opener-policy"
+      ],
+      "missing": []
+    },
+    {
+      "name": "/clash/any-five: real served local response contains security headers",
+      "status": "PASS",
+      "present": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "cross-origin-opener-policy"
+      ],
+      "missing": []
+    },
+    {
+      "name": "/card/f14ee81345cc5b9c: real served local response contains security headers",
+      "status": "PASS",
+      "present": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "cross-origin-opener-policy"
+      ],
+      "missing": []
+    },
+    {
+      "name": "/clash/all-time/boston-vs-la-lakers: real served local response contains security headers",
+      "status": "PASS",
+      "present": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "cross-origin-opener-policy"
+      ],
+      "missing": []
+    },
+    {
+      "name": "/api/health: real served local response contains security headers",
+      "status": "PASS",
+      "present": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "cross-origin-opener-policy"
+      ],
+      "missing": []
+    },
+    {
+      "name": "/api/game?id=pv_rnwelexqe7: real served local response contains security headers",
+      "status": "PASS",
+      "present": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "cross-origin-opener-policy"
+      ],
+      "missing": []
+    },
+    {
+      "name": "Unauthenticated actual Lab full-result GET excludes private scenario/session/seed without losing actual result identity",
+      "status": "FAIL",
+      "projection": {
+        "httpStatus": 200,
+        "keys": [
+          "v",
+          "id",
+          "mode",
+          "goldIds",
+          "blueIds",
+          "versions",
+          "eraId",
+          "coachIds",
+          "preview",
+          "candidate",
+          "fingerprint",
+          "core",
+          "fallbackSummary",
+          "mvpFallback",
+          "v3",
+          "periodScores",
+          "created_at",
+          "chaosDraft",
+          "core_result_status",
+          "narrative_status",
+          "story",
+          "expandedAnalysis",
+          "loop"
+        ],
+        "loopKeys": [
+          "version",
+          "mode",
+          "tag",
+          "hiddenStats",
+          "outOfPosition",
+          "boardType"
+        ],
+        "id": "pv_rnwelexqe7",
+        "mode": "lab",
+        "score": {
+          "gold": 148,
+          "blue": 126
+        },
+        "headers": {
+          "cache-control": "public, max-age=300",
+          "connection": "keep-alive",
+          "content-length": "20208",
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+          "content-type": "application/json",
+          "cross-origin-opener-policy": "same-origin",
+          "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+          "keep-alive": "timeout=5",
+          "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "strict-transport-security": "max-age=63072000; includeSubDomains",
+          "x-content-type-options": "nosniff"
+        }
+      }
+    },
+    {
+      "name": "/run3-unknown-security-check: real served local response contains security headers",
+      "status": "PASS",
+      "present": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "cross-origin-opener-policy"
+      ],
+      "missing": []
+    },
+    {
+      "name": "dist/404.html: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/AccountGate-BJyiNUYP.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/CareerProgress-BZ9SEMnB.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/ChallengeComparison-DKmYLKTT.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/ChallengeShare-DYQtxXI2.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/ClashBreakdown-CgGu3a0Y.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/CoachPick-C8tGngLC.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/Credits-D2kILHlu.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/DailyCoachEra-Dtou8CWs.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/DailyPanel-DM-3BqvI.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/FiveBuilder-DW_QS0sy.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/FranchiseMode-BOTGqOS3.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/GauntletMode-DQvsGB8e.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/LeaderboardPage-CY1iyQ5l.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/LoopResult-CJ7vTe1_.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/MatchupPreview-Ci1_VzZ5.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/MyEraClash-C7Axd3hC.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/PlayerCard-_vOtW0BG.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/Postgame-C3T2FXWp.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/PrivateRooms-DB0r9d-2.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/Profile-D8xAYZj6.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/PublicProfilePage-D_y4xAVr.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/RatingChange-BBhpM4o_.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/RosterBalance--ZUwwmss.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/SimulationLoading-ByvKrKDn.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/SpinMode-EMtiKb02.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/TeamModes-CcRezrto.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/TimeArena-D4pGjMF2.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/VisibilitySetting-B_LTl-Ar.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/client-4mXyjIxY.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/client-C1d7R5NV.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/coaches-BOdJCH8b.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/contract-Vpp2NtMV.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/contract-XzMJOpmG.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/eraStyles-87Hlgecy.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/index-CANu9Cpy.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/index-Dr5R-os1.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/assets/index-eSBgaXU3.css: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/favicon.svg: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/index.html: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/manifest.json: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/share-entry.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "dist/sw.js: served asset bytes match independently scanned frozen build",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Actually served normal build text assets contain no recognizable server-secret patterns",
+      "status": "PASS",
+      "scannedFiles": 43,
+      "limits": "Pattern scan is bounded and cannot prove absence of all secrets; no secret values emitted."
+    }
+  ],
+  "headers": [
+    {
+      "path": "/",
+      "httpStatus": 200,
+      "headers": {
+        "connection": "keep-alive",
+        "content-encoding": "gzip",
+        "content-length": "942",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        "content-type": "text/html",
+        "cross-origin-opener-policy": "same-origin",
+        "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+        "keep-alive": "timeout=5",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=63072000; includeSubDomains",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff"
+      },
+      "bodySHA256": "d3835fa9ee13cf9e15024828bbf168232596c3b53302794e43c8d2c15e1e253b"
+    },
+    {
+      "path": "/clash/any-five",
+      "httpStatus": 200,
+      "headers": {
+        "connection": "keep-alive",
+        "content-encoding": "gzip",
+        "content-length": "942",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        "content-type": "text/html",
+        "cross-origin-opener-policy": "same-origin",
+        "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+        "keep-alive": "timeout=5",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=63072000; includeSubDomains",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff"
+      },
+      "bodySHA256": "d3835fa9ee13cf9e15024828bbf168232596c3b53302794e43c8d2c15e1e253b"
+    },
+    {
+      "path": "/card/f14ee81345cc5b9c",
+      "httpStatus": 200,
+      "headers": {
+        "cache-control": "public, max-age=86400, stale-while-revalidate=604800",
+        "connection": "keep-alive",
+        "content-length": "4381",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        "content-type": "text/html; charset=utf-8",
+        "cross-origin-opener-policy": "same-origin",
+        "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+        "keep-alive": "timeout=5",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=63072000; includeSubDomains",
+        "x-content-type-options": "nosniff"
+      },
+      "bodySHA256": "a87a57493d5c689624268ee2ecb2dfccdcd8106b87906192bde197e862f3d842"
+    },
+    {
+      "path": "/clash/all-time/boston-vs-la-lakers",
+      "httpStatus": 200,
+      "headers": {
+        "cache-control": "public, max-age=86400",
+        "connection": "keep-alive",
+        "content-length": "11776",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        "content-type": "text/html; charset=utf-8",
+        "cross-origin-opener-policy": "same-origin",
+        "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+        "keep-alive": "timeout=5",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=63072000; includeSubDomains",
+        "x-content-type-options": "nosniff"
+      },
+      "bodySHA256": "9a9896fa5c110c8ed0c119154d0118fa99e6184047030d5a374839ad39e2c45d"
+    },
+    {
+      "path": "/api/health",
+      "httpStatus": 200,
+      "headers": {
+        "cache-control": "no-store",
+        "connection": "keep-alive",
+        "content-length": "319",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        "content-type": "application/json",
+        "cross-origin-opener-policy": "same-origin",
+        "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+        "keep-alive": "timeout=5",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=63072000; includeSubDomains",
+        "x-content-type-options": "nosniff"
+      },
+      "bodySHA256": "576d34e14f1865a9d3cef879acf9f6a74e167c99944e34a05e517a3ae522dcb3"
+    },
+    {
+      "path": "/api/game?id=pv_rnwelexqe7",
+      "httpStatus": 200,
+      "headers": {
+        "cache-control": "public, max-age=300",
+        "connection": "keep-alive",
+        "content-length": "20208",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        "content-type": "application/json",
+        "cross-origin-opener-policy": "same-origin",
+        "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+        "keep-alive": "timeout=5",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=63072000; includeSubDomains",
+        "x-content-type-options": "nosniff"
+      },
+      "bodySHA256": "f2fe858ab6dacf25814559ded01eaa7c966a553eb20ae907536060ed90a6377c"
+    },
+    {
+      "path": "/run3-unknown-security-check",
+      "httpStatus": 404,
+      "headers": {
+        "connection": "keep-alive",
+        "content-encoding": "gzip",
+        "content-length": "1344",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        "content-type": "text/html",
+        "cross-origin-opener-policy": "same-origin",
+        "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+        "keep-alive": "timeout=5",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=63072000; includeSubDomains",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff"
+      },
+      "bodySHA256": "974bfd0e103cbd8830e3e48d93baa36005273a2d1d84e30dc6ec1952f3a0c60a"
+    }
+  ],
+  "assets": [
+    {
+      "servedMatches": true,
+      "file": "dist/404.html",
+      "bytes": 2879,
+      "sha256": "974bfd0e103cbd8830e3e48d93baa36005273a2d1d84e30dc6ec1952f3a0c60a",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/AccountGate-BJyiNUYP.js",
+      "bytes": 2847,
+      "sha256": "1d645a8388efeac864ed91b96d860c20bacc9c035c7f887f603324fb722a23d5",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/CareerProgress-BZ9SEMnB.js",
+      "bytes": 4919,
+      "sha256": "520fdea0e3ece04f828ce44848be08a576517699c87e0b91a271dc1054356c11",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/ChallengeComparison-DKmYLKTT.js",
+      "bytes": 3205,
+      "sha256": "677f574582fbfeee80ab24462a135d3361486b41bc024930cbe2f427f82477de",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/ChallengeShare-DYQtxXI2.js",
+      "bytes": 20060,
+      "sha256": "b089b66ffc9a6253cd2e0117ad38f93bd103cb136bc7d9e7e8701203d8f50768",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/ClashBreakdown-CgGu3a0Y.js",
+      "bytes": 17135,
+      "sha256": "57482f0b9341c07e620cf49d24a65cd0c18e2946a1d73243135acb8be574166d",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/CoachPick-C8tGngLC.js",
+      "bytes": 11956,
+      "sha256": "a1001b28d4cec42dad8c55df42a375b211325b50bddaa0b002fc8dad19fe1e7e",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/Credits-D2kILHlu.js",
+      "bytes": 1870,
+      "sha256": "ba77ab74c63434004003358a967004e6066e4b144c0b4a3b1d0f7d09bb144043",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/DailyCoachEra-Dtou8CWs.js",
+      "bytes": 3327,
+      "sha256": "8453a0b18d09bdf055edfdbdd24cd1a07fd7fb62c870568266aef16005cd568a",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/DailyPanel-DM-3BqvI.js",
+      "bytes": 3190,
+      "sha256": "f4d9db6619daf837a07983b91d688535b96368b00312bb66e0218d77ae1bf986",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/FiveBuilder-DW_QS0sy.js",
+      "bytes": 3829,
+      "sha256": "9f4b01aebd83a34d0b7a59cf824400e88d486c0b103bd8bdb6da464f86dd8ffd",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/FranchiseMode-BOTGqOS3.js",
+      "bytes": 297039,
+      "sha256": "09309b5a87bcd5883fb31d1706267e6d2dbb3bf220eb6adf21b64df800a83e13",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/GauntletMode-DQvsGB8e.js",
+      "bytes": 3605,
+      "sha256": "5c61394a5264b5a9504fbcc024b7ddea01b1b010b8b48118900b7ebd30b2f820",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/LeaderboardPage-CY1iyQ5l.js",
+      "bytes": 8925,
+      "sha256": "26731724d3edfaa5cda981696a310b02c8734bff34e4b8f1dca7eb99177b7a76",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/LoopResult-CJ7vTe1_.js",
+      "bytes": 3852,
+      "sha256": "6f73da42808a26ff77ddf6ec34f7807aae929daf4b82aeafc08f2081b7e5536f",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/MatchupPreview-Ci1_VzZ5.js",
+      "bytes": 4458,
+      "sha256": "122d976c923842fc17832e936330962547b28917f290b926a1b681e94a579b1c",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/MyEraClash-C7Axd3hC.js",
+      "bytes": 62948,
+      "sha256": "dd1b210d8b7459d6c11f5145c98e49b0bac1ab2949710f557fc780d7dc6875d4",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/PlayerCard-_vOtW0BG.js",
+      "bytes": 4326,
+      "sha256": "215f06ae3996caf3635cbdf7900711bff5e56a2c094aec5ba9ad01c286363550",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/Postgame-C3T2FXWp.js",
+      "bytes": 37670,
+      "sha256": "c0f3827029c6686aa8b2d70082b32f2e745bcf9776850373d70204a72fd05e77",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/PrivateRooms-DB0r9d-2.js",
+      "bytes": 4091,
+      "sha256": "4c1755a94aa9fba7ceb0a603a2734caccd07dc0b9c74b6ecad1ed462f4441ed8",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/Profile-D8xAYZj6.js",
+      "bytes": 6666,
+      "sha256": "b9385cd1a8109a3e81134f0ccb15977d9ff7cddb87647b760dde5b6c90c7cdc4",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/PublicProfilePage-D_y4xAVr.js",
+      "bytes": 2468,
+      "sha256": "948b1666473826d19e69c4e1e53b91d00c40e05706ff7561d920739eb253bf18",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/RatingChange-BBhpM4o_.js",
+      "bytes": 2219,
+      "sha256": "1eab25330679e3df146a60d21eda17ac030c2aa85c160103c07c9a5031ea8b15",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/RosterBalance--ZUwwmss.js",
+      "bytes": 2323,
+      "sha256": "a83ac52aaf39b6f25f1b928f93148bdefa422c33733b146e4ec9d889bfe589bc",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/SimulationLoading-ByvKrKDn.js",
+      "bytes": 4157,
+      "sha256": "c08b1be2a15849e294e51e972442e57304601a32eff3b5f6b25c1722148ba2dd",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/SpinMode-EMtiKb02.js",
+      "bytes": 2985,
+      "sha256": "95a96c8cc7bd7e6bf494af2d95f5d8dba19fe418c024d0b1498f48af354cd468",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/TeamModes-CcRezrto.js",
+      "bytes": 7022,
+      "sha256": "53c54472e6a69ddce2225cbc4324739ee99f2f457b2916ddd9171e0c8d71cce9",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/TimeArena-D4pGjMF2.js",
+      "bytes": 61035,
+      "sha256": "f32d126ec398e9886d2bb364d9a47ab80e20348d2e2e16412d3c59d8bd8c345c",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/VisibilitySetting-B_LTl-Ar.js",
+      "bytes": 2033,
+      "sha256": "7292cf866dba4d4623ef5cc336a6f1733cf5d27dc6eadc57cd9b2e14783eb627",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/client-4mXyjIxY.js",
+      "bytes": 1841,
+      "sha256": "108bfebf758a3adc8c3a8f994200932baf16a7b40571eb852c0c7eda1c184126",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/client-C1d7R5NV.js",
+      "bytes": 1667,
+      "sha256": "96ca059060bee2b52e1d1655b20dd7636ce21f206eecda551b1eaaf62d51877c",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/coaches-BOdJCH8b.js",
+      "bytes": 112834,
+      "sha256": "82b22331552e41910ddb33d6596f4a9d9717fc3060011d589617a7f96d31f969",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/contract-Vpp2NtMV.js",
+      "bytes": 3963,
+      "sha256": "5e79b541d840f4967e93ffec55bb8292fa6d7e89d2d8acfa7a0f6c6a295d4dcb",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/contract-XzMJOpmG.js",
+      "bytes": 1231,
+      "sha256": "7e7f95c4fb1dd3e21f2dcbfde8511ded2eeb04ea7db916f0e4ddb7f024368987",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/eraStyles-87Hlgecy.js",
+      "bytes": 21751,
+      "sha256": "7b2f1711aa2047606c2b7606690a010c066887b0b961d904bb56682860bfde0f",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/index-CANu9Cpy.js",
+      "bytes": 223592,
+      "sha256": "e3c780400806a00a5466f69f7942c062732f9844a0e5315b2c86722609dccae5",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/index-Dr5R-os1.js",
+      "bytes": 565756,
+      "sha256": "be35ebc9355f9b15f2d8229c425bd298a6924e9476072781335eef9a1a4eef52",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/assets/index-eSBgaXU3.css",
+      "bytes": 155064,
+      "sha256": "e34f610bc322d155cc341883d8636baa8c4e57787aebad76f293495bc0e73412",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/favicon.svg",
+      "bytes": 285,
+      "sha256": "455ad248c68d571e33fec99d8cd4605fcb3f9cedbb185c5d57575c8a7a0d788f",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/index.html",
+      "bytes": 2499,
+      "sha256": "d3835fa9ee13cf9e15024828bbf168232596c3b53302794e43c8d2c15e1e253b",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/manifest.json",
+      "bytes": 445,
+      "sha256": "739102849ffbef186534dc9f8b130a56e022853ab8067158c3b191ce25f39dfe",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/share-entry.js",
+      "bytes": 1212,
+      "sha256": "981cbb750b2cdbd9767d6db37a0c082da78df62f7968a71f6adbe3a700c2d53b",
+      "findings": []
+    },
+    {
+      "servedMatches": true,
+      "file": "dist/sw.js",
+      "bytes": 2715,
+      "sha256": "d2f9126829f67fc80831902ac22b1938c8f4dd0008c6cc274a87c41c8d237afd",
+      "findings": []
+    }
+  ],
+  "publicLabGet": {
+    "httpStatus": 200,
+    "keys": [
+      "v",
+      "id",
+      "mode",
+      "goldIds",
+      "blueIds",
+      "versions",
+      "eraId",
+      "coachIds",
+      "preview",
+      "candidate",
+      "fingerprint",
+      "core",
+      "fallbackSummary",
+      "mvpFallback",
+      "v3",
+      "periodScores",
+      "created_at",
+      "chaosDraft",
+      "core_result_status",
+      "narrative_status",
+      "story",
+      "expandedAnalysis",
+      "loop"
+    ],
+    "loopKeys": [
+      "version",
+      "mode",
+      "tag",
+      "hiddenStats",
+      "outOfPosition",
+      "boardType"
+    ],
+    "id": "pv_rnwelexqe7",
+    "mode": "lab",
+    "score": {
+      "gold": 148,
+      "blue": 126
+    },
+    "headers": {
+      "cache-control": "public, max-age=300",
+      "connection": "keep-alive",
+      "content-length": "20208",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+      "content-type": "application/json",
+      "cross-origin-opener-policy": "same-origin",
+      "date": "Fri, 02 Oct 2026 13:31:16 GMT",
+      "keep-alive": "timeout=5",
+      "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "strict-transport-security": "max-age=63072000; includeSubDomains",
+      "x-content-type-options": "nosniff"
+    }
+  },
+  "sourceProjectRefs": "// ── Public project identifiers (not secrets) ──────────────────────────────────\n// The Supabase project refs are part of every browser bundle's provider URL, so\n// naming them here reveals nothing. They exist so that a build or a server can\n// REFUSE to point a Preview deployment at the production project: the two\n// environments must never share users, careers or Challenges.\nexport const PRODUCTION_SUPABASE_REF = \"dxdtnhdeaanhfoqngdel\";\nexport const PREVIEW_SUPABASE_REF = \"lfybiphmqkiecfrqsfzt\";\nexport const supabaseRefOf = (url) => (String(url || \"\").trim().match(/^https:\\/\\/([a-z0-9-]+)\\.supabase\\.(?:co|in)\\/?$/i) || [])[1] || null;\n\n// ── Vercel Preview is pinned to the Preview project (2026-09-26) ───────────────\n// The Preview-scoped Vercel variables named the PRODUCTION project for weeks\n// (the containment guards kept that inert: accounts off, a 503 instead of\n// production traffic). A Vercel Preview deployment now resolves its provider\n// address and PUBLISHABLE key from these constants whatever the dashboard\n// holds, so a Preview can only ever talk to the Preview project. Both values are\n// public — they ship in every preview browser bundle. The SERVER secret still\n// comes only from the environment and is never named here. Local harnesses\n// (no VERCEL=1) and Production are unaffected.\nexport const PREVIEW_SUPABASE_URL = `https://${PREVIEW_SUPABASE_REF}.supabase.co`;\nexport const PREVIEW_SUPABASE_PUBLISHABLE_KEY = \"sb_publishable_X--8fugunRzXrZ2p1Ewhsg_V9xp9WH8\";\nexport const onVercelPreview = (env = process.env) => env.VERCEL === \"1\" && env.VERCEL_ENV === \"preview\";\n",
+  "provider": {
+    "status": "UNVERIFIED",
+    "reason": "Source config separates Preview and production; actual hosted Preview is access-protected and local health explicitly has cloudAccounts.enabled=false/ready=false. No actual provider credentials, identities or database writes were used."
+  },
+  "reverificationReason": "Original collector supplied resultId instead of the source-defined GET id parameter and observed expected validation400. Original raw output remains preserved; this read-only recapture uses the correct current source contract.",
+  "runtimeSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "runnerSHA256": "133ad56988e608ac81b0a7270ecfab7c12ec4246a4d718788a0721f19a8f2549",
+  "distBuildStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "counts": {
+    "PASS": 51,
+    "FAIL": 1
+  }
+}

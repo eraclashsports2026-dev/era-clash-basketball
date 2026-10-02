@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-10-02T12:31:45.691070+00:00",
+  "testedSourceSha": "12620d7ac0bece111dc9ce43fdc5a5415a98ae56",
+  "finalSourceSha": "6545f8caf281d484d242826fa640823b2a15687c",
+  "appIdenticalExceptAddedTerminalHeading": true,
+  "nativeCoveragePreserved": "155 measured native initial/draft/reroll/reset/coach/era/ready/simulation-transition heading checks on 12620d7 remain applicable by exact unchanged source. The final tournament terminal addition needs its own actual completion verification, owned by the parent.",
+  "runtimeDiff": "diff --git a/src/App.jsx b/src/App.jsx\nindex 3fdde785..e429c921 100644\n--- a/src/App.jsx\n+++ b/src/App.jsx\n@@ -2449,6 +2449,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on\n   if (result.type === \"tournament\") {\n     return (\n       <div className=\"rise\" style={{ ...card, padding: 20, marginTop: 14 }}>\n+        <h1 className=\"sr-only\">Tournament result</h1>\n         <div style={{ textAlign: \"center\", marginBottom: 14 }}>\n           <div style={{ fontSize: 30, fontWeight: 900, fontStyle: \"italic\" }}>{result.won ? \"\ud83c\udfc6 CHAMPION\" : \"Run Over\"}</div>\n           {result.won && result.rounds[3]?.sim?.mvp && (\n",
+  "allChangedPaths": [
+    "docs/handoffs/10-02-2026-loop-foundation.md",
+    "src/App.jsx"
+  ],
+  "protectedCoreFingerprint": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+  "limitation": "Source equality is transfer evidence, not a claim that every route and dynamic state was rerun on final6545. Independent Run3 will recrawl the final source."
+}

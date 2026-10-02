@@ -40,6 +40,7 @@ import {
   guestRunsUsed, consumeGuestRun, guestLimitReached,
 } from "./_lib/chaosRun.js";
 import { can, CAPABILITIES, gateReason, GUEST_CHAOS_RUNS } from "../src/entitlements.js";
+import { loopHandler } from './_lib/loopFoundation.js';
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
@@ -69,6 +70,11 @@ export default async function handler(req, res) {
     const r = hasStore() ? await getJSON(`${isPreviewId ? "preview-result" : "result"}:${id}`) : null;
     if (!r) return sendError(res, "NOT_FOUND", requestId);
     res.setHeader("Cache-Control", "public, max-age=300");
+    if (r.loop) {
+      const { seed, loop, ...loopResult } = publicResult(r);
+      const { scenario, ...publicLoop } = loop;
+      return res.status(200).json({ ...loopResult, loop: publicLoop });
+    }
     return res.status(200).json(publicResult(r));
   }
 
@@ -83,6 +89,7 @@ export default async function handler(req, res) {
 
   try {
     const b = req.body || {};
+    if (b.action === 'loop') return await loopHandler(req, res, { session, f });
 
     // ── Chaos Clash actions ─────────────────────────────────────────────────
     // These ride /api/game because the deployment sits at its 13-function

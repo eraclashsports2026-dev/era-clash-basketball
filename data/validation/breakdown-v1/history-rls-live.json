@@ -1,0 +1,16 @@
+{
+  "artifact": "history-rls-live",
+  "phase": "Clash Breakdown V1",
+  "verifiedAt": "2026-09-24T05:20:00Z",
+  "database": "Preview project lfybiphmqkiecfrqsfzt (Postgres 17.6) — restored from INACTIVE (auto-paused) before the check",
+  "method": "one transaction, rolled back: synthetic auth.users A and B, one saved_clashes row owned by A with a result_snapshot; then SET LOCAL ROLE authenticated with request.jwt.claims for A and for B, and SET LOCAL ROLE anon. This is the exact read the fixed History reopen uses (getSavedClash: select * where result_id = …, under the existing owner-only RLS policy from 0001).",
+  "results": {
+    "A: select own row by result_id": "1 row; snapshot has core: true",
+    "B: select A's row by result_id": "0",
+    "B: select every saved_clashes row": "0",
+    "B: update A's score": "permission denied for table saved_clashes",
+    "anon: select saved_clashes": "permission denied for table saved_clashes",
+    "service: A's score unchanged": "114"
+  },
+  "passed": true
+}

@@ -1,0 +1,126 @@
+{
+  "variant": "combined-png-light-theme-compressed",
+  "baseSourceSha": "7da20313a4d9a079c3e27a970668dd2c4b9867bd",
+  "proposal": true,
+  "origin": "http://localhost:4336",
+  "dist": "dist-combined-png-light-theme",
+  "scope": "Three-route controlled actual mobile Lighthouse13.5 experiment; unchanged formFactor and simulate throttle, unchanged compression/server/engine flags. Separate disposable archive, not deployed production or final-source certification.",
+  "before": {
+    "at": "2026-10-02T11:44:12.883Z",
+    "contentEncoding": "gzip",
+    "buildStamp": "eraclash-assets:2.7.2:2d011a0ea8db",
+    "htmlHash": "bad3a8c113e1843a66fc07787298e9a23422ce8385f3e7cf906323d1afbc06c8",
+    "distIndexHash": "bad3a8c113e1843a66fc07787298e9a23422ce8385f3e7cf906323d1afbc06c8",
+    "serverHealth": {
+      "status": "ok",
+      "build": "2.7.2",
+      "coreEngine": "ok",
+      "persistence": "ok",
+      "aiNarrative": "ok",
+      "simV3": true,
+      "cloudAccounts": {
+        "enabled": false,
+        "ready": false
+      },
+      "preview": {
+        "enabled": true,
+        "candidateId": "Candidate 4",
+        "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "calibrationVersion": "1.4.0"
+      }
+    }
+  },
+  "after": {
+    "at": "2026-10-02T11:44:38.873Z",
+    "contentEncoding": "gzip",
+    "buildStamp": "eraclash-assets:2.7.2:2d011a0ea8db",
+    "htmlHash": "bad3a8c113e1843a66fc07787298e9a23422ce8385f3e7cf906323d1afbc06c8",
+    "distIndexHash": "bad3a8c113e1843a66fc07787298e9a23422ce8385f3e7cf906323d1afbc06c8",
+    "serverHealth": {
+      "status": "ok",
+      "build": "2.7.2",
+      "coreEngine": "ok",
+      "persistence": "ok",
+      "aiNarrative": "ok",
+      "simV3": true,
+      "cloudAccounts": {
+        "enabled": false,
+        "ready": false
+      },
+      "preview": {
+        "enabled": true,
+        "candidateId": "Candidate 4",
+        "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "calibrationVersion": "1.4.0"
+      }
+    }
+  },
+  "sourceStability": "PASS",
+  "results": [
+    {
+      "name": "home",
+      "path": "/",
+      "status": "PARTIAL",
+      "scores": {
+        "performance": 90,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "lcpMs": 3327.435,
+      "finalUrl": "http://localhost:4336/",
+      "lighthouseVersion": "13.5.0",
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "artifact": "lighthouse/home.html",
+      "warnings": [],
+      "runtimeError": null,
+      "lcpNeedsInvestigation": true
+    },
+    {
+      "name": "daily",
+      "path": "/clash/daily",
+      "status": "UNVERIFIED",
+      "scores": {
+        "performance": 0,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "finalUrl": "http://localhost:4336/clash/daily",
+      "lighthouseVersion": "13.5.0",
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "artifact": "lighthouse/daily.html",
+      "warnings": [],
+      "runtimeError": {
+        "code": "NO_NAVSTART",
+        "message": "Something went wrong with recording the trace over your page load. Please run Lighthouse again. (NO_NAVSTART)",
+        "errorStack": "LighthouseError: NO_NAVSTART\n    at LHTraceProcessor.createNoNavstartError (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/lib/lh-trace-processor.js:17:12)\n    at LHTraceProcessor.computeTimeOrigin (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/lib/tracehouse/trace-processor.js:1007:33)\n    at LHTraceProcessor.processTrace (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/lib/tracehouse/trace-processor.js:824:32)\n    at ProcessedTrace.compute_ (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/processed-trace.js:16:29)\n    at ProcessedTrace.request (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/computed-artifact.js:72:29)\n    at TraceEngineResult.compute_ (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/trace-engine-result.js:235:49)\n    at TraceEngineResult.request (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/computed-artifact.js:72:29)\n    at TraceElements.getArtifact (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/gather/gatherers/trace-elements.js:330:31)\n    at file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/gather/runner-helpers.js:106:45\n    at async collectPhaseArtifacts (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/gather/runner-helpers.js:123:5)",
+        "artifactKey": "TraceElements"
+      },
+      "lcpNeedsInvestigation": false
+    },
+    {
+      "name": "modes-hub",
+      "path": "/clash/modes",
+      "status": "PARTIAL",
+      "scores": {
+        "performance": 91,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "lcpMs": 3305.467,
+      "finalUrl": "http://localhost:4336/clash/modes",
+      "lighthouseVersion": "13.5.0",
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "artifact": "lighthouse/modes-hub.html",
+      "warnings": [],
+      "runtimeError": null,
+      "lcpNeedsInvestigation": true
+    }
+  ],
+  "status": "PARTIAL"
+}

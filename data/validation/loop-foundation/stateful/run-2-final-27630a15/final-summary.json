@@ -1,0 +1,988 @@
+{
+  "status": "COMPLETE: assigned Run2 browser journeys PASS; provider acceptance remains PARTIAL EMULATED",
+  "packagedAt": "2026-10-02T12:19:38.554648+00:00",
+  "testedRuntimeSHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+  "testedNormalBuildStamp": "eraclash-assets:2.7.2:f94eb9fb10ab",
+  "testedFixtureBuildStamp": "eraclash-assets:2.7.2:809e87cb7f99",
+  "identityNamespace": "run-2-final-27630a15-ae07efee-5c1e-49fd-bbf4-5674f01aa41c",
+  "executionPath": "/private/tmp/eraclash-loop-verification-20261002",
+  "primaryCopyPath": "/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/data/validation/loop-foundation/stateful/run-2-final-27630a15",
+  "clientOrigin": "http://localhost:4321",
+  "apiOrigin": "http://localhost:4322",
+  "companionMethod": "Vite source modules + test-only main import/provider transform; source client has no production build stamp. File watching/HMR disabled; test-only runner corrections can be uncommitted and are bound by per-file hashes. Actual API handler process with in-memory fake cloud writes rows; read-only bridge scopes rows by fake token. Not production-dist/auth/RLS evidence.",
+  "scope": "PARTIAL EMULATED: localhost actual handlers + Candidate4 + existing fakeCloud/test provider. No real Preview OAuth, SMTP, RLS, provider durability, physical device or deployment proof.",
+  "sourceAfterExecution": {
+    "currentHEADAtPackaging": "12620d7ac0bece111dc9ce43fdc5a5415a98ae56",
+    "changedPathsSinceTestedRuntime": [
+      "docs/handoffs/10-02-2026-loop-foundation.md",
+      "scripts/loop/verifyLogoDeliveryBrowserPNG.mjs",
+      "src/App.jsx"
+    ],
+    "runtimeChange": "Parent added two mutually exclusive sr-only h1 labels in legacy builder/simulation branches. All Loop controllers/handlers/data unchanged. No new-runtime browser acceptance claimed by these276reports.",
+    "appSemanticOnlyDiff": "diff --git a/src/App.jsx b/src/App.jsx\nindex ce113528..3fdde785 100644\n--- a/src/App.jsx\n+++ b/src/App.jsx\n@@ -1544,6 +1544,9 @@ export default function App() {\n   const playView = (\n     <div>\n       <div className=\"sr-only\" role=\"status\" aria-live=\"polite\">{announce}</div>\n+      {team && !result && !isChaos && (\n+        <h1 className=\"sr-only\">{isDaily ? \"Daily Clash\" : isChallenge ? \"Challenge matchup\" : modeMeta(activeMode)?.label || \"Basketball matchup\"}</h1>\n+      )}\n       {undo && (\n         <div className=\"ec-undo-toast\" role=\"status\">\n           <span>{undo.message}</span>\n@@ -1973,6 +1976,7 @@ export default function App() {\n   // \u2500\u2500 Dedicated simulation transition (builder leaves the stage) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n   const simulatingView = (\n     <div style={{ maxWidth: 720, margin: \"8vh auto 0\" }}>\n+      <h1 className=\"sr-only\">Simulating your basketball matchup</h1>\n       <SimulationLoading stage={simStage} progress={progress}\n         goldLabel=\"TEAM GOLD\" blueLabel={isChallenge ? (challenge?.challengerName || \"TEAM BLUE\").toUpperCase() : \"TEAM BLUE\"}\n         coachGold={coachGold?.name} coachBlue={blueBuildable ? coachBlue?.name : null}\n",
+    "currentSelectedTrackedRuntimeClean": true,
+    "testHelperChange": "PNG browser origin verifier changed independently after execution; no executed mode helper changed.",
+    "testedSourceManifest": {
+      "runtimeSHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+      "sourcePath": "/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current",
+      "boundedCriticalFilesOnly": true,
+      "broadSourceCleanProof": "Read-only git diff --exit-code -- src api public config scripts package.json package-lock.json returned0 on exact276HEAD.",
+      "files": [
+        {
+          "path": "src/App.jsx",
+          "actualSHA256": "b9fe887352828c61109d5b476fa3af1f2fb9d432a6e30953ee05288f906f074e",
+          "committedSHA256": "b9fe887352828c61109d5b476fa3af1f2fb9d432a6e30953ee05288f906f074e",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/main.jsx",
+          "actualSHA256": "aab8fa9d01d49d3e4e5ec50416e43d41b09e7e7dd9c78d15b7d3cb13dc59ec60",
+          "committedSHA256": "aab8fa9d01d49d3e4e5ec50416e43d41b09e7e7dd9c78d15b7d3cb13dc59ec60",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/client.js",
+          "actualSHA256": "11aa3abc90adf37bc9b88fd96a4c62a96185fa386f4d00f55bca72c062fcd7e4",
+          "committedSHA256": "11aa3abc90adf37bc9b88fd96a4c62a96185fa386f4d00f55bca72c062fcd7e4",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/modes/LoopModes.jsx",
+          "actualSHA256": "b59c7ba6201042c8576b2f399d46237fe6c09eb794920e18d7a6f5bbc5e006eb",
+          "committedSHA256": "b59c7ba6201042c8576b2f399d46237fe6c09eb794920e18d7a6f5bbc5e006eb",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/modes/TeamModes.jsx",
+          "actualSHA256": "c9ca308c2e8ddb34f4d2b38b51e13d96efd4e253f8090189a37ff33bfe4dfdbf",
+          "committedSHA256": "c9ca308c2e8ddb34f4d2b38b51e13d96efd4e253f8090189a37ff33bfe4dfdbf",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/modes/SpinMode.jsx",
+          "actualSHA256": "cd793a841a3dd3285ff3977ed1473790c07bd84aeaab326f224e3233fbf8842f",
+          "committedSHA256": "cd793a841a3dd3285ff3977ed1473790c07bd84aeaab326f224e3233fbf8842f",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/modes/GauntletMode.jsx",
+          "actualSHA256": "8db672e505acab5ee4088ca2eeb93c2aa4e5cdeaf2cfb86287e5fb33dec17278",
+          "committedSHA256": "8db672e505acab5ee4088ca2eeb93c2aa4e5cdeaf2cfb86287e5fb33dec17278",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/modes/FranchiseMode.jsx",
+          "actualSHA256": "0a15b567d669cf08a307c8d5519f32a9c4a777d93c2e16455d8765ca6ab42af9",
+          "committedSHA256": "0a15b567d669cf08a307c8d5519f32a9c4a777d93c2e16455d8765ca6ab42af9",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/daily/DailyMode.jsx",
+          "actualSHA256": "3d0eb820c5f78b0a39defe0191db5fdcaabe35981f6269bd883b0955f44456db",
+          "committedSHA256": "3d0eb820c5f78b0a39defe0191db5fdcaabe35981f6269bd883b0955f44456db",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/daily/calendar.js",
+          "actualSHA256": "1c9d7fd65d77d91de3f6282071f57373627c661761f9c1808ea64fd2ac5c1617",
+          "committedSHA256": "1c9d7fd65d77d91de3f6282071f57373627c661761f9c1808ea64fd2ac5c1617",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/daily/clock.js",
+          "actualSHA256": "00c7ab96243b0bc70ed3a1b0ce7a2db284d450aa8ad55130d850a61c50e7fcc8",
+          "committedSHA256": "00c7ab96243b0bc70ed3a1b0ce7a2db284d450aa8ad55130d850a61c50e7fcc8",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/careerMode.js",
+          "actualSHA256": "486eec44f91d382267a535987ec94c13dd7caaba3865331d0025970bf87ba944",
+          "committedSHA256": "486eec44f91d382267a535987ec94c13dd7caaba3865331d0025970bf87ba944",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/loop/events.js",
+          "actualSHA256": "6560e2d509063d7e6890175b21912b8268977b9be5ead9797e86579ea4c9f6df",
+          "committedSHA256": "6560e2d509063d7e6890175b21912b8268977b9be5ead9797e86579ea4c9f6df",
+          "matchesCommitted": true
+        },
+        {
+          "path": "api/game.js",
+          "actualSHA256": "e426dc510946f8443db761f1e02f6ec9c931154533b039b13b27fb938497ae1c",
+          "committedSHA256": "e426dc510946f8443db761f1e02f6ec9c931154533b039b13b27fb938497ae1c",
+          "matchesCommitted": true
+        },
+        {
+          "path": "api/_lib/loopFoundation.js",
+          "actualSHA256": "09018fec4feb20aa1f9a4d54ca90bf04bed20b5ccb2577402d6f57ea78370a3e",
+          "committedSHA256": "09018fec4feb20aa1f9a4d54ca90bf04bed20b5ccb2577402d6f57ea78370a3e",
+          "matchesCommitted": true
+        },
+        {
+          "path": "api/_lib/cloudAccounts.js",
+          "actualSHA256": "cf1cc7741efefe95ece82584b2c325670827e5a08f67edbbbc3dbfc25d642f76",
+          "committedSHA256": "cf1cc7741efefe95ece82584b2c325670827e5a08f67edbbbc3dbfc25d642f76",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/accounts/careerV2.js",
+          "actualSHA256": "c9b932c5d3dc1da0a60f6329c5fe017d1382e351905e10ae3efe20bb92a0fa57",
+          "committedSHA256": "c9b932c5d3dc1da0a60f6329c5fe017d1382e351905e10ae3efe20bb92a0fa57",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/theme/applyTheme.js",
+          "actualSHA256": "0c0d4e3e81617a210b7171aa5ad5210024020e081e60fc5a620bc4bbc8f3a131",
+          "committedSHA256": "0c0d4e3e81617a210b7171aa5ad5210024020e081e60fc5a620bc4bbc8f3a131",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/components/arena/ArenaHeader.jsx",
+          "actualSHA256": "fddf0b7da0d9eb2e67888a91cee41eb15b90c1b01491278640a066733f41fee8",
+          "committedSHA256": "fddf0b7da0d9eb2e67888a91cee41eb15b90c1b01491278640a066733f41fee8",
+          "matchesCommitted": true
+        },
+        {
+          "path": "src/components/lobby/PlayLobby.jsx",
+          "actualSHA256": "17f07cbb5089097920ba3c62375ab79b302e811539af230b638d8998a31a0c8a",
+          "committedSHA256": "17f07cbb5089097920ba3c62375ab79b302e811539af230b638d8998a31a0c8a",
+          "matchesCommitted": true
+        },
+        {
+          "path": "index.html",
+          "actualSHA256": "aaec51276f4465f5d3b90e6173c9b3e592f7cb950c7df5cff7000555f9fd6d35",
+          "committedSHA256": "aaec51276f4465f5d3b90e6173c9b3e592f7cb950c7df5cff7000555f9fd6d35",
+          "matchesCommitted": true
+        },
+        {
+          "path": "vite.config.js",
+          "actualSHA256": "7f9373188864395faf2605f903bdcb1261e122619a16e30e18d8e43e4f5db063",
+          "committedSHA256": "7f9373188864395faf2605f903bdcb1261e122619a16e30e18d8e43e4f5db063",
+          "matchesCommitted": true
+        },
+        {
+          "path": "scripts/harness.mjs",
+          "actualSHA256": "43a5cd82590ded298b21e9a6eec5b5afcd8d198388caa117a35a6ef052aef976",
+          "committedSHA256": "43a5cd82590ded298b21e9a6eec5b5afcd8d198388caa117a35a6ef052aef976",
+          "matchesCommitted": true
+        },
+        {
+          "path": "tests/loop-foundation-server.test.js",
+          "actualSHA256": "fa77594a79a28c7014d5e49c0da767529960be834f5d68650d61c042c19f894f",
+          "committedSHA256": "fa77594a79a28c7014d5e49c0da767529960be834f5d68650d61c042c19f894f",
+          "matchesCommitted": true
+        }
+      ]
+    },
+    "testedRunnerHashesVerifiedAtPackaging": {
+      "tests/loop-stateful-harness.mjs": {
+        "expectedSHA256": "584e486d83547e2761c2349e9e03d6d4b0b3a2616fbe98a4133c8f7c13fdf8f8",
+        "currentSHA256": "584e486d83547e2761c2349e9e03d6d4b0b3a2616fbe98a4133c8f7c13fdf8f8",
+        "matchesPreparedExecution": true
+      },
+      "tests/loop-stateful-browser.mjs": {
+        "expectedSHA256": "d5bf646ef19a12501e7a781737437407cf09e8d62e9111e54c1ebc52d31bad3e",
+        "currentSHA256": "d5bf646ef19a12501e7a781737437407cf09e8d62e9111e54c1ebc52d31bad3e",
+        "matchesPreparedExecution": true
+      },
+      "tests/loop-stateful-browser-provider.js": {
+        "expectedSHA256": "5c3db74c93a34d6ca6364b48e363980d7a24dfae6db497d2bfa03c093cf10515",
+        "currentSHA256": "5c3db74c93a34d6ca6364b48e363980d7a24dfae6db497d2bfa03c093cf10515",
+        "matchesPreparedExecution": true
+      },
+      "tests/loop-stateful-identities.mjs": {
+        "expectedSHA256": "eee7966e2388a13ff79ab6067b90845d47bad4ddef72b964ae5afdb0810844b7",
+        "currentSHA256": "eee7966e2388a13ff79ab6067b90845d47bad4ddef72b964ae5afdb0810844b7",
+        "matchesPreparedExecution": true
+      },
+      "tests/loop-modes-browser.mjs": {
+        "expectedSHA256": "2423917a8c48a1a87ac44654719ad960c4064f98d68fbc7aea10b8bc75129a0b",
+        "currentSHA256": "2423917a8c48a1a87ac44654719ad960c4064f98d68fbc7aea10b8bc75129a0b",
+        "matchesPreparedExecution": true
+      },
+      "tests/loop-modes-state-reset.mjs": {
+        "expectedSHA256": "45c8578aa67adbb47f96784c7e6582dabb0cbf57ba1afae9cf1f634c90cc1d88",
+        "currentSHA256": "45c8578aa67adbb47f96784c7e6582dabb0cbf57ba1afae9cf1f634c90cc1d88",
+        "matchesPreparedExecution": true
+      },
+      "tests/loop-gauntlet-survival-browser.mjs": {
+        "expectedSHA256": "a24f850131fd21ab5a73c1d0fc8901c4d4b6b36d62a3fed3717699f5a1f05076",
+        "currentSHA256": "a24f850131fd21ab5a73c1d0fc8901c4d4b6b36d62a3fed3717699f5a1f05076",
+        "matchesPreparedExecution": true
+      },
+      "tests/loop-journey-metrics.mjs": {
+        "expectedSHA256": "dd0779bbf8eeffdcad83281809be41e3c8295986b2c87f20146426617295c8c6",
+        "currentSHA256": "dd0779bbf8eeffdcad83281809be41e3c8295986b2c87f20146426617295c8c6",
+        "matchesPreparedExecution": true
+      },
+      "/private/tmp/loop-run2-affected-state-browser.mjs": {
+        "expectedSHA256": "a643cfef3744a52a9bba5d96132cbb8651807bc0688e5277f38b3d354486cff9",
+        "currentSHA256": "a643cfef3744a52a9bba5d96132cbb8651807bc0688e5277f38b3d354486cff9",
+        "matchesPreparedExecution": true
+      },
+      "/private/tmp/loop-run2-public-get-privacy-browser.mjs": {
+        "expectedSHA256": "4d164ad6db6e29309aad372c5ad0a829c63d212be986d1be2bf4ef9db8318fad",
+        "currentSHA256": "4d164ad6db6e29309aad372c5ad0a829c63d212be986d1be2bf4ef9db8318fad",
+        "matchesPreparedExecution": true
+      },
+      "/private/tmp/loop-run2-tonight-direct-browser.mjs": {
+        "expectedSHA256": "bd35c37cbc2cbee23971b38d57fe8a63da1e98895222b1dad68985ed76add237",
+        "currentSHA256": "bd35c37cbc2cbee23971b38d57fe8a63da1e98895222b1dad68985ed76add237",
+        "matchesPreparedExecution": true
+      }
+    }
+  },
+  "counts": {
+    "namedBrowserChecksPassed": 124,
+    "namedBrowserChecksFailed": 0,
+    "browserConsoleErrors": 0,
+    "uniqueActualLoopGames": 89,
+    "governedChaosGames": 1,
+    "stateful": {
+      "passed": 28,
+      "failed": 0,
+      "consoleErrors": 0,
+      "actualLoopGames": 36,
+      "governedChaosGames": 1,
+      "eventBatches": 46
+    },
+    "guestModes": {
+      "passed": 72,
+      "failed": 0,
+      "consoleErrors": 0,
+      "results": 41
+    },
+    "reset": {
+      "passed": 3,
+      "failed": 0,
+      "actualLoopGames": 2
+    },
+    "affected": {
+      "passed": 7,
+      "failed": 0,
+      "consoleErrors": 0
+    },
+    "privacy": {
+      "passed": 5,
+      "failed": 0,
+      "consoleErrors": 0,
+      "actualLabGames": 1
+    },
+    "directTonight": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "consoleErrors": 0,
+      "actualGames": 2
+    },
+    "boundedSevenWinSurvival": {
+      "attempts": 1,
+      "games": 7,
+      "survivalVerified": true,
+      "failures": 0,
+      "consoleErrors": 0
+    },
+    "dailyUnit": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 20,
+      "total": 24
+    }
+  },
+  "uniqueActualLoopResultIds": [
+    "pv_02o8sv5bqc",
+    "pv_04sdq8t8le",
+    "pv_1374s53kux",
+    "pv_17vkh68cai",
+    "pv_1mbwl38kq8",
+    "pv_1onqo1utv3",
+    "pv_2yubkkxsgk",
+    "pv_35zi88r3uz",
+    "pv_3anq4887m7",
+    "pv_3gp2vxy15b",
+    "pv_3nxe51rixm",
+    "pv_44pufh2xhv",
+    "pv_45l23gd1rt",
+    "pv_48uetnerb7",
+    "pv_4mengc4coy",
+    "pv_4rawtbj27m",
+    "pv_4xgtmww0m5",
+    "pv_4zkev490t7",
+    "pv_5gwned2dsx",
+    "pv_5lwi5m4dna",
+    "pv_62lu4ydu5j",
+    "pv_743i1f0rj5",
+    "pv_7i14784h18",
+    "pv_82fyusxxlz",
+    "pv_89wmbfd50x",
+    "pv_8l9pxlxvzz",
+    "pv_94gvidasr7",
+    "pv_9m0vtfzwzg",
+    "pv_9ub8yhdmz0",
+    "pv_a5t00mmusg",
+    "pv_aaiha9ktnc",
+    "pv_adss6boxu9",
+    "pv_ai0mtyfwu7",
+    "pv_aituvb9q6n",
+    "pv_avtnesvdjk",
+    "pv_b41thzzpn5",
+    "pv_bagfrpq92b",
+    "pv_bcpfb3p2y3",
+    "pv_bf0imv5k1x",
+    "pv_deso9io618",
+    "pv_di2ldl7ba1",
+    "pv_dpp1to04yy",
+    "pv_dwi08ogz6e",
+    "pv_e1h493agkn",
+    "pv_e3g0s6vcl1",
+    "pv_ewrx71hjzb",
+    "pv_ewx89nw9ay",
+    "pv_f0e8mgia3f",
+    "pv_f1bbd7scsh",
+    "pv_f1hhza08iq",
+    "pv_fn5mcc1k7f",
+    "pv_hmdydkeorb",
+    "pv_ixvvjrvfxk",
+    "pv_j8ksvkc5jm",
+    "pv_j98glmo3vr",
+    "pv_jceecfskbj",
+    "pv_klatpcmcys",
+    "pv_kqmmkrt00z",
+    "pv_kqwwkkxu0s",
+    "pv_kvz2k8g6ca",
+    "pv_l2k0zc8pmj",
+    "pv_lf3e8a6kb2",
+    "pv_lmbsnez7fq",
+    "pv_m8yh35um14",
+    "pv_mjvwm8kvjy",
+    "pv_nton2y6iis",
+    "pv_ovko93ot4q",
+    "pv_r2970d0iw5",
+    "pv_r7osr37ux0",
+    "pv_ru5hfqrk25",
+    "pv_s0n0z4t05o",
+    "pv_si4ctv9c0b",
+    "pv_tw6cjt51w0",
+    "pv_u6t9uf0nb8",
+    "pv_um38omy1y1",
+    "pv_uswmpcbaoq",
+    "pv_uthkr79hf7",
+    "pv_uu9yvq6qnk",
+    "pv_viuogx9tia",
+    "pv_vveqy67g01",
+    "pv_w51c75hiya",
+    "pv_x2k9c9cwdv",
+    "pv_x6s21ttwdl",
+    "pv_y0nqaesbh7",
+    "pv_y5m2ryzas2",
+    "pv_y67223pkxe",
+    "pv_yv9tvzm0yc",
+    "pv_zfdpfxtk8y",
+    "pv_zolpx2h6xf"
+  ],
+  "gameCountsByDistinctJourney": {
+    "stateful": 36,
+    "guestModes": 41,
+    "reset": 2,
+    "survival": 7,
+    "privacy": 1,
+    "directTonight": 2
+  },
+  "gauntletEvidence": {
+    "statefulPublicStageCounts": [
+      {
+        "resultId": "pv_kvz2k8g6ca",
+        "publicPath": "/card/3a736725c417decb",
+        "httpStatus": 200,
+        "score": {
+          "gold": 159,
+          "blue": 117
+        },
+        "stage": 1,
+        "gauntlet": {
+          "victories": 1,
+          "totalEras": 7,
+          "stagesPlayed": 1,
+          "finished": false
+        },
+        "terminalUIAssertedInStateful": false,
+        "scope": "Readback of this fresh actual published stage; terminal UI proof is separate fresh survival verifier."
+      },
+      {
+        "resultId": "pv_35zi88r3uz",
+        "publicPath": "/card/fd7cbdf635743e59",
+        "httpStatus": 200,
+        "score": {
+          "gold": 139,
+          "blue": 104
+        },
+        "stage": 2,
+        "gauntlet": {
+          "victories": 2,
+          "totalEras": 7,
+          "stagesPlayed": 2,
+          "finished": false
+        },
+        "terminalUIAssertedInStateful": false,
+        "scope": "Readback of this fresh actual published stage; terminal UI proof is separate fresh survival verifier."
+      },
+      {
+        "resultId": "pv_f1hhza08iq",
+        "publicPath": "/card/2665f4e77f08dc0d",
+        "httpStatus": 200,
+        "score": {
+          "gold": 124,
+          "blue": 93
+        },
+        "stage": 3,
+        "gauntlet": {
+          "victories": 3,
+          "totalEras": 7,
+          "stagesPlayed": 3,
+          "finished": false
+        },
+        "terminalUIAssertedInStateful": false,
+        "scope": "Readback of this fresh actual published stage; terminal UI proof is separate fresh survival verifier."
+      },
+      {
+        "resultId": "pv_82fyusxxlz",
+        "publicPath": "/card/ead7bbaa7c23ed23",
+        "httpStatus": 200,
+        "score": {
+          "gold": 105,
+          "blue": 110
+        },
+        "stage": 4,
+        "gauntlet": {
+          "victories": 3,
+          "totalEras": 7,
+          "stagesPlayed": 4,
+          "finished": true
+        },
+        "terminalUIAssertedInStateful": false,
+        "scope": "Readback of this fresh actual published stage; terminal UI proof is separate fresh survival verifier."
+      },
+      {
+        "resultId": "pv_1mbwl38kq8",
+        "publicPath": "/card/5fa8265b806512ad",
+        "httpStatus": 200,
+        "score": {
+          "gold": 177,
+          "blue": 130
+        },
+        "stage": 1,
+        "gauntlet": {
+          "victories": 1,
+          "totalEras": 7,
+          "stagesPlayed": 1,
+          "finished": false
+        },
+        "terminalUIAssertedInStateful": false,
+        "scope": "Readback of this fresh actual published stage; terminal UI proof is separate fresh survival verifier."
+      },
+      {
+        "resultId": "pv_ai0mtyfwu7",
+        "publicPath": "/card/e8196e7427e7416c",
+        "httpStatus": 200,
+        "score": {
+          "gold": 120,
+          "blue": 132
+        },
+        "stage": 2,
+        "gauntlet": {
+          "victories": 1,
+          "totalEras": 7,
+          "stagesPlayed": 2,
+          "finished": true
+        },
+        "terminalUIAssertedInStateful": false,
+        "scope": "Readback of this fresh actual published stage; terminal UI proof is separate fresh survival verifier."
+      }
+    ],
+    "statefulTerminalUIAssertion": false,
+    "guest72Outcome": [
+      {
+        "name": "Gauntlet fixed five resumes after refresh and terminates correctly",
+        "status": "PASS",
+        "details": {
+          "stagesObserved": 7,
+          "victories": 7,
+          "outcome": "seven-stage survival"
+        }
+      },
+      {
+        "name": "iPhone SE gauntlet width and 44px targets",
+        "status": "PASS",
+        "details": {
+          "overflow": false,
+          "bg": "rgb(241, 237, 228)",
+          "small": []
+        }
+      },
+      {
+        "name": "iPhone 14 gauntlet width and 44px targets",
+        "status": "PASS",
+        "details": {
+          "overflow": false,
+          "bg": "rgb(241, 237, 228)",
+          "small": []
+        }
+      },
+      {
+        "name": "Pixel gauntlet width and 44px targets",
+        "status": "PASS",
+        "details": {
+          "overflow": false,
+          "bg": "rgb(241, 237, 228)",
+          "small": []
+        }
+      }
+    ],
+    "freshBoundedRun": [
+      {
+        "attempt": 1,
+        "games": [
+          {
+            "resultId": "pv_743i1f0rj5",
+            "eraId": "1960s",
+            "score": {
+              "gold": 163,
+              "blue": 123
+            },
+            "stage": 1,
+            "victories": 1,
+            "done": false,
+            "candidateId": "Candidate 4",
+            "calibration": "1.4.0",
+            "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+          },
+          {
+            "resultId": "pv_7i14784h18",
+            "eraId": "1970s",
+            "score": {
+              "gold": 132,
+              "blue": 119
+            },
+            "stage": 2,
+            "victories": 2,
+            "done": false,
+            "candidateId": "Candidate 4",
+            "calibration": "1.4.0",
+            "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+          },
+          {
+            "resultId": "pv_m8yh35um14",
+            "eraId": "1980s",
+            "score": {
+              "gold": 133,
+              "blue": 109
+            },
+            "stage": 3,
+            "victories": 3,
+            "done": false,
+            "candidateId": "Candidate 4",
+            "calibration": "1.4.0",
+            "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+          },
+          {
+            "resultId": "pv_ovko93ot4q",
+            "eraId": "1990s",
+            "score": {
+              "gold": 143,
+              "blue": 107
+            },
+            "stage": 4,
+            "victories": 4,
+            "done": false,
+            "candidateId": "Candidate 4",
+            "calibration": "1.4.0",
+            "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+          },
+          {
+            "resultId": "pv_di2ldl7ba1",
+            "eraId": "2000s",
+            "score": {
+              "gold": 114,
+              "blue": 106
+            },
+            "stage": 5,
+            "victories": 5,
+            "done": false,
+            "candidateId": "Candidate 4",
+            "calibration": "1.4.0",
+            "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+          },
+          {
+            "resultId": "pv_3gp2vxy15b",
+            "eraId": "2010s",
+            "score": {
+              "gold": 143,
+              "blue": 83
+            },
+            "stage": 6,
+            "victories": 6,
+            "done": false,
+            "candidateId": "Candidate 4",
+            "calibration": "1.4.0",
+            "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+          },
+          {
+            "resultId": "pv_dwi08ogz6e",
+            "eraId": "2020s",
+            "score": {
+              "gold": 158,
+              "blue": 92
+            },
+            "stage": 7,
+            "victories": 7,
+            "done": true,
+            "candidateId": "Candidate 4",
+            "calibration": "1.4.0",
+            "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+          }
+        ],
+        "stagesObserved": 7,
+        "victories": 7,
+        "outcome": "seven-stage survival",
+        "terminalUIVerified": true,
+        "publicRecap": {
+          "path": "/card/d5d9ea24ab74ec1a",
+          "gauntlet": {
+            "victories": 7,
+            "totalEras": 7,
+            "stagesPlayed": 7,
+            "finished": true
+          },
+          "headline": "Era Gauntlet \u00b7 7 of 7 eras",
+          "scope": "Era Gauntlet \u00b7 7 of 7 eras won \u00b7 Completed run \u00b7 Latest stage points"
+        },
+        "boardVerified": true
+      }
+    ],
+    "claim": "Fresh bounded run separately establishes actual seven wins, terminal7of7 UI, public authoritative counts and completed-run board; stateful loss paths and prior guest outcome alone did not establish terminal UI."
+  },
+  "publication": {
+    "statefulReceipts": 36,
+    "statefulRequestFailures": [],
+    "statefulStatuses": [
+      "200"
+    ],
+    "directTonightReceipts": [
+      {
+        "resultId": "pv_48uetnerb7",
+        "status": 200,
+        "path": "/card/184243e7ee1482a5"
+      },
+      {
+        "resultId": "pv_klatpcmcys",
+        "status": 200,
+        "path": "/card/f772fd0c6d46f039"
+      }
+    ]
+  },
+  "events": {
+    "actualJourneySourceReportSHA256": "2e5a2575cf78f110f8d2448ec40bc3c5abc249e6a0fac56b75540846c16756cc",
+    "input": {
+      "nativeBeaconBatches": 46,
+      "nativeBeaconAccepted": 46,
+      "httpReceiptCount": 46,
+      "httpReceiptStatuses": {
+        "204": 46
+      },
+      "capturedClosedEvents": 166,
+      "equalEventRecordsObserved": 6,
+      "deduplication": "None; equal records were actually emitted and accepted. No transport duplication inference.",
+      "closedNameCounts": {
+        "game_completed": 36,
+        "card_created": 36,
+        "card_shared": 2,
+        "card_opened": 1,
+        "rematch_started_from_card": 1,
+        "guest_play_started": 14,
+        "signup_completed": 1,
+        "daily_attempted": 2,
+        "daily_shared": 1,
+        "mode_started": 72
+      },
+      "missingClosedNames": []
+    },
+    "numbers": {
+      "sharesPerCompletedGame": 0.05555555555555555,
+      "cardTapsPerShare": 0.5,
+      "playsPerCardTap": 1,
+      "returnRate": {
+        "day2": null,
+        "day7": null
+      }
+    },
+    "cohort": {
+      "day2": {
+        "eligibleCompleteWindows": 0,
+        "returned": 0,
+        "totalObservedBrowserIdentities": 3,
+        "rate": null,
+        "status": "CENSORED: current journey has no completed follow-up window",
+        "observationOffsetDays": 1
+      },
+      "day7": {
+        "eligibleCompleteWindows": 0,
+        "returned": 0,
+        "totalObservedBrowserIdentities": 3,
+        "rate": null,
+        "status": "CENSORED: current journey has no completed follow-up window",
+        "observationOffsetDays": 6
+      }
+    },
+    "limits": [
+      "Local synthetic QA traffic using genuine current captured timestamps; no real-user retention or future observations.",
+      "Raw loopNumbers returns zero for immature cohorts; this report censors them to null using complete observed follow-up windows.",
+      "All actual dev StrictMode mounts remain in input, including exactly equal records. Ratios are journey telemetry, not deduplicated unique-user conversion.",
+      "Native sendBeacon acceptance and HTTP204 receipts are observed. Local in-memory ingest is configured, but durable storage, vendor ingestion and production provider receipt were not read back or proved. An unconfigured /api/events sink may also return204.",
+      "The harness explicitly flushes the real event queue before hard reloads. No production unload-delivery claim."
+    ]
+  },
+  "dailyClockScope": {
+    "sourceSHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+    "executionPath": "/private/tmp/eraclash-loop-verification-20261002",
+    "sourceReportSHA256": "01b621466c71b9392fd9b02f69988502cfe8b06136c1f135cb4790015245a8a0",
+    "filter": "guest identities|forged and other-owner tokens|one completion|next-day streak",
+    "selected": [
+      {
+        "name": "Daily calendar, signed claims and account streaks gives two guest identities the same real Chaos constraints, offers and era",
+        "status": "passed"
+      },
+      {
+        "name": "Daily calendar, signed claims and account streaks rejects forged and other-owner tokens",
+        "status": "passed"
+      },
+      {
+        "name": "Daily calendar, signed claims and account streaks allows one completion; same request retry replays, a different attempt is blocked",
+        "status": "passed"
+      },
+      {
+        "name": "Daily calendar, signed claims and account streaks server-enforces the account claim across sessions and increments next-day streak",
+        "status": "passed"
+      }
+    ],
+    "skipped": [
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics persists real Candidate4 identity, score, rosters and saved-row identity without session exposure",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics returns the same immutable result for a successful retry, even if inputs change",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics shares the existing simulation budget while a completed retry costs no allowance",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics explains unsupported out-of-position fives before reaching the protected engine",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics rejects missing retry ids and invalid bearers instead of granting guest access",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics keeps Lab exploration off every leaderboard and sanitizes its free-text scenario",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics runs any-five and tags its casual board without competitive rating",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics runs one-franchise and tags its casual board without competitive rating",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics runs one-per-era and tags its casual board without competitive rating",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics runs no-mvps and tags its casual board without competitive rating",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics runs franchise and tags its casual board without competitive rating",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Loop adapters preserve authoritative results and retry semantics runs tonight and tags its casual board without competitive rating",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Spin, resumable Gauntlet and private-room concurrency binds spin constraints to a signed receipt and serializes different-axis skips",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Spin, resumable Gauntlet and private-room concurrency resumes an account Gauntlet without supplying a new team and rejects other-owner tokens",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Spin, resumable Gauntlet and private-room concurrency hides room data from nonmembers and preserves simultaneous join retries",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Spin, resumable Gauntlet and private-room concurrency does not send room email without both verified flags and an injected sender",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "Spin, resumable Gauntlet and private-room concurrency preserves two-account room membership across devices and shares only owned live governed Challenges",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "closed event delivery and measurable loop numbers ingests every event into first-party counters, discarding free text and invalid identity",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "closed event delivery and measurable loop numbers computes all four numbers from known test observations and reports missing denominators as null",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      },
+      {
+        "name": "closed event delivery and measurable loop numbers uses no-op without a vendor and sends only closed properties with an optional configured adapter",
+        "reason": "Not selected by targeted -t filter; this invocation did not execute this test."
+      }
+    ],
+    "scope": "Focused actual-handler Daily constraints/forged+owner/refusal/onecompletion/daychange/streak. No browser server time injection. Parent separately runs full units.",
+    "counts": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 20,
+      "total": 24
+    }
+  },
+  "directTonightRouteEvidence": [
+    {
+      "name": "Modes hub reaches the distinct direct Tonight route",
+      "status": "PASS"
+    },
+    {
+      "name": "Direct reload preserves Tonight heading and sourced current date",
+      "status": "PASS",
+      "details": {
+        "date": "2026-10-02",
+        "snapshotGames": 0,
+        "honestEmpty": true
+      }
+    },
+    {
+      "name": "Tonight requires an actual scheduled selection before playing",
+      "status": "PASS"
+    },
+    {
+      "name": "Sourced date selection loads exact scheduled all-time fives",
+      "status": "PASS",
+      "details": {
+        "scheduledDate": "2026-10-20",
+        "scheduledGameId": "2026-27-0001",
+        "homeId": "detroit",
+        "awayId": "boston",
+        "selectionInvalidation": "Date and manual franchise changes require a new sourced pairing selection"
+      }
+    },
+    {
+      "name": "Direct Tonight real result preserves scheduled request and accepted engine identity",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_48uetnerb7",
+        "score": {
+          "gold": 98,
+          "blue": 117
+        },
+        "candidate": {
+          "candidateId": "Candidate 4",
+          "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+          "possessionCalibrationVersion": "1.4.0",
+          "actionLibraryVersion": "2.1.0",
+          "possessionEngineVersion": "1.2.0",
+          "fallbackEngine": "production engineVersion 3.2.0"
+        }
+      }
+    },
+    {
+      "name": "Actual public Tonight recap preserves exact teams and score without private compute fields",
+      "status": "PASS",
+      "details": {
+        "publicPath": "/card/184243e7ee1482a5",
+        "httpStatus": 200
+      }
+    },
+    {
+      "name": "390px public Tonight card opens a guest-owned fresh-five rematch",
+      "status": "PASS"
+    },
+    {
+      "name": "Guest rematch is a new casual result against exactly the public Tonight Gold five",
+      "status": "PASS",
+      "details": {
+        "originalResultId": "pv_48uetnerb7",
+        "freshResultId": "pv_klatpcmcys",
+        "opponentIds": [
+          "isiah-80s",
+          "dumars-90s",
+          "grant-90s",
+          "sheed-2ks",
+          "ben-00s"
+        ],
+        "ownGoldIds": [
+          "mookie-90s",
+          "arizin-60s",
+          "mark-80s",
+          "sabonis-20s",
+          "dwight-10s"
+        ]
+      }
+    },
+    {
+      "name": "Fresh guest rematch publishes a distinct exact recap and mobile card",
+      "status": "PASS",
+      "details": {
+        "publicPath": "/card/f772fd0c6d46f039",
+        "score": {
+          "gold": 97,
+          "blue": 117
+        }
+      }
+    }
+  ],
+  "directTonightPriorGap": "Earlier72journeys used the Franchise Tonight section. They did not prove direct/clash/tonight or a hub link. Parent fixed that genuine missingroute before276; fresh9checks verify it explicitly.",
+  "protectedIdentity": {
+    "candidateId": "Candidate 4",
+    "calibrationVersion": "1.4.0",
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "savedRowAndSnapshotOnEveryModeRematchAsserted": true
+  },
+  "imagesActuallyViewed": [
+    "run-2-final-27630a15-survival/seven-win-terminal-mobile.png",
+    "run-2-final-27630a15-survival/seven-win-public-card-mobile.png",
+    "run-2-final-27630a15-affected/affected-mobile-builder.png",
+    "run-2-final-27630a15-privacy/public-lab-card-mobile.png",
+    "run-2-final-27630a15-tonight-direct/tonight-public-card-mobile.png"
+  ],
+  "preservedInfrastructureAndCollectorErrors": [
+    "Initial companion listener sandboxEPERM followed by approved fresh start before any browser/game; recordedexecution-start.json.",
+    "Readback exporter used response.ok() instead of boolean; initialerrorpreservedandcorrectedtoolonly, no source/server/simulation rerun.",
+    "Packaging broadscriptguardcaughtindependentPNGhelperchange; laterHEADguardcaughtparentssemanticcommit. These didnotestablishproductfailures; summaryrecordsactualpostrunsourceadvance."
+  ],
+  "limits": [
+    "PARTIAL EMULATED two fresh UUID account actors; actual handler-created rows, no saved/game fixtures.",
+    "No real OAuth/SMTP/Preview/Postgres RLS/hosted durability acceptance.",
+    "Browser viewport emulation; no physical-device acceptance.",
+    "Companion Vite SOURCE client with test-only existing provider injection; normal production build recorded separately.",
+    "Fresh empty memory/context/results; no old report/result IDs reused as fixtures.",
+    "Candidate4/calibration/core and saved snapshot identity asserted; no engine/data/calibration edits.",
+    "No seed/stage/result/victory injection; seven-win bounded real survival or honest UNVERIFIED.",
+    "Local session/IP500 only; shared120Loop actions/min and20public recaps/min unchanged.",
+    "Native beacon acceptance/wire receipts measured; durable/vendor ingestion unverified without readback.",
+    "Actual current clocks; immature day2/day7 censored null, no future timestamps or demand claim.",
+    "Focused Daily -t records all skipped names/reasons; parent owns separate full-unit acceptance.",
+    "Residual LCP and broader rights/provider/release blockers remain open; no threshold waiver."
+  ],
+  "rootFullSuiteOutcomes": "Owned separately by parent; not included in124assigned browserchecks.",
+  "oldArtifactsOrResultsUsedAsFixtures": false,
+  "runtimeModifiedByThisAgentDuringExecution": false,
+  "independentRun3LeadContactedWithOutcomes": false
+}

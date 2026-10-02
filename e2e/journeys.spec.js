@@ -16,7 +16,7 @@ async function buildGoldManual(page) {
     await dialog.getByRole("button").nth(2).click();
   }
 }
-const randomBlue = (page) => page.getByRole("tab", { name: /Random Team/ }).click();
+const randomBlue = (page) => page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ }).click();
 const randomGold = (page) => page.getByRole("button", { name: /Random Team/ }).first().click();
 
 // V3 wizard: rosters → Continue to Coaches → random coach each side →
@@ -80,7 +80,7 @@ test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim 
   // REGRESSION: Gold completion must NOT auto-populate Blue
   await expect(page.getByText("Build Team Blue", { exact: false })).toBeVisible();
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toHaveCount(0);
-  await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible();
+  await expect(page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ })).toBeVisible();
   await randomBlue(page);
   // card containment: every Gold roster card stays inside the Gold panel
   const goldPanel = page.getByRole("region", { name: "TEAM GOLD" });
@@ -139,7 +139,7 @@ test("J4: Daily consumes one attempt, persists, and survives reload", async ({ p
   // It must NOT be re-rollable or swappable, or the daily board is gameable.
   await expect(page.getByText("Today's official opponent")).toBeVisible();
   await expect(page.getByRole("button", { name: "Re-roll Team Blue" })).toHaveCount(0);
-  await expect(page.getByRole("tab", { name: /Random Team/ })).toHaveCount(0);
+  await expect(page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ })).toHaveCount(0);
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
   const board = await (await page.request.get("/api/daily")).json();
@@ -228,7 +228,7 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
   await expect(page.getByRole("button", { name: "Add Point Guard" }).first()).toBeVisible();
   // Gold: random complete → Reset Team returns to build methods, Blue untouched
   await page.getByRole("button", { name: /Random Team/ }).first().click();
-  await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
+  await page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ }).click(); // blue random
   // both fives complete → the wizard offers the next stage
   await expect(page.getByRole("button", { name: /Continue to Coaches/ })).toBeVisible();
   await page.getByRole("button", { name: "Reset Team Gold" }).click();
@@ -238,14 +238,14 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
   await expect(page.getByRole("button", { name: "Reset Team Blue" })).toBeVisible(); // blue still built
   // Blue: Reset clears the built five
   await page.getByRole("button", { name: "Reset Team Blue" }).click();
-  await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible(); // blue methods return
+  await expect(page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ })).toBeVisible(); // blue methods return
   await expect(page.getByRole("button", { name: "Add Point Guard" })).toHaveCount(2); // both panels empty
 });
 
 test("J10b: one-click Re-roll refreshes a random five on BOTH sides and invalidates stale coach picks", async ({ page }) => {
   await page.goto("/play/dream");
   await page.getByRole("button", { name: /Random Team/ }).first().click();
-  await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
+  await page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ }).click(); // blue random
   // both completed rosters expose a prominent Re-roll next to Reset
   await expect(page.getByRole("button", { name: "Re-roll Team Gold" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Re-roll Team Blue" })).toBeVisible();

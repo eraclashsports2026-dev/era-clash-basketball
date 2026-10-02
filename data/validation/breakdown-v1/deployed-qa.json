@@ -1,0 +1,76 @@
+{
+  "artifact": "deployed-qa",
+  "phase": "Clash Breakdown V1",
+  "generatedAt": "2026-09-24T05:09:10.568Z",
+  "origin": "https://era-clash-basketball-git-feature-clash-breakdown-v1-era-clash.vercel.app",
+  "checks": [
+    {
+      "check": "the build has Clash Breakdown switched on",
+      "pass": true,
+      "detail": "{\"chaosClash\":true,\"clashSocial\":true,\"clashBreakdown\":true}"
+    },
+    {
+      "check": "the authoritative /api/game response was captured for the audit",
+      "pass": true,
+      "detail": "pv_lgtgb12dr7"
+    },
+    {
+      "check": "the final score sits above the breakdown entry, which starts collapsed",
+      "pass": true,
+      "detail": "{\"score\":132.8125,\"bd\":911.453125,\"bdOpen\":\"false\"}"
+    },
+    {
+      "check": "the collapsed entry states the single largest recorded difference (or the balanced line)",
+      "pass": true,
+      "detail": "Blue held a +21 rebounding margin."
+    },
+    {
+      "check": "up to three differences, exactly the projection's (3 shown)",
+      "pass": true,
+      "detail": "rebounds,fg_pct,free_throws"
+    },
+    {
+      "check": "every team number shown equals an independent recount of the raw box score",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "directionality: turnovers favour the lower count; splits and possessions are never marked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "key performances from BOTH teams, exactly the projection's lines",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "game flow: period rows add up to the final score and the facts match",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no causal wording and no MVP label in the rendered breakdown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "opening the breakdown makes no API request (pure projection of the result already on screen)",
+      "pass": true,
+      "detail": "https://era-clash-basketball-git-feature-clash-breakdown-v1-era-clash.vercel.app/api/events"
+    },
+    {
+      "check": "after a refresh the same breakdown reopens from the remembered result",
+      "pass": true,
+      "detail": "last-clash-sheet"
+    }
+  ],
+  "passed": true,
+  "resultId": "pv_lgtgb12dr7",
+  "insightIds": [
+    "rebounds",
+    "fg_pct",
+    "free_throws"
+  ],
+  "note": "Chromium device emulation (Playwright), not a physical iPhone."
+}

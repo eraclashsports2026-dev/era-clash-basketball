@@ -1,3 +1,4 @@
+import { leagueCopy } from "../../loop/rights.js";
 // ── Era Reveal ───────────────────────────────────────────────────────────────
 // Phase 9B.3, revised 2026-09-09: the server reveals the era WITH THE HIRE
 // (runState.js, sequence 3) and the Clash Ready board makes it the focus once:
@@ -28,7 +29,7 @@ export const eraRuleCards = (run) => {
   const seen = new Set();
   const out = [];
   for (const f of [...(ctx.highlights || []), ...(ctx.ruleFacts || []), ctx.pace, ctx.rebounding]) {
-    const full = clean(f);
+    const full = clean(leagueCopy(f));
     if (!full || seen.has(full)) continue;
     seen.add(full);
     out.push({ full, short: headline(full) });

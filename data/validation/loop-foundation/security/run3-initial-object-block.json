@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-02T13:11:33.639725+00:00",
+  "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "status": "UNVERIFIED_INFRASTRUCTURE",
+  "reason": "Fresh shallow clone lacked original absorbed commit objects; boundary comparison could not run. No source byte mismatch established. Original boundary command exited1 before comparison.",
+  "checks": [
+    {
+      "ref": "16ea9085a9f864c607cad226e6577177004268e1",
+      "exit": 128,
+      "stderr": "fatal: Not a valid object name 16ea9085a9f864c607cad226e6577177004268e1^{commit}\n"
+    },
+    {
+      "ref": "origin/wave1",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "ref": "origin/wave2",
+      "exit": 0,
+      "stderr": ""
+    }
+  ],
+  "method": "Fetch exact historical source objects into disposable checkout only, then rerun unchanged boundary verifier."
+}

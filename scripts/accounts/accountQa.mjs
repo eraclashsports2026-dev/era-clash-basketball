@@ -42,8 +42,10 @@ const record = (over = {}) => ({
   v: 1, id: "pv_abc123def4", session: "a".repeat(48), mode: "single",
   goldIds: ["g1", "g2", "g3", "g4", "g5"], blueIds: ["b1", "b2", "b3", "b4", "b5"],
   finalScore: { gold: 112, blue: 104 }, eraId: "1990s", mvp: { name: "Test Legend", pts: 33 },
-  previewCandidate: { candidateId: "Candidate 4", calibrationVersion: "1.4.0", candidateCoreHash: "c".repeat(64) },
-  pregame: { cards: [{ id: "g1", name: "Gold One", pos: "PG" }] }, core: { winner: "GOLD" },
+  // The shape api/game.js stores: the candidate under `candidate`, coach ids under `coachIds`.
+  preview: true, candidate: { candidateId: "Candidate 4", coreHash: "c".repeat(64), possessionCalibrationVersion: "1.4.0" },
+  coachIds: { gold: "phil-jackson", blue: "pat-riley" },
+  v3: { fullBox: { gold: [{ id: "g1", name: "Gold One", pos: "PG" }], blue: [] } }, core: { winner: "GOLD" },
   challengeId: "chal01", created_at: 1_760_000_000_000, ...over,
 });
 
@@ -120,7 +122,8 @@ if (MODE === "rls") {
   let crossUserReads = 0, crossUserWrites = 0, anonymousProtectedReads = 0;
   ctx.signInAs("u-1");
   if (await ctx.provider.getSavedClash("pv_two22222bb")) crossUserReads++;
-  if ((await ctx.provider.listSavedClashes()).some((r) => r.user_id !== "u-1")) crossUserReads++;
+  // the list carries the real provider's projection (no user_id column), so the cross-account check is by result id
+  if ((await ctx.provider.listSavedClashes()).some((r) => r.result_id === "pv_two22222bb")) crossUserReads++;
   if (ctx.server.claimAndSave({ resultId: "pv_two22222bb", token: "test-token.u-1", deviceSession: A }).status === "saved") crossUserWrites++;
   await ctx.provider.updateDisplayName("One Only");
   if (ctx.db.profiles.get("u-2").display_name === "One Only") crossUserWrites++;
@@ -305,8 +308,9 @@ if (MODE === "security") {
     ["src/accounts/accountState.js", "src/accounts/cloudSave.js", "src/components/accounts/AccountDialog.jsx", "src/components/accounts/AuthCallback.jsx", "src/components/accounts/MyEraClash.jsx", "src/components/accounts/SaveThisClash.jsx"]
       .every((f) => [...src(f).matchAll(/track\("([^"]+)",\s*(\{[^}]*\})/g)].every(([, , props]) => !/@|accessToken|refresh|cookie|token|\bemail:/i.test(props))));
   ok("every account event is allowlisted on the server", ACTIVATION_EVENTS.filter((e) => /^(account|guest_|cloud_result|my_eraclash|recent_clash|saved_report|display_name)/.test(e)).every((e) => EVENTS_ALLOWLIST.has(e)));
-  ok("the content policy opens only the provider's own hosts and still forbids third-party script",
-    /connect-src 'self' https:\/\/\*\.supabase\.co https:\/\/\*\.supabase\.in;/.test(JSON.stringify(JSON.parse(read("vercel.json")))) && /script-src 'self';/.test(JSON.stringify(JSON.parse(read("vercel.json")))));
+  const csp = JSON.parse(read('vercel.json')).headers.flatMap(h=>h.headers).find(h=>h.key==='Content-Security-Policy').value;
+  ok("the content policy permits only provider and optional closed analytics hosts and forbids third-party script",
+    JSON.stringify(csp.match(/connect-src ([^;]+);/)[1].split(' ').sort()) === JSON.stringify(["'self'",'https://*.supabase.co','https://*.supabase.in','https://us.i.posthog.com','https://eu.i.posthog.com'].sort()) && /script-src 'self';/.test(csp));
   ok("the cloud actions are rate limited and origin checked like every other mutation", /rateLimit\(`acct:/.test(src("api/profile.js")) && /sameOrigin\(req\)/.test(src("api/profile.js")));
   extra.security = { serviceRoleInClient: 0, tokensInUrl: 0, openRedirects: 0, previewLeakage: 0 };
 }

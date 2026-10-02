@@ -1,0 +1,138 @@
+{
+  "recordedAt": "2026-10-02T14:13:53.931092+00:00",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "phase": "POST_BLIND_ATTRIBUTED_JOIN",
+  "sourcePages": 15,
+  "pages": [
+    {
+      "name": "Public entrance and Play lobby",
+      "sourceRoutes": [
+        "/",
+        "/play"
+      ],
+      "status": "FAIL_LCP/PARTIAL_STATES",
+      "evidenceAndLimit": "Home3306.9804ms;initial routes/probes completed, legacy entitlement and game states separate."
+    },
+    {
+      "name": "Modes hub and constraint chooser",
+      "sourceRoutes": [
+        "/clash/modes",
+        "/clash/filters"
+      ],
+      "status": "FAIL_LCP_AND_C7",
+      "evidenceAndLimit": "Hub3304.062ms;three variants take3taps;missing separate UTC Daily hub entry."
+    },
+    {
+      "name": "Franchise programmatic previews",
+      "sourceRoutes": [
+        "/clash/all-time/:slug"
+      ],
+      "status": "PASS_LOCAL/PARTIAL_HOSTED",
+      "evidenceAndLimit": "All435pairings\u00d75profiles plus435\u00d73bots\u00d7bothflags;exact names/metadata/sitemap. Physical and hosted limits."
+    },
+    {
+      "name": "Public completed-result cards",
+      "sourceRoutes": [
+        "/card/:id",
+        "/result/:id"
+      ],
+      "status": "PASS_LOCAL/PARTIAL_DYNAMIC_SCOPE",
+      "evidenceAndLimit": "11actual public cards\u00d75profiles,tenactual guestrematches/newcards on390px;not every later dynamic card\u00d75."
+    },
+    {
+      "name": "Public governed invitation",
+      "sourceRoutes": [
+        "/challenge/:id",
+        "/?challenge=EC-\u2026"
+      ],
+      "status": "PARTIAL_EMULATED/UNVERIFIED_PROVIDER",
+      "evidenceAndLimit": "Actual governed Challenge/room feed supporting parent proof;no fresh independent three-bot invocation for each invite/no real provider."
+    },
+    {
+      "name": "Public profiles",
+      "sourceRoutes": [
+        "/player/:slug"
+      ],
+      "status": "PARTIAL_EMULATED/UNVERIFIED_PROVIDER",
+      "evidenceAndLimit": "Source correct api/profile.js and actual emulated visibility boundaries;no actual real-provider slug acceptance."
+    },
+    {
+      "name": "My EraClash, History, achievements and settings",
+      "sourceRoutes": [
+        "/my-eraclash",
+        "/my-eraclash?tab=history",
+        "/my-eraclash?tab=achievements"
+      ],
+      "status": "PARTIAL_EMULATED",
+      "evidenceAndLimit": "Actual10savedsource modes\u2192History\u2192Breakdown\u2192freshcasualrematch;native7profile/Credits originsPASS, realdurable providerunverified."
+    },
+    {
+      "name": "Leaderboard",
+      "sourceRoutes": [
+        "/leaderboard"
+      ],
+      "status": "FAIL_LOCAL_503/UNVERIFIED_PROVIDER",
+      "evidenceAndLimit": "Actual /api/profile503 on all5normalprofiles;appropriate readable retry. Not configured hosted provider failure proof."
+    },
+    {
+      "name": "Privacy, Terms and Founding Player",
+      "sourceRoutes": [
+        "/privacy",
+        "/terms",
+        "/support"
+      ],
+      "status": "PASS_BASIC_LOCAL/PARTIAL_OWNER_SCOPE",
+      "evidenceAndLimit": "Initial pages/footer/signup/card links;operator/contact/retention/legal assertions and real payment checkout unverified."
+    },
+    {
+      "name": "Membership and mode information",
+      "sourceRoutes": [
+        "/membership",
+        "/modes/:slug"
+      ],
+      "status": "PASS_INFO/PARTIAL_LEGACY_DOD",
+      "evidenceAndLimit": "Information pages resolve;strict six legacy contract paths and guest/account policy parity remain unresolved."
+    },
+    {
+      "name": "Fantasy format proposals",
+      "sourceRoutes": [
+        "/fantasy/eraclash",
+        "/fantasy/live"
+      ],
+      "status": "PASS_TRUTHFUL_PLANNED/NOT_PLAYABLE",
+      "evidenceAndLimit": "FlagOFF information;no fictional completed gameplay orpaidavailability."
+    },
+    {
+      "name": "Auth callbacks",
+      "sourceRoutes": [
+        "/auth/:path*"
+      ],
+      "status": "PARTIAL_PROVIDER",
+      "evidenceAndLimit": "Actual callback source/error UX and allowlisted redirect tests. RealSMTP/OAuth callbackunverified;passwordresetUI N/A."
+    },
+    {
+      "name": "Clash Cards/Rivalries embedded surfaces",
+      "sourceRoutes": [],
+      "status": "PARTIAL_EMULATED_AND_INHERITED",
+      "evidenceAndLimit": "Owned source/career/card/rivalry suites and Challenge flow;not every format publiccard/account/physical matrix."
+    },
+    {
+      "name": "Clash Breakdown embedded surface",
+      "sourceRoutes": [],
+      "status": "PASS_LOCAL_SNAPSHOT/PARTIAL_PROVIDER",
+      "evidenceAndLimit": "Freshactualimmutable savedrecord/positiveBreakdown/casualRunBack. Real provider and everylegacyformatinteractionunverified."
+    },
+    {
+      "name": "Owner ThemeLab/fixture surfaces",
+      "sourceRoutes": [
+        "/dev/basketball-theme-lab",
+        "/dev/profile-reference",
+        "/__fixtures/:path*"
+      ],
+      "status": "PARTIAL_OWNER_TEST_SCOPE",
+      "evidenceAndLimit": "ThemeLab owner-only publicfallback5PARTIAL;fixturesowner/testscope notpublicacceptance."
+    }
+  ],
+  "sourcePathCorrections": "api/profile.js+api/_lib/profiles.js+src/profiles/client.js;src/components/accounts/AuthCallback.jsx+src/accounts/provider.js",
+  "definition": "Initial literal-routeallfive scope and emulated dynamic/owned scope are separate. No wildcard route prefix implies infinite generated-state acceptance."
+}

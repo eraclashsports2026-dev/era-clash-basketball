@@ -9,7 +9,7 @@ export default function Credits() {
   const images = approvedData.images.filter((i) => i.approved_for_product);
   return (
     <div style={{ ...card, padding: 20 }}>
-      <h2 style={{ margin: "0 0 6px", fontSize: 18 }}>📷 Image Credits</h2>
+      <h1 style={{ margin: "0 0 6px", fontSize: 18 }}>📷 Image Credits</h1>
       <p style={{ fontSize: 12.5, color: T.textDim, margin: "0 0 14px", lineHeight: 1.6 }}>
         Player photographs on EraClash come from verified open-license or public-domain sources, each with
         recorded provenance. Players without an approved photograph are shown with an EraClash silhouette —

@@ -1,0 +1,5127 @@
+{
+  "run": "run-3-final-dc926ada",
+  "target": "http://localhost:4321",
+  "startedAt": "2026-10-02T13:11:50.232Z",
+  "identityNamespace": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+  "executionPath": "/private/tmp/eraclash-run3-final-20261002",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "runtimeSourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "productionBuildStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "testFileHashes": {
+    "tests/loop-stateful-browser.mjs": "d5bf646ef19a12501e7a781737437407cf09e8d62e9111e54c1ebc52d31bad3e",
+    "tests/loop-stateful-browser-provider.js": "5c3db74c93a34d6ca6364b48e363980d7a24dfae6db497d2bfa03c093cf10515",
+    "tests/loop-stateful-harness.mjs": "584e486d83547e2761c2349e9e03d6d4b0b3a2616fbe98a4133c8f7c13fdf8f8",
+    "tests/loop-stateful-identities.mjs": "eee7966e2388a13ff79ab6067b90845d47bad4ddef72b964ae5afdb0810844b7"
+  },
+  "companionMethod": "Vite source modules + test-only main import/provider transform; source client has no production build stamp. File watching/HMR disabled; test-only runner corrections can be uncommitted and are bound by per-file hashes. Actual API handler process with in-memory fake cloud writes rows; read-only bridge scopes rows by fake token. Not production-dist/auth/RLS evidence.",
+  "scope": "PARTIAL EMULATED: localhost actual handlers + Candidate4 + existing fakeCloud/test provider. No real Preview OAuth, SMTP, RLS, provider durability, physical device or deployment proof.",
+  "localBudgetOverrides": {
+    "RL_SIM_PER_MIN_SESSION": 500,
+    "RL_SIM_PER_MIN_IP": 500,
+    "purpose": "Local verification only; shared 120 actions/min and public 20 recaps/min remain enforced"
+  },
+  "checks": [
+    {
+      "name": "any-five actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_61r7dzkbz9",
+        "mode": "any-five",
+        "score": {
+          "gold": 124,
+          "blue": 131
+        },
+        "boardTag": "ANY_FIVE"
+      }
+    },
+    {
+      "name": "daily actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_84mayjc2zn",
+        "mode": "daily",
+        "score": {
+          "gold": 86,
+          "blue": 105
+        },
+        "boardTag": "DAILY"
+      }
+    },
+    {
+      "name": "spin actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_209pfujbd6",
+        "mode": "spin",
+        "score": {
+          "gold": 142,
+          "blue": 121
+        },
+        "boardTag": "SPIN"
+      }
+    },
+    {
+      "name": "one-franchise actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_3xhjv3b9bd",
+        "mode": "one-franchise",
+        "score": {
+          "gold": 93,
+          "blue": 110
+        },
+        "boardTag": "ONE_FRANCHISE"
+      }
+    },
+    {
+      "name": "one-per-era actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_weir86w9xe",
+        "mode": "one-per-era",
+        "score": {
+          "gold": 116,
+          "blue": 104
+        },
+        "boardTag": "ONE_PER_ERA"
+      }
+    },
+    {
+      "name": "no-mvps actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_pi2qt0rg7g",
+        "mode": "no-mvps",
+        "score": {
+          "gold": 119,
+          "blue": 144
+        },
+        "boardTag": "NO_MVPS"
+      }
+    },
+    {
+      "name": "gauntlet actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_vzi783rgqh",
+        "mode": "gauntlet",
+        "score": {
+          "gold": 96,
+          "blue": 105
+        },
+        "boardTag": "GAUNTLET"
+      }
+    },
+    {
+      "name": "lab actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_a3obl7u98w",
+        "mode": "lab",
+        "score": {
+          "gold": 106,
+          "blue": 128
+        },
+        "boardTag": "LAB"
+      }
+    },
+    {
+      "name": "franchise actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_52rovi2gem",
+        "mode": "franchise",
+        "score": {
+          "gold": 111,
+          "blue": 102
+        }
+      }
+    },
+    {
+      "name": "tonight actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_mbqesclr28",
+        "mode": "tonight",
+        "score": {
+          "gold": 99,
+          "blue": 127
+        }
+      }
+    },
+    {
+      "name": "any-five account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_ylrvlkkc7y",
+        "savedMode": "loop_any_five",
+        "rematchResultId": "pv_19kx2j98kz",
+        "coaches": {
+          "gold": "red-auerbach",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "daily account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_hipvox6l97",
+        "savedMode": "loop_daily",
+        "rematchResultId": "pv_tee7tbfbc8",
+        "coaches": {
+          "gold": "lenny-wilkens",
+          "blue": "larry-brown"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "spin account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_qa0rjyd2x3",
+        "savedMode": "loop_spin",
+        "rematchResultId": "pv_suxngnv9yt",
+        "coaches": {
+          "gold": "neutral",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "one-franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_dfay7op173",
+        "savedMode": "loop_one_franchise",
+        "rematchResultId": "pv_ds5e36uacn",
+        "coaches": {
+          "gold": "red-auerbach",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "one-per-era account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_q9z4dged67",
+        "savedMode": "loop_one_per_era",
+        "rematchResultId": "pv_sakwdqv70o",
+        "coaches": {
+          "gold": "red-auerbach",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "no-mvps account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_vbipx9up3t",
+        "savedMode": "loop_no_mvps",
+        "rematchResultId": "pv_p11fdou39h",
+        "coaches": {
+          "gold": "red-auerbach",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "gauntlet account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_mxhhd3oz2e",
+        "savedMode": "loop_gauntlet",
+        "rematchResultId": "pv_c6f1as2mss",
+        "coaches": {
+          "gold": "neutral",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "lab account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_9d1klbmldu",
+        "savedMode": "loop_lab",
+        "rematchResultId": "pv_940lsxgn4n",
+        "coaches": {
+          "gold": "red-auerbach",
+          "blue": "neutral"
+        },
+        "eraId": "1970s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_rcm0bz9l16",
+        "savedMode": "loop_franchise",
+        "rematchResultId": "pv_v3v4bia28h",
+        "coaches": {
+          "gold": "neutral",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "tonight account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_3ayb6w0z1w",
+        "savedMode": "loop_tonight",
+        "rematchResultId": "pv_pxvubk3a34",
+        "coaches": {
+          "gold": "neutral",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "Saved History survives a fresh browser context under the same account",
+      "status": "PASS",
+      "details": {
+        "originalRows": 10
+      }
+    },
+    {
+      "name": "Another account cannot read the original owner’s saved row",
+      "status": "PASS",
+      "details": {
+        "forbiddenResultId": "pv_ylrvlkkc7y",
+        "rowsVisibleToOther": 0
+      }
+    },
+    {
+      "name": "Daily completed account cannot restart on a different device",
+      "status": "PASS",
+      "details": {
+        "status": "Second-device same-account attempt refused by server"
+      }
+    },
+    {
+      "name": "Two accounts join one private room and own-result checks work across devices",
+      "status": "PASS",
+      "details": {
+        "roomId": "6cx15raorove9ag1",
+        "members": 2,
+        "ownResults": [
+          "pv_ylrvlkkc7y",
+          "pv_6vdx1jwdpr"
+        ]
+      }
+    },
+    {
+      "name": "Room feed shares an actual governed Challenge created from a completed Chaos draft",
+      "status": "PASS",
+      "details": {
+        "code": "EC-BLXG-HL22",
+        "feed": "Actual Challenge, not fixture insertion; owned sharing enforced"
+      }
+    },
+    {
+      "name": "Public card → guest fresh five → new authoritative result captures sharing and rematch events",
+      "status": "PASS",
+      "details": {
+        "originalResultId": "pv_ylrvlkkc7y",
+        "newGuestResultId": "pv_7wxd3eq4v6",
+        "originalCard": "/card/4cb641eab7d48b2f"
+      }
+    },
+    {
+      "name": "Fake email signup dialog completes and emits signup instrumentation (SMTP unverified)",
+      "status": "PASS",
+      "details": {
+        "status": "PARTIAL EMULATED dialog and instrumentation only; no SMTP or OAuth delivery proof"
+      }
+    },
+    {
+      "name": "Actual first-party event batches have HTTP receipts and the closed Loop vocabulary",
+      "status": "FAIL",
+      "error": "Missing actual event HTTP receipt for guest"
+    }
+  ],
+  "failures": [
+    {
+      "name": "Actual first-party event batches have HTTP receipts and the closed Loop vocabulary",
+      "error": "Error: Missing actual event HTTP receipt for guest\n    at assert (file:///private/tmp/eraclash-run3-final-20261002/tests/loop-stateful-browser.mjs:28:42)\n    at flushNativeReceipts (file:///private/tmp/eraclash-run3-final-20261002/tests/loop-stateful-browser.mjs:67:5)\n    at async file:///private/tmp/eraclash-run3-final-20261002/tests/loop-stateful-browser.mjs:191:133\n    at async check (file:///private/tmp/eraclash-run3-final-20261002/tests/loop-stateful-browser.mjs:30:59)\n    at async file:///private/tmp/eraclash-run3-final-20261002/tests/loop-stateful-browser.mjs:190:3"
+    }
+  ],
+  "consoleErrors": [],
+  "results": [
+    {
+      "resultId": "pv_61r7dzkbz9",
+      "mode": "any-five",
+      "score": {
+        "gold": 124,
+        "blue": 131
+      },
+      "goldIds": [
+        "edgecombe-20s",
+        "beal-10s",
+        "marion-00s",
+        "evan-20s",
+        "bosh-10s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_84mayjc2zn",
+      "mode": "daily",
+      "score": {
+        "gold": 86,
+        "blue": 105
+      },
+      "goldIds": [
+        "bibby-00s",
+        "smart-20s",
+        "jamison-00s",
+        "lamar-00s",
+        "draymond-20s"
+      ],
+      "blueIds": [
+        "cousy-60s",
+        "chet-60s",
+        "luka-20s",
+        "elton-00s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "lenny-wilkens",
+        "blue": "larry-brown"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_209pfujbd6",
+      "mode": "spin",
+      "score": {
+        "gold": 142,
+        "blue": 121
+      },
+      "goldIds": [
+        "reaves-20s",
+        "cassell-2ks",
+        "marion-90s",
+        "ad-10s",
+        "draymond-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_3xhjv3b9bd",
+      "mode": "one-franchise",
+      "score": {
+        "gold": 93,
+        "blue": 110
+      },
+      "goldIds": [
+        "archie-60s",
+        "kobe-10s",
+        "ced-90s",
+        "lamar-00s",
+        "vlade-90s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_weir86w9xe",
+      "mode": "one-per-era",
+      "score": {
+        "gold": 116,
+        "blue": 104
+      },
+      "goldIds": [
+        "fears-20s",
+        "oscar-70s",
+        "arizin-50s",
+        "ad-10s",
+        "bosh-00s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_pi2qt0rg7g",
+      "mode": "no-mvps",
+      "score": {
+        "gold": 119,
+        "blue": 144
+      },
+      "goldIds": [
+        "isiah-90s",
+        "ja-20s",
+        "siakam-20s",
+        "oakley-90s",
+        "schayes-50s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_6pq0nj0vy8",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 158,
+        "blue": 111
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "dave-60s",
+        "john-h-60s",
+        "bailey-60s",
+        "fred-h-60s",
+        "beaty-60s"
+      ],
+      "eraId": "1960s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_h788pqjanx",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 127,
+        "blue": 118
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "murphy-70s",
+        "charlie-70s",
+        "paul-s-70s",
+        "julius-70s",
+        "lucas-m-70s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_7bzv42s4ym",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 120,
+        "blue": 106
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "tiny-80s",
+        "clyde-80s",
+        "worthy-80s",
+        "jack-80s",
+        "walton-80s"
+      ],
+      "eraId": "1980s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_sdkcapjy1r",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 118,
+        "blue": 107
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "hersey-90s",
+        "clyde-90s",
+        "bigdog-90s",
+        "malone-90s",
+        "alonzo-90s"
+      ],
+      "eraId": "1990s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_vzi783rgqh",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 96,
+        "blue": 105
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "manu-00s",
+        "kobe-00s",
+        "jamison-00s",
+        "zach-00s",
+        "kg-00s"
+      ],
+      "eraId": "2000s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_a3obl7u98w",
+      "mode": "lab",
+      "score": {
+        "gold": 106,
+        "blue": 128
+      },
+      "goldIds": [
+        "parker-00s",
+        "sharman-60s",
+        "lavine-20s",
+        "terry-80s",
+        "evan-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_52rovi2gem",
+      "mode": "franchise",
+      "score": {
+        "gold": 111,
+        "blue": 102
+      },
+      "goldIds": [
+        "drose-10s",
+        "jordan-90s",
+        "pippen-90s",
+        "rodman-90s",
+        "artis-70s"
+      ],
+      "blueIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_mbqesclr28",
+      "mode": "tonight",
+      "score": {
+        "gold": 99,
+        "blue": 127
+      },
+      "goldIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "blueIds": [
+        "russ-10s",
+        "shai-20s",
+        "durant-10s",
+        "ibaka-2010s",
+        "chet-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_ylrvlkkc7y",
+      "mode": "any-five",
+      "score": {
+        "gold": 106,
+        "blue": 114
+      },
+      "goldIds": [
+        "dumars-90s",
+        "chet-70s",
+        "jerry-l-60s",
+        "al-10s",
+        "sabonis-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_19kx2j98kz",
+      "mode": "any-five",
+      "freshCasualFrom": "any-five",
+      "originalResultId": "pv_ylrvlkkc7y",
+      "score": {
+        "gold": 100,
+        "blue": 113
+      },
+      "goldIds": [
+        "dumars-90s",
+        "chet-70s",
+        "jerry-l-60s",
+        "al-10s",
+        "sabonis-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_hipvox6l97",
+      "mode": "daily",
+      "score": {
+        "gold": 86,
+        "blue": 105
+      },
+      "goldIds": [
+        "bibby-00s",
+        "smart-20s",
+        "jamison-00s",
+        "lamar-00s",
+        "draymond-20s"
+      ],
+      "blueIds": [
+        "cousy-60s",
+        "chet-60s",
+        "luka-20s",
+        "elton-00s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "lenny-wilkens",
+        "blue": "larry-brown"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_tee7tbfbc8",
+      "mode": "any-five",
+      "freshCasualFrom": "daily",
+      "originalResultId": "pv_hipvox6l97",
+      "score": {
+        "gold": 85,
+        "blue": 110
+      },
+      "goldIds": [
+        "bibby-00s",
+        "smart-20s",
+        "jamison-00s",
+        "lamar-00s",
+        "draymond-20s"
+      ],
+      "blueIds": [
+        "cousy-60s",
+        "chet-60s",
+        "luka-20s",
+        "elton-00s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "lenny-wilkens",
+        "blue": "larry-brown"
+      }
+    },
+    {
+      "resultId": "pv_qa0rjyd2x3",
+      "mode": "spin",
+      "score": {
+        "gold": 103,
+        "blue": 137
+      },
+      "goldIds": [
+        "timH-90s",
+        "demar-2010s",
+        "blake-10s",
+        "bigdog-90s",
+        "gobert-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_suxngnv9yt",
+      "mode": "any-five",
+      "freshCasualFrom": "spin",
+      "originalResultId": "pv_qa0rjyd2x3",
+      "score": {
+        "gold": 115,
+        "blue": 136
+      },
+      "goldIds": [
+        "timH-90s",
+        "demar-2010s",
+        "blake-10s",
+        "bigdog-90s",
+        "gobert-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_dfay7op173",
+      "mode": "one-franchise",
+      "score": {
+        "gold": 137,
+        "blue": 129
+      },
+      "goldIds": [
+        "reaves-20s",
+        "van-ex-90s",
+        "lebron-20s",
+        "mychal-80s",
+        "mikan-50s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_ds5e36uacn",
+      "mode": "any-five",
+      "freshCasualFrom": "one-franchise",
+      "originalResultId": "pv_dfay7op173",
+      "score": {
+        "gold": 143,
+        "blue": 122
+      },
+      "goldIds": [
+        "reaves-20s",
+        "van-ex-90s",
+        "lebron-20s",
+        "mychal-80s",
+        "mikan-50s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_q9z4dged67",
+      "mode": "one-per-era",
+      "score": {
+        "gold": 127,
+        "blue": 101
+      },
+      "goldIds": [
+        "sleepy-80s",
+        "ant-20s",
+        "arizin-60s",
+        "dave-c-70s",
+        "pettit-50s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_sakwdqv70o",
+      "mode": "any-five",
+      "freshCasualFrom": "one-per-era",
+      "originalResultId": "pv_q9z4dged67",
+      "score": {
+        "gold": 114,
+        "blue": 127
+      },
+      "goldIds": [
+        "sleepy-80s",
+        "ant-20s",
+        "arizin-60s",
+        "dave-c-70s",
+        "pettit-50s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_vbipx9up3t",
+      "mode": "no-mvps",
+      "score": {
+        "gold": 126,
+        "blue": 123
+      },
+      "goldIds": [
+        "cade-20s",
+        "petrovic-90s",
+        "john-d-70s",
+        "bob-l-70s",
+        "mitch-r-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_p11fdou39h",
+      "mode": "any-five",
+      "freshCasualFrom": "no-mvps",
+      "originalResultId": "pv_vbipx9up3t",
+      "score": {
+        "gold": 116,
+        "blue": 119
+      },
+      "goldIds": [
+        "cade-20s",
+        "petrovic-90s",
+        "john-d-70s",
+        "bob-l-70s",
+        "mitch-r-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_h2old4w2qz",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 134,
+        "blue": 116
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "clem-60s",
+        "dave-60s",
+        "tom-h-60s",
+        "wes-60s",
+        "paul-s-60s"
+      ],
+      "eraId": "1960s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_3ingbqmsw8",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 150,
+        "blue": 109
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "clint-70s",
+        "mike-n-70s",
+        "billy-k-70s",
+        "elvin-70s",
+        "tom-b-70s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_odgjlwyj1m",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 128,
+        "blue": 116
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "isiah-80s",
+        "cooper-80s",
+        "terry-80s",
+        "xavier-80s",
+        "jack-80s"
+      ],
+      "eraId": "1980s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_fv5qr64jx7",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 117,
+        "blue": 109
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "mark-p-90s",
+        "spree-90s",
+        "grant-90s",
+        "larry-j-90s",
+        "webb-90s"
+      ],
+      "eraId": "1990s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_hhld067ehd",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 121,
+        "blue": 92
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "deron-2ks",
+        "vince-00s",
+        "lamar-00s",
+        "jamison-00s",
+        "ben-00s"
+      ],
+      "eraId": "2000s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_g6ejydctq2",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 116,
+        "blue": 113
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "drose-10s",
+        "kemba-10s",
+        "melo-10s",
+        "kawhi-10s",
+        "draymond-10s"
+      ],
+      "eraId": "2010s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_mxhhd3oz2e",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 123,
+        "blue": 120
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "murray-20s",
+        "trejohnson-20s",
+        "paolo-20s",
+        "barnes-20s",
+        "jjj-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_c6f1as2mss",
+      "mode": "any-five",
+      "freshCasualFrom": "gauntlet",
+      "originalResultId": "pv_mxhhd3oz2e",
+      "score": {
+        "gold": 121,
+        "blue": 128
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "murray-20s",
+        "trejohnson-20s",
+        "paolo-20s",
+        "barnes-20s",
+        "jjj-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_9d1klbmldu",
+      "mode": "lab",
+      "score": {
+        "gold": 122,
+        "blue": 107
+      },
+      "goldIds": [
+        "doc-80s",
+        "wade-00s",
+        "acebailey-20s",
+        "queen-20s",
+        "walt-b-60s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_940lsxgn4n",
+      "mode": "any-five",
+      "freshCasualFrom": "lab",
+      "originalResultId": "pv_9d1klbmldu",
+      "score": {
+        "gold": 140,
+        "blue": 127
+      },
+      "goldIds": [
+        "doc-80s",
+        "wade-00s",
+        "acebailey-20s",
+        "queen-20s",
+        "walt-b-60s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_rcm0bz9l16",
+      "mode": "franchise",
+      "score": {
+        "gold": 91,
+        "blue": 113
+      },
+      "goldIds": [
+        "drose-10s",
+        "jordan-90s",
+        "pippen-90s",
+        "rodman-90s",
+        "artis-70s"
+      ],
+      "blueIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_v3v4bia28h",
+      "mode": "any-five",
+      "freshCasualFrom": "franchise",
+      "originalResultId": "pv_rcm0bz9l16",
+      "score": {
+        "gold": 116,
+        "blue": 115
+      },
+      "goldIds": [
+        "drose-10s",
+        "jordan-90s",
+        "pippen-90s",
+        "rodman-90s",
+        "artis-70s"
+      ],
+      "blueIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_3ayb6w0z1w",
+      "mode": "tonight",
+      "score": {
+        "gold": 124,
+        "blue": 99
+      },
+      "goldIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "blueIds": [
+        "russ-10s",
+        "shai-20s",
+        "durant-10s",
+        "ibaka-2010s",
+        "chet-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_pxvubk3a34",
+      "mode": "any-five",
+      "freshCasualFrom": "tonight",
+      "originalResultId": "pv_3ayb6w0z1w",
+      "score": {
+        "gold": 118,
+        "blue": 99
+      },
+      "goldIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "blueIds": [
+        "russ-10s",
+        "shai-20s",
+        "durant-10s",
+        "ibaka-2010s",
+        "chet-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      }
+    },
+    {
+      "resultId": "pv_6vdx1jwdpr",
+      "mode": "any-five",
+      "score": {
+        "gold": 110,
+        "blue": 141
+      },
+      "goldIds": [
+        "ai-00s",
+        "brunson-20s",
+        "middleton-20s",
+        "lauri-20s",
+        "tree-80s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_7wxd3eq4v6",
+      "mode": "any-five",
+      "score": {
+        "gold": 115,
+        "blue": 83
+      },
+      "goldIds": [
+        "curry-20s",
+        "jordan-90s",
+        "lebron-20s",
+        "duncan-00s",
+        "shaq-00s"
+      ],
+      "blueIds": [
+        "dumars-90s",
+        "chet-70s",
+        "jerry-l-60s",
+        "al-10s",
+        "sabonis-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    }
+  ],
+  "eventBatches": [
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph second device",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Bea",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Bea",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph second device",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Bea",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "emulated signup",
+      "status": 204,
+      "events": []
+    }
+  ],
+  "beacons": [
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946713063,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946713066,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946713067,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946713068,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946713868,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946713991,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946714002,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946714643,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946714644,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946717467,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily",
+          "source": "direct"
+        },
+        {
+          "event": "daily_attempted",
+          "ts": 1790946717467,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946717511,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946717521,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "daily_shared",
+          "ts": 1790946717597,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily",
+          "channel": "copy"
+        },
+        {
+          "event": "card_shared",
+          "ts": 1790946717597,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily",
+          "channel": "copy"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946718196,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "spin"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946718197,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "spin"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946721095,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "spin",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946721247,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "spin"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946721259,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946722003,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946722004,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-franchise"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946724778,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-franchise",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946724957,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-franchise"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946724966,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946725774,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-per-era"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946725774,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-per-era"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946728354,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-per-era",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946728531,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-per-era"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946728546,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946729190,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "no-mvps"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946729190,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "no-mvps"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946731973,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "no-mvps",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946732077,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "no-mvps"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946732085,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946732623,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946732624,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946735551,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946735683,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946735707,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "guest_play_started",
+          "ts": 1790946739166,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946739255,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946739264,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946742777,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946743025,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946743034,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "guest_play_started",
+          "ts": 1790946746392,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946746458,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946746462,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946750061,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946750121,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946750138,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946750764,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "lab"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946750765,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "lab"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946753575,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "lab",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946753828,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "lab"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946753843,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946754513,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946754514,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946757190,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946757265,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946757271,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946758089,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946758090,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946760849,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "tonight",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946761010,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "tonight"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946761026,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946761831,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946761832,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946761832,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946761833,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946764602,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946764625,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946764746,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946764782,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946765260,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946765261,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946765883,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_any_five"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946765929,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_any_five"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946766730,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946766779,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946768032,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_any_five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946768038,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946768039,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946768237,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946768368,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946769039,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946769041,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "daily_attempted",
+          "ts": 1790946771646,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946771736,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946771763,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946771847,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946771859,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946772265,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946772265,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946772879,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_daily"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946772917,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_daily"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946773962,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946774035,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946775249,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_daily"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946775256,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946775257,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946775540,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946775604,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946775904,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "spin"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946775905,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "spin"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946779021,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "spin"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946779030,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946779095,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946779110,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946779508,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946779509,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946780095,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_spin"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946780129,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_spin"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946781185,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946781243,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946782451,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_spin"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946782464,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946782465,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946782586,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946782646,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946782974,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946782975,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-franchise"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946786364,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-franchise"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946786375,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946786428,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946786444,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946786845,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946786846,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946787552,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_one_franchise"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946787595,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_one_franchise"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946788773,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946788845,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946789647,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_one_franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946789653,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946789653,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946789819,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946789919,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946790377,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-per-era"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946790378,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-per-era"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946793601,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "one-per-era"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946793616,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946793696,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946793711,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946794770,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946794771,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946795525,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_one_per_era"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946795581,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_one_per_era"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946797218,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946797380,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946797567,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_one_per_era"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946797600,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946797601,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "game_completed",
+          "ts": 1790946798847,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946798907,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946799542,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "no-mvps"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946799545,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "no-mvps"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946801420,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "no-mvps"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946801433,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946801485,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946801620,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946802209,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946802210,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946803180,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_no_mvps"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946803284,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_no_mvps"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946804263,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946804346,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946804815,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_no_mvps"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946804827,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946804828,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946805511,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946805708,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946806098,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946806100,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946808506,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946808528,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "game_completed",
+          "ts": 1790946812236,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946812259,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946816064,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946816089,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "game_completed",
+          "ts": 1790946819371,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946819384,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946823046,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946823058,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "game_completed",
+          "ts": 1790946826686,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946826701,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946830188,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946830227,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946830294,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946830307,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946830679,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946830680,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946831396,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_gauntlet"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946831425,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_gauntlet"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946832525,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946832558,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946833693,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_gauntlet"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946833698,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946833700,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946833848,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946833915,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946834327,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "lab"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946834329,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "lab"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946837510,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "lab"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946837527,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946837592,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946837608,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946837824,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946837826,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946838434,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_lab"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946838478,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_lab"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946839145,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946839192,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946840937,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_lab"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946840957,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946840957,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946841065,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946841208,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946841511,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946841511,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946844668,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946844675,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946844728,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946844751,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946845194,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946845195,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946845814,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_franchise"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946845909,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_franchise"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946846942,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946846974,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946848128,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946848134,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946848135,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946848533,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946848702,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946849339,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946849340,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946852028,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "tonight"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946852052,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790946852127,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790946852141,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946852605,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946852606,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790946853193,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_tonight"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790946853226,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_tonight"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790946854259,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790946854291,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790946855308,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_tonight"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946855312,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946855313,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946855394,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946855451,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph second device",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "returning_session",
+          "ts": 1790946855744,
+          "uid": "fb7325ab-ed4e-4409-85e3-38d98f7af8f6",
+          "session_id": "9fbc0ad9-d0df-454c-90a3-a9983eecd7f8",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946855745,
+          "uid": "fb7325ab-ed4e-4409-85e3-38d98f7af8f6",
+          "session_id": "9fbc0ad9-d0df-454c-90a3-a9983eecd7f8",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946855788,
+          "uid": "fb7325ab-ed4e-4409-85e3-38d98f7af8f6",
+          "session_id": "9fbc0ad9-d0df-454c-90a3-a9983eecd7f8",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946855789,
+          "uid": "fb7325ab-ed4e-4409-85e3-38d98f7af8f6",
+          "session_id": "9fbc0ad9-d0df-454c-90a3-a9983eecd7f8",
+          "app_version": "2.7.2",
+          "build": "dev"
+        }
+      ]
+    },
+    {
+      "label": "Bea",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "returning_session",
+          "ts": 1790946857141,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946857142,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946857181,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946857182,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev"
+        }
+      ]
+    },
+    {
+      "label": "Bea",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946861051,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "rooms"
+        }
+      ]
+    },
+    {
+      "label": "Joseph second device",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946858326,
+          "uid": "fb7325ab-ed4e-4409-85e3-38d98f7af8f6",
+          "session_id": "9fbc0ad9-d0df-454c-90a3-a9983eecd7f8",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946858326,
+          "uid": "fb7325ab-ed4e-4409-85e3-38d98f7af8f6",
+          "session_id": "9fbc0ad9-d0df-454c-90a3-a9983eecd7f8",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946860120,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "rooms"
+        }
+      ]
+    },
+    {
+      "label": "Bea",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946862552,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946862554,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946863523,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946863535,
+          "uid": "08aff51d-53a0-42fa-94d6-a9b4e0c33a22",
+          "session_id": "55eed281-2789-449e-a4e3-0d1f39c02d4b",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946867668,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "rooms"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946867779,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "rooms"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "card_opened",
+          "source": "card",
+          "ts": 1790946869888,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "rematch_started_from_card",
+          "source": "card",
+          "ts": 1790946870497,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946868830,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790946868830,
+          "uid": "23013d81-a41c-4b4e-bad1-c220b563fed6",
+          "session_id": "56af6526-b86a-4493-b9ba-87be946c5eb7",
+          "app_version": "2.7.2",
+          "build": "dev"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946870760,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946870761,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790946871279,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790946871339,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790946871357,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "card_shared",
+          "ts": 1790946871476,
+          "uid": "806ee7dd-e660-4e79-9482-1a56d4a0306e",
+          "session_id": "f8ea6f57-3e85-46c7-8b46-0e8c5f473f82",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five",
+          "channel": "copy"
+        }
+      ]
+    },
+    {
+      "label": "emulated signup",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790946872522,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946872524,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790946872525,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790946872525,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_gate_shown",
+          "ts": 1790946873236,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_signup_started",
+          "ts": 1790946873381,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_gate_shown",
+          "ts": 1790946873420,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_gate_shown",
+          "ts": 1790946873425,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_signin_completed",
+          "ts": 1790946873425,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "signup_completed",
+          "ts": 1790946873425,
+          "uid": "3b030ba5-8ea3-4c2f-ae90-7f510094fed9",
+          "session_id": "5b5c331a-346f-4f1a-b28a-a45497bd65c0",
+          "app_version": "2.7.2",
+          "build": "dev"
+        }
+      ]
+    }
+  ],
+  "governedChallenges": [
+    {
+      "chaosResultId": "pv_kpfaptq8k9",
+      "score": {
+        "gold": 106,
+        "blue": 158
+      }
+    }
+  ],
+  "publicationReceipts": [
+    {
+      "label": "guest",
+      "resultId": "pv_61r7dzkbz9",
+      "status": 200,
+      "created": true,
+      "path": "/card/24176c45c0022917"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_84mayjc2zn",
+      "status": 200,
+      "created": true,
+      "path": "/card/6e46777f7533e9f6"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_209pfujbd6",
+      "status": 200,
+      "created": true,
+      "path": "/card/8a77eb43015233c0"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_3xhjv3b9bd",
+      "status": 200,
+      "created": true,
+      "path": "/card/5bd2aad4bee75a3e"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_weir86w9xe",
+      "status": 200,
+      "created": true,
+      "path": "/card/1e849de8789fca00"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_pi2qt0rg7g",
+      "status": 200,
+      "created": true,
+      "path": "/card/439b1ce5c3d58cb3"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_6pq0nj0vy8",
+      "status": 200,
+      "created": true,
+      "path": "/card/777c1978c3ba1a0c"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_h788pqjanx",
+      "status": 200,
+      "created": true,
+      "path": "/card/a3f07b12cb86c307"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_7bzv42s4ym",
+      "status": 200,
+      "created": true,
+      "path": "/card/16a09fd2918eeadd"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_sdkcapjy1r",
+      "status": 200,
+      "created": true,
+      "path": "/card/65f6ad1cf2cb931f"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_vzi783rgqh",
+      "status": 200,
+      "created": true,
+      "path": "/card/ddfe915253912bb6"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_a3obl7u98w",
+      "status": 200,
+      "created": true,
+      "path": "/card/fb7591a092ee4d72"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_52rovi2gem",
+      "status": 200,
+      "created": true,
+      "path": "/card/86e16fe3794804c2"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_mbqesclr28",
+      "status": 200,
+      "created": true,
+      "path": "/card/1e0f4c0edae1118b"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_ylrvlkkc7y",
+      "status": 200,
+      "created": true,
+      "path": "/card/4cb641eab7d48b2f"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_19kx2j98kz",
+      "status": 200,
+      "created": true,
+      "path": "/card/a51405c8c8fb1e32"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_hipvox6l97",
+      "status": 200,
+      "created": true,
+      "path": "/card/83f1287077750d7d"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_tee7tbfbc8",
+      "status": 200,
+      "created": true,
+      "path": "/card/e73fdd94faba1e69"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_qa0rjyd2x3",
+      "status": 200,
+      "created": true,
+      "path": "/card/36f7638cbee3956d"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_suxngnv9yt",
+      "status": 200,
+      "created": true,
+      "path": "/card/f7904fe80c4e6288"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_dfay7op173",
+      "status": 200,
+      "created": true,
+      "path": "/card/54070c3f525270bb"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_ds5e36uacn",
+      "status": 200,
+      "created": true,
+      "path": "/card/ccc1c20ac7ede33a"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_q9z4dged67",
+      "status": 200,
+      "created": true,
+      "path": "/card/2e91a81624d09ac0"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_sakwdqv70o",
+      "status": 200,
+      "created": true,
+      "path": "/card/af2285ab5b62adac"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_vbipx9up3t",
+      "status": 200,
+      "created": true,
+      "path": "/card/a48dfe786347cc2e"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_p11fdou39h",
+      "status": 200,
+      "created": true,
+      "path": "/card/78b30eced78f3666"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_h2old4w2qz",
+      "status": 200,
+      "created": true,
+      "path": "/card/300a7337ec5079ef"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_3ingbqmsw8",
+      "status": 200,
+      "created": true,
+      "path": "/card/95d2586d29155f86"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_odgjlwyj1m",
+      "status": 200,
+      "created": true,
+      "path": "/card/2299665f30da3d9d"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_fv5qr64jx7",
+      "status": 200,
+      "created": true,
+      "path": "/card/9e0dcd9392643cca"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_hhld067ehd",
+      "status": 200,
+      "created": true,
+      "path": "/card/fed8ad2076c6b831"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_g6ejydctq2",
+      "status": 200,
+      "created": true,
+      "path": "/card/f702da71810c27f9"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_mxhhd3oz2e",
+      "status": 200,
+      "created": true,
+      "path": "/card/f08698b5632c1bcc"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_c6f1as2mss",
+      "status": 200,
+      "created": true,
+      "path": "/card/1d90b987fe8e34f5"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_9d1klbmldu",
+      "status": 200,
+      "created": true,
+      "path": "/card/fc73bd24b46a3e7f"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_940lsxgn4n",
+      "status": 200,
+      "created": true,
+      "path": "/card/5e02ea3e6d52034f"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_rcm0bz9l16",
+      "status": 200,
+      "created": true,
+      "path": "/card/ad39dfd57de4f173"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_v3v4bia28h",
+      "status": 200,
+      "created": true,
+      "path": "/card/08b02d3a3f73176f"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_3ayb6w0z1w",
+      "status": 200,
+      "created": true,
+      "path": "/card/2f4af68e9a2fd89b"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_pxvubk3a34",
+      "status": 200,
+      "created": true,
+      "path": "/card/6979bd5c3a2a26f0"
+    },
+    {
+      "label": "Bea",
+      "resultId": "pv_6vdx1jwdpr",
+      "status": 200,
+      "created": true,
+      "path": "/card/b2edac0980d6fd89"
+    },
+    {
+      "label": "guest",
+      "resultId": "pv_7wxd3eq4v6",
+      "status": 200,
+      "created": true,
+      "path": "/card/a75adb9aec1279c6"
+    }
+  ],
+  "publicationRequestFailures": [],
+  "endedAt": "2026-10-02T13:14:49.177Z",
+  "summary": {
+    "passed": 27,
+    "failed": 1,
+    "consoleErrors": 0,
+    "actualLoopGames": 42,
+    "governedChaosGames": 1,
+    "eventBatches": 47
+  }
+}

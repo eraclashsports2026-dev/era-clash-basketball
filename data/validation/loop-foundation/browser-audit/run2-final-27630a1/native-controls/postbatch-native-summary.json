@@ -1,0 +1,138 @@
+{
+  "sourceSha": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+  "scope": "Actual postbatch native browser evidence; raw collector warnings are retained separately. Not overall launch acceptance.",
+  "headingsAndCredits": {
+    "total": 7,
+    "allHaveH1": true,
+    "pageHeadingViolations": 0,
+    "creditsNativeCases": [
+      {
+        "route": "/",
+        "profile": "desktop",
+        "h1": [
+          "\ud83d\udcf7 Image Credits"
+        ],
+        "textChanged": true,
+        "status": "PASS"
+      },
+      {
+        "route": "/clash/any-five",
+        "profile": "desktop",
+        "h1": [
+          "\ud83d\udcf7 Image Credits"
+        ],
+        "textChanged": true,
+        "status": "PASS"
+      },
+      {
+        "route": "/privacy",
+        "profile": "iphone-se",
+        "h1": [
+          "\ud83d\udcf7 Image Credits"
+        ],
+        "textChanged": true,
+        "status": "PASS"
+      },
+      {
+        "route": "/modes/bo7",
+        "profile": "desktop",
+        "h1": [
+          "\ud83d\udcf7 Image Credits"
+        ],
+        "textChanged": true,
+        "status": "PASS"
+      }
+    ]
+  },
+  "selectedControls": {
+    "status": "PASS",
+    "cases": 5
+  },
+  "clippedInputs": {
+    "actions": 12,
+    "nativePass": 12,
+    "remainingAfterAxe": [
+      {
+        "route": "/clash/any-five",
+        "action": "keyboard",
+        "target": "[data-testid=\"loop-player-4\"]",
+        "violations": [
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "#\\:r1\\:-input"
+                ],
+                "html": "<input id=\":r1:-input\" data-testid=\"loop-player-1\" role=\"combobox\" aria-autocomplete=\"list\" aria-expanded=\"false\" autocomplete=\"off\" placeholder=\"Name, nickname, or a close spelling\" value=\"\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 296px by 8.8px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 14.8px instead of at least 24px."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "route": "/clash/one-franchise",
+        "action": "keyboard",
+        "target": "[data-testid=\"loop-player-4\"]",
+        "violations": [
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "#\\:r1\\:-input"
+                ],
+                "html": "<input id=\":r1:-input\" data-testid=\"loop-player-1\" role=\"combobox\" aria-autocomplete=\"list\" aria-expanded=\"false\" autocomplete=\"off\" placeholder=\"Name, nickname, or a close spelling\" value=\"\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 296px by 9.3px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 15.2px instead of at least 24px."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "route": "/clash/one-per-era",
+        "action": "keyboard",
+        "target": "[data-testid=\"loop-player-4\"]",
+        "violations": [
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "#\\:r1\\:-input"
+                ],
+                "html": "<input id=\":r1:-input\" data-testid=\"loop-player-1\" role=\"combobox\" aria-autocomplete=\"list\" aria-expanded=\"false\" autocomplete=\"off\" placeholder=\"Name, nickname, or a close spelling\" value=\"\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 296px by 9.4px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 15.4px instead of at least 24px."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "route": "/clash/no-mvps",
+        "action": "keyboard",
+        "target": "[data-testid=\"loop-player-4\"]",
+        "violations": [
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "#\\:r6\\:-input"
+                ],
+                "html": "<input id=\":r6:-input\" data-testid=\"loop-player-1\" role=\"combobox\" aria-autocomplete=\"list\" aria-expanded=\"false\" autocomplete=\"off\" placeholder=\"Name, nickname, or a close spelling\" value=\"\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 296px by 9.4px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 15.4px instead of at least 24px."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "adjudication": "Exact exercised inputs retain46.8px intrinsic height and native actions reveal/focus their centers without forced scroll or CSS. Four after-Tab full-page axe findings concern a different input at the viewport boundary; they remain in raw evidence and are not replaced with blanket axe PASS."
+  }
+}

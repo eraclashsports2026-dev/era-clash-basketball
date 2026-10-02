@@ -1,0 +1,290 @@
+{
+  "run": "run-2-stable",
+  "target": "http://localhost:4321",
+  "startedAt": "2026-10-02T09:36:20.531Z",
+  "identityNamespace": "run-2-stable",
+  "sourceSHA": "b0ef7ae430f818d1d3b98bbf15a8ed3e19b30d44",
+  "runtimeSourceSHA": "a826333eb68ff2b995933541bb4be44ca9acda7b",
+  "productionBuildStamp": "eraclash-assets:2.7.2:c3234f7053ad",
+  "testFileHashes": {
+    "tests/loop-stateful-browser.mjs": "fdcd80c7787ca8e3274ebeb1e8ee8079ba7fb7ba12d59b6b63826901f8360acd",
+    "tests/loop-stateful-browser-provider.js": "5c3db74c93a34d6ca6364b48e363980d7a24dfae6db497d2bfa03c093cf10515",
+    "tests/loop-stateful-harness.mjs": "584e486d83547e2761c2349e9e03d6d4b0b3a2616fbe98a4133c8f7c13fdf8f8",
+    "tests/loop-stateful-identities.mjs": "eee7966e2388a13ff79ab6067b90845d47bad4ddef72b964ae5afdb0810844b7"
+  },
+  "companionMethod": "Vite source modules + test-only main import/provider transform; source client has no production build stamp. File watching/HMR disabled; test-only runner corrections can be uncommitted and are bound by per-file hashes. Actual API handler process with in-memory fake cloud writes rows; read-only bridge scopes rows by fake token. Not production-dist/auth/RLS evidence.",
+  "scope": "PARTIAL EMULATED: localhost actual handlers + Candidate4 + existing fakeCloud/test provider. No real Preview OAuth, SMTP, RLS, provider durability, physical device or deployment proof.",
+  "localBudgetOverrides": {
+    "RL_SIM_PER_MIN_SESSION": 500,
+    "RL_SIM_PER_MIN_IP": 500,
+    "purpose": "Local verification only; shared 120 actions/min and public 20 recaps/min remain enforced"
+  },
+  "checks": [
+    {
+      "name": "any-five actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4321/clash/any-five\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "name": "daily actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "spin actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "one-franchise actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "one-per-era actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "no-mvps actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "gauntlet actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "lab actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "franchise actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "tonight actual guest result and tagged board",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "name": "any-five account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "daily account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "spin account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "one-franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "one-per-era account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "no-mvps account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "gauntlet account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "lab account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "tonight account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "Saved History survives a fresh browser context under the same account",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "Another account cannot read the original owner’s saved row",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "Daily completed account cannot restart on a different device",
+      "status": "PASS",
+      "details": {
+        "skipped": "daily not selected"
+      }
+    },
+    {
+      "name": "Two accounts join one private room and own-result checks work across devices",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "Room feed shares an actual governed Challenge created from a completed Chaos draft",
+      "status": "FAIL",
+      "error": "Room prerequisite failed"
+    },
+    {
+      "name": "Public card → guest fresh five → new authoritative result captures sharing and rematch events",
+      "status": "FAIL",
+      "error": "page.goto: Target page, context or browser has been closed"
+    },
+    {
+      "name": "Fake email signup dialog completes and emits signup instrumentation (SMTP unverified)",
+      "status": "FAIL",
+      "error": "browser.newContext: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/var/folders/5n/lq86ql3d19j_0p5lxdsjwbkc0000gn/T/playwright_chromiumdev_profile-3nSHDM --remote-debugging-pipe --no-startup-window\n<launched> pid=37154\n[pid=37154][err] Trying to load the allocator multiple times. This is *not* supported.\n[pid=37154][err] [37164:30759417:1002/053621.960132:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.960398:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968096:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968171:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968302:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968350:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968445:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968477:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968560:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968587:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.266012:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.266072:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.268285:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.268375:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.269086:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.269159:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.269401:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.269456:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.270238:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.270295:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.471351:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.471445:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.472971:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.473030:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.473936:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.474088:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.474252:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.474319:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.474459:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.474520:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.662585:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.662662:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.669248:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.669311:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.669754:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.669805:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.669917:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.669962:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.670066:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.670106:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37154:30759403:1002/053625.321467:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\n[pid=37154][err] [37154:30759403:1002/053625.321552:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\n[pid=37154][err] [37154:30759403:1002/053625.321708:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\n[pid=37154][err] [37154:30759403:1002/053651.731486:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\n[pid=37154] <gracefully close start>"
+    },
+    {
+      "name": "Actual first-party event batches have HTTP receipts and the closed Loop vocabulary",
+      "status": "FAIL",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    }
+  ],
+  "failures": [
+    {
+      "name": "any-five actual guest result and tagged board",
+      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4321/clash/any-five\", waiting until \"networkidle\"\u001b[22m\n\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:124:134\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:124:47"
+    },
+    {
+      "name": "daily actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "spin actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "one-franchise actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "one-per-era actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "no-mvps actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "gauntlet actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "lab actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "franchise actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "tonight actual guest result and tagged board",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:56:140)\n    at async playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:3)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:128\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:124:41"
+    },
+    {
+      "name": "any-five account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "daily account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "spin account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "one-franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "one-per-era account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "no-mvps account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "gauntlet account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "lab account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "tonight account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at playMode (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:79:9)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:157\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:126:35"
+    },
+    {
+      "name": "Saved History survives a fresh browser context under the same account",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:128:110\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:128:11"
+    },
+    {
+      "name": "Another account cannot read the original owner’s saved row",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:129:99\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:129:11"
+    },
+    {
+      "name": "Two accounts join one private room and own-result checks work across devices",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:133:13\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:132:11"
+    },
+    {
+      "name": "Room feed shares an actual governed Challenge created from a completed Chaos draft",
+      "error": "Error: Room prerequisite failed\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:143:7\n    at check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:142:11"
+    },
+    {
+      "name": "Public card → guest fresh five → new authoritative result captures sharing and rematch events",
+      "error": "page.goto: Target page, context or browser has been closed\n    at navigate (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:57:12)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:152:93\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:151:11"
+    },
+    {
+      "name": "Fake email signup dialog completes and emits signup instrumentation (SMTP unverified)",
+      "error": "browser.newContext: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/var/folders/5n/lq86ql3d19j_0p5lxdsjwbkc0000gn/T/playwright_chromiumdev_profile-3nSHDM --remote-debugging-pipe --no-startup-window\n<launched> pid=37154\n[pid=37154][err] Trying to load the allocator multiple times. This is *not* supported.\n[pid=37154][err] [37164:30759417:1002/053621.960132:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.960398:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968096:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968171:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968302:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968350:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968445:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968477:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053621.968560:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053621.968587:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.266012:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.266072:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.268285:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.268375:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.269086:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.269159:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.269401:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.269456:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.270238:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.270295:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.471351:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.471445:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.472971:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.473030:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.473936:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.474088:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.474252:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.474319:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.474459:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.474520:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.662585:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.662662:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.669248:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.669311:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.669754:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.669805:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.669917:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.669962:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759417:1002/053622.670066:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37164:30759500:1002/053622.670106:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=37154][err] [37154:30759403:1002/053625.321467:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\n[pid=37154][err] [37154:30759403:1002/053625.321552:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\n[pid=37154][err] [37154:30759403:1002/053625.321708:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\n[pid=37154][err] [37154:30759403:1002/053651.731486:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\n[pid=37154] <gracefully close start>\n    at async newPage (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:32:15)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:158:22\n    at async check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:157:5"
+    },
+    {
+      "name": "Actual first-party event batches have HTTP receipts and the closed Loop vocabulary",
+      "error": "page.waitForTimeout: Target page, context or browser has been closed\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:164:17\n    at check (/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:29:65)\n    at /Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/tests/loop-stateful-browser.mjs:162:9"
+    }
+  ],
+  "consoleErrors": [],
+  "results": [],
+  "eventBatches": [],
+  "beacons": [],
+  "governedChallenges": [],
+  "endedAt": "2026-10-02T09:37:22.822Z",
+  "summary": {
+    "passed": 1,
+    "failed": 27,
+    "consoleErrors": 0,
+    "actualLoopGames": 0,
+    "governedChaosGames": 0,
+    "eventBatches": 0
+  }
+}

@@ -14,22 +14,10 @@ import {
 } from "./career.js";
 import { createChallenge, loadChallengeFromUrl } from "./challengeClient.js";
 import { publishResult, shareText } from "./share.js";
-import Postgame from "./components/Postgame.jsx";
-import DailyPanel from "./components/DailyPanel.jsx";
-import DailyCoachEra from "./components/DailyCoachEra.jsx";
-import Profile from "./components/Profile.jsx";
-import Credits from "./components/Credits.jsx";
-import RosterBalance from "./components/RosterBalance.jsx";
-import MatchupPreview, { VsDivider } from "./components/MatchupPreview.jsx";
-import SimulationLoading from "./components/SimulationLoading.jsx";
 import ManualPicker from "./components/ManualPicker.jsx";
-import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
-import TimeArena from "./components/arena/TimeArena.jsx";
-import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
-import ProgressionReferenceFixture from "./ui/progression/ProgressionReferenceFixture.jsx";   // Phase 9D, same dev-only gate
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import {
   PLAY_MODES, findMode, defaultMode, MODE_STATUS,
@@ -41,34 +29,24 @@ import PlayLobby from "./components/lobby/PlayLobby.jsx";
 import AccountDialog from "./components/accounts/AccountDialog.jsx";
 import AuthCallback from "./components/accounts/AuthCallback.jsx";
 import SaveThisClash from "./components/accounts/SaveThisClash.jsx";
-import MyEraClash from "./components/accounts/MyEraClash.jsx";
 import { startAccountState, subscribeAccount, accountState, signOutAccount } from "./accounts/accountState.js";
-import { provider as accountProvider } from "./accounts/provider.js";
+import { provider as accountProvider, withProvider } from "./accounts/provider.js";
 import { saveResultToCareer, claimGuestResult } from "./accounts/cloudSave.js";
 import { rememberResult } from "./accounts/deviceResults.js";
 import { runItBackSetup } from "./accounts/careerV2.js";
 import { placementPlan, place as placePlayer, describeSelection, describePlacement, PLACEMENT_MODE } from "./lineupPlacement.js";
 import { markEntry } from "./activation.js";
-import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
 import { simulateChaos, chooseChaosEra } from "./chaos/client.js";
 // Phase 9C: a finished Chaos Clash becomes a governed challenge; a link opens an
 // invitation; an accepted challenge is an ordinary Chaos run the arena resumes.
 import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
-import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
-import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
+import { loadSavedReport } from "./accounts/savedReport.js";
 import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
 // Phase 9D: what a saved result earned (server-decided), shown after the score.
 import { rememberProgression, progressionFor, mergeProgression } from "./progression/client.js";
-import CareerProgress from "./components/progression/CareerProgress.jsx";
 // Phase 9E: the Challenge Rating leaderboard and the rating movement after a comparison.
-import LeaderboardPage from "./components/competitive/LeaderboardPage.jsx";
-import PublicProfilePage from "./components/profiles/PublicProfilePage.jsx";   // Phase 9F
 import { slugFromPath, PUBLIC_PROFILE_ROUTE } from "./profiles/contract.js";
-import RatingChange from "./components/competitive/RatingChange.jsx";
-import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
-import SocialReferenceFixture from "./ui/social/SocialReferenceFixture.jsx";   // dev-only gate (Clash Cards + Rivalries V1)
-import ProfileReferenceFixture from "./ui/profiles/ProfileReferenceFixture.jsx";   // dev-only gate
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
@@ -80,6 +58,46 @@ import { teamFit } from "./chemistryView.js";
 import { v3meta } from "./v3meta.js";
 import { runNarrative, toViewStatus } from "./narrativeMachine.js";
 import { shortBuild, watchForNewBuild } from "./buildStamp.js";
+import { PolicyPage, SupportPage } from './loop/PolicyPages.jsx';
+import { loopEvent } from './loop/events.js';
+import { loopApi } from './loop/client.js';
+import LoopModes from './loop/modes/LoopModes.jsx';
+
+// Defer conditional screens while keeping the arena header and active mode visible.
+// Declared at module scope so navigating or rerendering preserves component identity.
+function deferredScreen(load, message) {
+  const Screen = lazy(load);
+  return function DeferredScreen(props) {
+    return (
+      <Suspense fallback={<div role="status" aria-busy="true" style={{ maxWidth: 1100, margin: "0 auto", padding: 24, minHeight: 120 }}>{message}</div>}>
+        <Screen {...props} />
+      </Suspense>
+    );
+  };
+}
+
+const TimeArena = deferredScreen(() => import("./components/arena/TimeArena.jsx"), "Loading the arena…");
+const MyEraClash = deferredScreen(() => import("./components/accounts/MyEraClash.jsx"), "Loading My EraClash…");
+const Postgame = deferredScreen(() => import("./components/Postgame.jsx"), "Loading the full report…");
+const ClashBreakdown = deferredScreen(() => import("./components/breakdown/ClashBreakdown.jsx"), "Loading the breakdown…");
+const LeaderboardPage = deferredScreen(() => import("./components/competitive/LeaderboardPage.jsx"), "Loading the leaderboard…");
+const PublicProfilePage = deferredScreen(() => import("./components/profiles/PublicProfilePage.jsx"), "Loading this profile…");
+const PrivateRooms = deferredScreen(() => import("./loop/PrivateRooms.jsx"), "Loading private rooms…");
+const LoopResult = deferredScreen(() => import("./loop/LoopResult.jsx"), "Loading the result…");
+const DailyPanel = deferredScreen(() => import("./components/DailyPanel.jsx"), "Loading the Daily board…");
+const DailyCoachEra = deferredScreen(() => import("./components/DailyCoachEra.jsx"), "Loading Daily coaching…");
+const Profile = deferredScreen(() => import("./components/Profile.jsx"), "Loading your basketball profile…");
+const Credits = deferredScreen(() => import("./components/Credits.jsx"), "Loading image credits…");
+const RosterBalance = deferredScreen(() => import("./components/RosterBalance.jsx"), "Loading roster balance…");
+const SimulationLoading = deferredScreen(() => import("./components/SimulationLoading.jsx"), "Preparing the game…");
+const CoachPick = deferredScreen(() => import("./components/CoachPick.jsx"), "Loading coaching choices…");
+const AccountGate = deferredScreen(() => import("./components/chaos/AccountGate.jsx"), "Loading account options…");
+const ChallengeShare = deferredScreen(() => import("./components/challenges/ChallengeShare.jsx"), "Loading challenge sharing…");
+const ChallengeComparison = deferredScreen(() => import("./components/challenges/ChallengeComparison.jsx"), "Loading the comparison…");
+const CareerProgress = deferredScreen(() => import("./components/progression/CareerProgress.jsx"), "Loading career progress…");
+const RatingChange = deferredScreen(() => import("./components/competitive/RatingChange.jsx"), "Loading rating movement…");
+const MatchupPreview = deferredScreen(() => import("./components/MatchupPreview.jsx"), "Loading the matchup preview…");
+const VsDivider = deferredScreen(() => import("./components/MatchupPreview.jsx").then(module => ({ default: module.VsDivider })), "Loading the matchup…");
 
 // The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
 // server's edges; placeholder until both fives exist. No numbers, no winner.
@@ -159,6 +177,11 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 // `npm run build:visual-qa` (and the dev server), so a production build
 // statically eliminates both this route and the fixture module.
 const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
+const ReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/time-arena/ReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const ProgressionReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/progression/ProgressionReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const CompetitiveReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/competitive/CompetitiveReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const SocialReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/social/SocialReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const ProfileReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/profiles/ProfileReferenceFixture.jsx"), "Loading the reference fixture…") : null;
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
 const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
 const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
@@ -208,6 +231,7 @@ const writePriorResult = (p) => {
 };
 
 export default function App() {
+  const [loopResult, setLoopResult] = useState(null);
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
   const [gameMode, setGameMode] = useState("Chaos");  // Chaos | Single (Dream Matchup) | Best7 | Win82 | Tournament
@@ -215,6 +239,8 @@ export default function App() {
   // Clash Cards + Rivalries V1: one server flag, read with the mode registry;
   // off (the production default until acceptance) hides every new surface.
   const [socialEnabled, setSocialEnabled] = useState(false);
+  // Clash Breakdown V1: read with the mode registry; off (production default) hides it.
+  const [breakdownEnabled, setBreakdownEnabled] = useState(false);
   const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
   const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
@@ -242,6 +268,16 @@ export default function App() {
   const [authDialog, setAuthDialog] = useState(null);
   const [cloudSave, setCloudSave] = useState({ resultId: null, state: "idle" });
   const [savedReport, setSavedReport] = useState(null);   // a cloud-saved clash reopened from its own snapshot
+  // The History list deliberately omits the (large) snapshot column, so opening
+  // a saved Clash reads the owner's full row through the provider under RLS —
+  // the existing owner-only path. Without this the report could not reopen for
+  // a real account (the list row has no snapshot; only the test adapter did).
+  const openSavedReport = useCallback(async (clash) => {
+    if (!clash) return;
+    if (!clash.result_snapshot?.core) setSavedReport({ ...clash, _loading: true });
+    const out = await loadSavedReport(clash, (id) => withProvider((p) => p.getSavedClash(id), null));
+    setSavedReport((cur) => (!cur || cur.result_id === clash.result_id ? { ...out.clash, _loading: false } : cur));
+  }, []);
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
   const [chaosChallengeId, setChaosChallengeId] = useState(null);
   // Bumped on a new clash and on account creation to force a re-render. It is
@@ -352,6 +388,21 @@ export default function App() {
   // server reads the authoritative record. A failure leaves the result on
   // screen and offers a retry.
   const token = acct.session?.accessToken || null;
+  useEffect(() => {
+    if (loading && !token) loopEvent('guest_play_started');
+  }, [loading]);
+  useEffect(() => {
+    const mode = modeForRoute(route);
+    if (mode) loopEvent('mode_started', { mode: ({ bo7: 'best7', win82: '82' })[mode.id] || mode.id });
+  }, [route]);
+  const loopCompletedIds = useRef(new Set());
+  useEffect(() => {
+    const id = result?.resultId;
+    if (!id || loopCompletedIds.current.has(id)) return;
+    loopCompletedIds.current.add(id);
+    const mode = result.tag === 'chaos' ? 'chaos' : result.tag === 'daily' ? 'daily' : result.type === 'single' ? 'dream' : result.type;
+    loopEvent('game_completed', { mode });
+  }, [result?.resultId]);
   const runCloudSave = useCallback(async (resultId, mode, kind = "cloud-save") => {
     if (!resultId || !token) return null;
     setCloudSave({ resultId, state: "saving" });
@@ -422,6 +473,7 @@ export default function App() {
         const on = m.modes?.chaosClash !== false;
         setChaosAvailable(on);
         setSocialEnabled(m.modes?.clashSocial === true);
+        setBreakdownEnabled(m.modes?.clashBreakdown === true);
         if (!on) {
           setGameMode((g) => (g === "Chaos" ? "Single" : g));
           // Keep the address truthful: a Chaos link on a deployment without
@@ -510,6 +562,7 @@ export default function App() {
   // the same way. It never starts a game — the mode's own surface does that,
   // on an explicit action.
   useEffect(() => {
+    if (route === '/challenges') { setNav('Challenges'); return; }
     const m = modeForRoute(route);
     if (!m) return;
     if (m.nav) { if (nav !== m.nav) setNav(m.nav); return; }
@@ -1273,6 +1326,30 @@ export default function App() {
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
 
+  // Reopening a completed card is presentation, so its game-completed event
+  // is emitted once per authoritative result in this app session.
+  const presentLoopResult = async (payload, context = {}, resultRoute = route) => {
+    const record = payload.result || payload;
+    const mode = context.mode || record.loop?.mode || 'any-five';
+    if (!loopCompletedIds.current.has(record.id)) {
+      loopCompletedIds.current.add(record.id);
+      loopEvent('game_completed', { mode });
+    }
+    setLoopResult(current => ({ record, mode, route: resultRoute,
+      url: current?.record?.id === record.id ? current.url : null,
+      notice: context.notice || null }));
+    const url = await publishResult({ resultId: record.id });
+    setLoopResult(current => current?.record?.id === record.id ? { ...current, url } : current);
+    const room = new URLSearchParams(location.search).get('room');
+    if (room) {
+      let roomStatus;
+      try { await loopApi({ op: 'room-challenge', roomId: room, resultId: record.id }); roomStatus = 'Your result was added to the private room.'; }
+      catch { roomStatus = 'The room could not save this result. Return to the room and retry after the other update finishes.'; }
+      setLoopResult(current => current?.record?.id === record.id ? { ...current, roomStatus } : current);
+    }
+    return url;
+  };
+
   // Run It Back from a saved Clash: the same five, coaches and era, a NEW seed.
   // The five and the opponent are reconstructed from the stored identity refs;
   // the server decides everything else. Exact replay is deliberately NOT this —
@@ -1281,6 +1358,19 @@ export default function App() {
   const runItBackFromSaved = (clash) => {
     const setup = runItBackSetup(clash);
     if (!setup) return;
+    if (setup.freshCasual) {
+      const target = '/clash/any-five';
+      const notice = 'Fresh casual rematch · Any Five. These teams, coaches and rules environment play with a new game seed. The original mode’s governed attempt and constraints stay with its saved report.';
+      setSavedReport(null); setErr('');
+      setLoopResult({ record: null, mode: 'any-five', route: target, url: null, notice: 'Running your fresh casual rematch…' });
+      navigate(target);
+      loopApi({ op: 'play', mode: 'any-five', goldIds: setup.goldIds,
+        blueIds: setup.blueIds, coachGoldId: setup.coachGoldId || 'neutral',
+        coachBlueId: setup.coachBlueId || 'neutral', eraId: setup.eraStyleId || '2020s' })
+        .then(payload => presentLoopResult(payload, { mode: 'any-five', notice }, target))
+        .catch(error => { setLoopResult(null); setErr(error.message || 'The fresh casual rematch could not be completed. Your saved report is preserved.'); });
+      return;
+    }
     const five = setup.goldIds.map((id) => findCard(id)).filter(Boolean);
     if (five.length !== 5) return;
     const opp = setup.blueIds.map((id) => findCard(id)).filter(Boolean);
@@ -1416,7 +1506,7 @@ export default function App() {
     // instead of the Chaos flow. Dream/Best7/Win82/Tournament/Daily keep it.
     const legacyChallenge = result?.tag !== "chaos";
     const [resultUrl, ch] = await Promise.all([
-      result && result.type !== "tournament" ? publishResult(buildSnapshot()) : Promise.resolve(null),
+      result ? publishResult({ resultId: result.resultId }) : Promise.resolve(null),
       legacyChallenge ? createChallenge(team, rec) : Promise.resolve(null),
     ]);
     if (resultUrl) track("result_created", { kind: result?.type || "single" });
@@ -1425,6 +1515,7 @@ export default function App() {
     const text = `🏀 My EraClash squad went ${rec}\n\n${roster}\n\nTeam Rating: ${teamRating(team)}\n\nThink you can beat my five? Play them here:\n${resultUrl && ch ? `${resultUrl}\n(or take the direct challenge: ${ch.url})` : url}`;
     if (result?.tag === "daily") track("daily_result_shared", {});
     const outcome = await shareText(text, result?.tag === "daily" ? "daily_result" : result?.type || "result");
+    if (outcome === 'shared') loopEvent('card_shared', { channel: 'native' });
     if (outcome !== "shared") setShare({ text, url });
   };
 
@@ -1453,6 +1544,9 @@ export default function App() {
   const playView = (
     <div>
       <div className="sr-only" role="status" aria-live="polite">{announce}</div>
+      {team && !result && !isChaos && (
+        <h1 className="sr-only">{isDaily ? "Daily Clash" : isChallenge ? "Challenge matchup" : modeMeta(activeMode)?.label || "Basketball matchup"}</h1>
+      )}
       {undo && (
         <div className="ec-undo-toast" role="status">
           <span>{undo.message}</span>
@@ -1500,7 +1594,7 @@ export default function App() {
             {Object.values(DIFFICULTIES).map((d) => (
               <button key={d.id} role="tab" aria-selected={difficulty === d.id} aria-label={`Difficulty ${d.label}`}
                 onClick={() => setDifficulty(d.id)} style={{
-                  padding: "8px 15px", borderRadius: R.sm, cursor: "pointer", minHeight: 42, fontSize: 13, fontWeight: 800,
+                  padding: "8px 15px", borderRadius: R.sm, cursor: "pointer", minHeight: 44, fontSize: 13, fontWeight: 800,
                   border: `1px solid ${difficulty === d.id ? T.goldBorder : T.border}`,
                   background: difficulty === d.id ? T.goldSoft : T.bgCard,
                   color: difficulty === d.id ? T.gold : T.textDim,
@@ -1554,21 +1648,23 @@ export default function App() {
                 <>
                   {/* Build method (Daily stays seeded rolls — that IS the daily) */}
                   {!isDaily && (
-                    <div role="tablist" aria-label="Build method" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+                    <div role="group" aria-label="Team Gold build actions" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+                      <div role="tablist" aria-label="Build method" style={{ display: "contents" }}>
                       {[["manual", "✍️ Manual Draft"], ["rolls", "🎲 Chaos Draft"]].map(([id, label]) => (
                         <button key={id} role="tab" aria-selected={buildMethod === id} onClick={() => { setBuildMethod(id); setYz(null); setManual([null, null, null, null, null]); }} style={{
-                          flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                          flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                           border: `1px solid ${buildMethod === id ? T.goldBorder : T.border}`,
                           background: buildMethod === id ? T.goldSoft : "transparent",
                           color: buildMethod === id ? T.gold : T.textDim,
                         }}>{label}</button>
                       ))}
+                      </div>
                       <button onClick={randomGold} style={{
-                        flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                        flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                         border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold,
                       }}>🔀 Random Team</button>
                       <button onClick={resetGold} disabled={!yz && !manual.some(Boolean)} aria-label="Reset Team Gold" style={{
-                        flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
+                        flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 44,
                         border: `1px solid ${T.border}`, background: "transparent",
                         color: (!yz && !manual.some(Boolean)) ? T.textMuted : T.textDim,
                         cursor: (!yz && !manual.some(Boolean)) ? "default" : "pointer",
@@ -1687,17 +1783,17 @@ export default function App() {
               )}
               {/* Blue build methods — Team Blue is user-controlled, never auto-locked */}
               {!isChallenge && blueBuildable && !opponent && (
-                <div role="tablist" aria-label="Blue build method" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-                  <button role="tab" onClick={() => setPicker({ slot: null, target: "blue-manual" })} style={{
-                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                <div role="group" aria-label="Team Blue build actions" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                  <button onClick={() => setPicker({ slot: null, target: "blue-manual" })} style={{
+                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                     border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
                   }}>✍️ Manual Draft</button>
-                  <button role="tab" onClick={randomBlue} style={{
-                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                  <button onClick={randomBlue} style={{
+                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                     border: `1px solid ${T.blueBorder}`, background: T.blueSoft, color: T.blue,
                   }}>🔀 Random Team</button>
                   <button onClick={resetBlue} disabled={!blueManual.some(Boolean)} aria-label="Reset Team Blue" style={{
-                    flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
+                    flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 44,
                     border: `1px solid ${T.border}`, background: "transparent",
                     color: !blueManual.some(Boolean) ? T.textMuted : T.textDim,
                     cursor: !blueManual.some(Boolean) ? "default" : "pointer",
@@ -1848,7 +1944,7 @@ export default function App() {
                 {[["Edit rosters", "ROSTERS"], ["Edit coaches", "COACHES"], ["Edit era", "ERA"]].map(([label, stage]) => (
                   <button key={stage} onClick={() => setPlayStage(stage)} style={{
                     background: T.bgCard, border: `1px solid ${T.border}`, color: T.textDim, borderRadius: R.sm,
-                    padding: "8px 14px", cursor: "pointer", fontSize: 12.5, fontWeight: 700, minHeight: 42,
+                    padding: "8px 14px", cursor: "pointer", fontSize: 12.5, fontWeight: 700, minHeight: 44,
                   }}>{label}</button>
                 ))}
               </div>
@@ -1880,6 +1976,7 @@ export default function App() {
   // ── Dedicated simulation transition (builder leaves the stage) ──────────────
   const simulatingView = (
     <div style={{ maxWidth: 720, margin: "8vh auto 0" }}>
+      <h1 className="sr-only">Simulating your basketball matchup</h1>
       <SimulationLoading stage={simStage} progress={progress}
         goldLabel="TEAM GOLD" blueLabel={isChallenge ? (challenge?.challengerName || "TEAM BLUE").toUpperCase() : "TEAM BLUE"}
         coachGold={coachGold?.name} coachBlue={blueBuildable ? coachBlue?.name : null}
@@ -1896,7 +1993,7 @@ export default function App() {
    */
   const renderReport = ({ result: res, team: tm, narrative: nar, live = false }) => res && (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
-      <ResultView result={res} team={tm} feedbackCtx={feedbackCtx}
+      <ResultView result={res} team={tm} feedbackCtx={feedbackCtx} showBreakdown={breakdownEnabled}
         narrative={nar || { status: "none" }} onRetryNarrative={live ? retryNarrative : null}
         // doRematch and doShare read the LIVE result and five. A previous
         // clash's report is a record, not a control surface — newChaosClash has
@@ -1941,7 +2038,7 @@ export default function App() {
     <div style={{ maxWidth: 620, margin: "0 auto" }}>
       <div style={{ ...card, padding: 26, textAlign: "center" }}>
         <div style={{ fontSize: 34 }}>⚔️</div>
-        <h2 style={{ margin: "8px 0 6px" }}>Challenges</h2>
+        <h1 style={{ margin: "8px 0 6px", fontSize: 24 }}>Challenges</h1>
         <p style={{ fontSize: 13.5, color: T.textDim, lineHeight: 1.65 }}>
           Build a five, run a game, then hit <b style={{ color: T.gold }}>Challenge a Friend</b> on the postgame.
           Anyone who opens your link plays against your exact lineup — wins, losses and rematches are tracked as a rivalry.
@@ -2006,13 +2103,24 @@ export default function App() {
           padding: "10px 16px", background: T.goldSoft, borderBottom: `1px solid ${T.goldBorder}`, fontSize: 12.5, color: T.text }}>
           <span>A newer version of EraClash is live — you're viewing build <b>{shortBuild()}</b>.</span>
           <button onClick={() => window.location.reload()} style={{
-            padding: "7px 16px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+            padding: "7px 16px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
             border: "none", background: T.gold, color: T.onGold }}>Reload to update</button>
         </div>
       )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
 
-      {route === "/auth/callback" ? (
+      {route === '/privacy' || route === '/terms' ? <PolicyPage kind={route.slice(1)} />
+      : route === '/support' ? <SupportPage />
+      : route === '/clash/rooms' ? <PrivateRooms signedIn={!!token} />
+      : route.startsWith('/clash/') ? <>
+        <LoopModes route={route} user={acct} onNavigate={navigate} onResult={presentLoopResult} />
+        {loopResult?.route === route && loopResult.notice ? <p role="status" style={{ ...card, maxWidth: 1100, margin: '16px auto', padding: 16 }}>{loopResult.notice}</p> : null}
+        {loopResult?.route === route ? <LoopResult {...loopResult} signedIn={!!token} onSave={rid => runCloudSave(rid, 'single', 'save')} onPublish={async record => {
+          const url = await publishResult({ resultId: record.id });
+          setLoopResult(current => current?.record?.id === record.id ? { ...current, url } : current);
+          return url;
+        }} /> : null}
+      </> : route === "/auth/callback" ? (
         <AuthCallback onDone={({ next }) => {
           setTier(currentTier());
           const rid = authDialog?.claimResultId || null;
@@ -2030,7 +2138,7 @@ export default function App() {
       ) : route === "/my-eraclash" ? (
         <MyEraClash
           onSignIn={() => openAccountDialog({ entryPoint: "my_eraclash", intent: "signin", returnTo: "/my-eraclash" })}
-          onOpenReport={(clash) => setSavedReport(clash)}
+          onOpenReport={openSavedReport}
           onRunItBack={runItBackFromSaved}
           onOpenLeaderboard={() => navigate(LEADERBOARD_ROUTE)}
           onOpenProfile={(path) => navigate(path)}
@@ -2107,6 +2215,7 @@ export default function App() {
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
             onReset={() => { setFullReport(false); newChaosClash(); }}
+            showBreakdown={breakdownEnabled}
             challengeContext={challengeForRun(chaosRun?.chaosRunId) || (challengeAttempt && challengeAttempt.resultId === result?.resultId ? challengeAttempt : null)}
             challengeShare={result?.resultId && chaosRun?.chaosRunId && !(challengeAttempt && challengeAttempt.resultId === result?.resultId)
               ? <ChallengeShare chaosRunId={chaosRun.chaosRunId} accessToken={token} socialEnabled={socialEnabled}
@@ -2143,9 +2252,9 @@ export default function App() {
             <SharedResultView snap={sharedResult} onPlay={() => {
               const t = sharedResult.teamIds.map((id) => findCard(id));
               if (!t.some((x) => !x)) {
-                setChallenge({ id: sharedResult.challengeId || null, team: t, record: sharedResult.scoreline, challengerName: sharedResult.name, games: [], rivalry: null });
-                setSharedResult(null); setNav("Challenges");
-                track("challenge_started", { from: "shared_result" });
+                loopEvent('rematch_started_from_card', { source: 'card' });
+                const shareId = new URLSearchParams(location.search).get('r');
+                setSharedResult(null); navigate('/clash/any-five' + (shareId ? '?rematch=' + encodeURIComponent(shareId) : ''));
               }
             }} />
           </div>
@@ -2192,12 +2301,13 @@ export default function App() {
             </div>
             {(() => {
               const snap = savedReport.result_snapshot;
-              if (!snap?.core) return <p style={{ color: T.textDim, fontSize: 13 }}>This saved report is missing its snapshot and cannot be reopened.</p>;
+              if (savedReport._loading) return <p role="status" style={{ color: T.textDim, fontSize: 13 }}>Opening this saved report…</p>;
+              if (!snap?.core) return <p role="status" style={{ color: T.textDim, fontSize: 13 }}>This saved report could not be opened.</p>;
               const five = (savedReport.gold_roster || []).map((p) => findCard(p.id)).filter(Boolean);
               const opp = (savedReport.blue_roster || []).map((p) => findCard(p.id)).filter(Boolean);
               return <ResultView
                 result={{ type: savedReport.mode === "best7" ? "best7" : "single", sim: viewSim(snap), w: savedReport.outcome === "win", won: savedReport.outcome === "win", tag: savedReport.mode, opp, resultId: savedReport.result_id, record: snap, persisted: true }}
-                team={five} feedbackCtx={null} narrative={{ status: "none" }} onRetryNarrative={null}
+                team={five} feedbackCtx={null} narrative={{ status: "none" }} onRetryNarrative={null} showBreakdown={breakdownEnabled}
                 onRematch={null} onBest7={null} onChallenge={null} onSwap={null} onShare={null} onLeaderboard={null} />;
             })()}
           </div>
@@ -2238,12 +2348,13 @@ export default function App() {
       )}
       {share && <ShareModal share={share} onClose={() => setShare(null)} />}
 
+      <nav aria-label="More basketball modes" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center', padding: 12 }}><a className="ec-footer-link" href="/clash/modes">All modes</a><a className="ec-footer-link" href="/clash/rooms">Private rooms</a><a className="ec-footer-link" href="/privacy">Privacy</a><a className="ec-footer-link" href="/terms">Terms</a><a className="ec-footer-link" href="/support">Founding Player</a></nav>
       <footer style={{ textAlign: "center", padding: 20, fontSize: 10.5, color: T.textDim, borderTop: `1px solid ${T.border}` }}>
-        EraClash is an independent fan-made game. Not affiliated with or endorsed by the NBA.
+        EraClash is not affiliated with, endorsed by, or sponsored by any professional basketball league or team.
         {" · "}
         {/* .ec-footer-link carries the 44px touch target; the inline padding:0
             it used to set is gone so the class can apply. Copy unchanged. */}
-        <button className="ec-footer-link" onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline" }}>
+        <button className="ec-footer-link" onClick={() => { navigate("/"); handleNav("Credits"); }} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline" }}>
           Image credits
         </button>
         {" · "}
@@ -2304,7 +2415,7 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
 }
 
 // ── Results ──────────────────────────────────────────────────────────────────
-function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard, showBreakdown = false }) {
   const narrProps = { narrativeStatus: narrative?.status, onRetryNarrative, persisted: result.persisted };
   if (result.type === "82") {
     const pct = ((result.wins / 82) * 100).toFixed(1);
@@ -2328,6 +2439,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on
   if (result.type === "single") {
     const pgMode = result.tag === "challenge" ? "challenge" : result.tag === "daily" ? "daily" : "single";
     return <Postgame sim={result.sim} won={result.w} mode={pgMode} team={team} opp={result.opp} feedbackCtx={feedbackCtx} {...narrProps}
+      breakdown={showBreakdown ? <ClashBreakdown result={result.sim} surface="report" /> : null}
       onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge} onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard} />;
   }
   if (result.type === "best7") {
@@ -2337,6 +2449,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on
   if (result.type === "tournament") {
     return (
       <div className="rise" style={{ ...card, padding: 20, marginTop: 14 }}>
+        <h1 className="sr-only">Tournament result</h1>
         <div style={{ textAlign: "center", marginBottom: 14 }}>
           <div style={{ fontSize: 30, fontWeight: 900, fontStyle: "italic" }}>{result.won ? "🏆 CHAMPION" : "Run Over"}</div>
           {result.won && result.rounds[3]?.sim?.mvp && (
@@ -2394,7 +2507,7 @@ function SharedResultView({ snap, onPlay }) {
       )}
       {snap.insight && <p style={{ fontSize: 13, color: T.textDim, textAlign: "center", margin: "0 0 14px" }}>"{snap.insight}"</p>}
       <button onClick={onPlay} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: T.onGold, cursor: "pointer", minHeight: 48 }}>
-        ⚔️ CAN YOUR TEAM BEAT THIS LINEUP? PLAY THE CHALLENGE
+        Run it back with your five
       </button>
     </div>
   );

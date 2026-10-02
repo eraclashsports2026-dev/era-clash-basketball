@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T13:27:16.315505+00:00",
+  "scope": "Reference line corrections only. Original blind/closure evidence is preserved unchanged. Source facts and runtime-pending statuses remain unchanged.",
+  "corrections": [
+    {
+      "artifact": "source-findings-initial.json",
+      "finding": "coach-change-target-42",
+      "source": "src/components/CoachPick.jsx",
+      "preciseLine": 45
+    },
+    {
+      "artifact": "source-path-resolution-supplement.json",
+      "field": "coachReferenceCorrection.minHeightLine",
+      "actualValue": 45
+    },
+    {
+      "artifact": "release-instructions-source-review.json",
+      "check": "migration-before-merge",
+      "refs": [
+        "docs/release/10-02-2026-production-release.md:7",
+        "docs/release/10-02-2026-production-release.md:11",
+        "docs/release/10-02-2026-production-release.md:56"
+      ]
+    },
+    {
+      "artifact": "release-instructions-source-review.json",
+      "check": "actual-env-names",
+      "refs": [
+        "vite.config.js:109",
+        "vite.config.js:110",
+        "src/loop/rights.js:1",
+        "src/loop/PolicyPages.jsx:13",
+        "src/loop/events.js:34",
+        "api/_lib/loopFoundation.js:87",
+        "api/_lib/loopFoundation.js:286"
+      ]
+    },
+    {
+      "artifact": "release-instructions-source-review.json",
+      "check": "public-origin-build-guard",
+      "refs": [
+        "scripts/loop/sitemap.mjs:6",
+        "vite.config.js:107"
+      ]
+    },
+    {
+      "artifact": "release-instructions-source-review.json",
+      "check": "physical-and-provider-boundaries",
+      "refs": [
+        "docs/release/10-02-2026-production-release.md:62",
+        "docs/release/10-02-2026-production-release.md:64",
+        "docs/release/10-02-2026-production-release.md:66"
+      ]
+    },
+    {
+      "artifact": "release-instructions-source-review.json",
+      "check": "rollback-boundary",
+      "refs": [
+        "docs/release/10-02-2026-production-release.md:70"
+      ]
+    }
+  ]
+}

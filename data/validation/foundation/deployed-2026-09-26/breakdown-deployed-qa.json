@@ -1,0 +1,76 @@
+{
+  "artifact": "deployed-qa",
+  "phase": "Clash Breakdown V1",
+  "generatedAt": "2026-09-26T22:16:10.625Z",
+  "origin": "https://era-clash-basketball-git-phase-data-foundation-8711b8-era-clash.vercel.app",
+  "checks": [
+    {
+      "check": "the build has Clash Breakdown switched on",
+      "pass": true,
+      "detail": "{\"chaosClash\":true,\"clashSocial\":true,\"clashBreakdown\":true}"
+    },
+    {
+      "check": "the authoritative /api/game response was captured for the audit",
+      "pass": true,
+      "detail": "pv_dw93kuaf5e"
+    },
+    {
+      "check": "the final score sits above the breakdown entry, which starts collapsed",
+      "pass": true,
+      "detail": "{\"score\":132.8125,\"bd\":916.125,\"bdOpen\":\"false\"}"
+    },
+    {
+      "check": "the collapsed entry states the single largest recorded difference (or the balanced line)",
+      "pass": true,
+      "detail": "Blue held a +30 rebounding margin."
+    },
+    {
+      "check": "up to three differences, exactly the projection's (3 shown)",
+      "pass": true,
+      "detail": "rebounds,free_throws,assists"
+    },
+    {
+      "check": "every team number shown equals an independent recount of the raw box score",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "directionality: turnovers favour the lower count; splits and possessions are never marked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "key performances from BOTH teams, exactly the projection's lines",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "game flow: period rows add up to the final score and the facts match",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no causal wording and no MVP label in the rendered breakdown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "opening the breakdown makes no API request (pure projection of the result already on screen)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "after a refresh the same breakdown reopens from the remembered result",
+      "pass": true,
+      "detail": "last-clash-sheet"
+    }
+  ],
+  "passed": true,
+  "resultId": "pv_dw93kuaf5e",
+  "insightIds": [
+    "rebounds",
+    "free_throws",
+    "assists"
+  ],
+  "note": "Chromium device emulation (Playwright), not a physical iPhone."
+}

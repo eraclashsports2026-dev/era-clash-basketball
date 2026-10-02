@@ -2,8 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { REGISTRY } from "./src/versions.js";
+import { PREVIEW_SUPABASE_URL, PREVIEW_SUPABASE_PUBLISHABLE_KEY } from "./config/projectRefs.js";
+import { franchiseSitemapPlugin } from "./scripts/loop/sitemap.mjs";
 
 export const SW_PLACEHOLDER = "__ERACLASH_BUILD_ID__";
 export const CACHE_PREFIX = "eraclash-assets:";
@@ -20,12 +22,15 @@ export const buildId = (assetNames) => {
  * public/ files are copied verbatim by Vite, so the substitution happens on the
  * emitted dist/sw.js rather than through a transform.
  */
-const swVersionPlugin = () => ({
+export const swVersionPlugin = () => {
+  let outputDirectory = resolve(process.cwd(), "dist");
+  return {
   name: "eraclash-sw-version",
+  configResolved(config) { outputDirectory = resolve(config.root, config.build.outDir); },
   closeBundle() {
-    const swPath = join(process.cwd(), "dist", "sw.js");
+    const swPath = join(outputDirectory, "sw.js");
     if (!existsSync(swPath)) return;
-    const assetsDir = join(process.cwd(), "dist", "assets");
+    const assetsDir = join(outputDirectory, "assets");
     const names = existsSync(assetsDir) ? readdirSync(assetsDir) : [];
     const id = buildId(names);
     const src = readFileSync(swPath, "utf8");
@@ -38,7 +43,7 @@ const swVersionPlugin = () => ({
 
     // The same identity goes into the HTML so the app can name its own build
     // and detect that a newer one is live (see src/buildStamp.js).
-    const htmlPath = join(process.cwd(), "dist", "index.html");
+    const htmlPath = join(outputDirectory, "index.html");
     if (existsSync(htmlPath)) {
       const html = readFileSync(htmlPath, "utf8");
       if (!html.includes(SW_PLACEHOLDER)) {
@@ -48,7 +53,8 @@ const swVersionPlugin = () => ({
       }
     }
   },
-});
+  };
+};
 
 // Vercel exposes its Git metadata to the build with a VITE_ prefix, and Vite
 // inlines every VITE_ variable into import.meta.env — so the full commit
@@ -72,6 +78,16 @@ const jwtRole = (v) => { try { const p = String(v).split("."); if (p.length !== 
 const secretShaped = (v) => /^sb_secret_/.test(String(v ?? "").trim()) || jwtRole(String(v ?? "").trim()) === "service_role";
 for (const k of Object.keys(process.env)) if (k.startsWith("VITE_") && secretShaped(process.env[k])) { console.warn(`[release guard] ${k} holds a secret-shaped value and was dropped from the build`); delete process.env[k]; }
 const refOf = (u) => (String(u ?? "").trim().match(/^https:\/\/([a-z0-9-]+)\.supabase\.(co|in)$/i) || [])[1] || null;
+// 0. (2026-09-26) a Vercel PREVIEW build is pinned to the Preview project: its
+//    browser provider address and publishable key come from config/projectRefs.js
+//    (public values), whatever the Preview-scoped dashboard variables say. The
+//    guards below still run and now have nothing to drop.
+if (process.env.VERCEL === "1" && process.env.VERCEL_ENV === "preview") {
+  process.env.VITE_SUPABASE_URL = PREVIEW_SUPABASE_URL;
+  process.env.VITE_SUPABASE_ANON_KEY = PREVIEW_SUPABASE_PUBLISHABLE_KEY;
+  process.env.SUPABASE_URL = PREVIEW_SUPABASE_URL;   // build-time comparison only (the server resolves its own)
+  console.warn("[release guard] Vercel Preview build: provider pinned to the Preview project");
+}
 // 3. (2026-09-10) a PREVIEW build whose browser provider is the PRODUCTION
 //    project. Previews test against the preview project only; a preview that
 //    signed people up against production would mix test traffic into real
@@ -86,9 +102,12 @@ if (process.env.VITE_SUPABASE_URL && process.env.SUPABASE_URL && refOf(process.e
   delete process.env.VITE_SUPABASE_URL; delete process.env.VITE_SUPABASE_ANON_KEY;
 }
 
+console.info('[provider binding] environment=' + (process.env.VERCEL_ENV || 'local') + ' project=' + (refOf(process.env.VITE_SUPABASE_URL) || 'unconfigured'));
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), swVersionPlugin()],
+  plugins: [react(), swVersionPlugin(), franchiseSitemapPlugin()],
   define: {
+    'import.meta.env.NEUTRAL_TEAM_NAMING': JSON.stringify(process.env.NEUTRAL_TEAM_NAMING || 'false'),
+    'import.meta.env.STRIPE_PAYMENT_LINK': JSON.stringify(/^https:\/\/buy\.stripe\.com\/[A-Za-z0-9_/-]+$/.test(process.env.STRIPE_PAYMENT_LINK || '') ? process.env.STRIPE_PAYMENT_LINK : ''),
     // The Basketball theme lab (Phase 9A.1): an owner decision surface at
     // /dev/basketball-theme-lab. Compiled INTO preview builds (VERCEL_ENV is
     // "preview" on every Git-integration branch deploy) and into the dev

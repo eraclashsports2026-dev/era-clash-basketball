@@ -1,0 +1,1925 @@
+{
+  "run": "run-2",
+  "target": "http://localhost:4321",
+  "startedAt": "2026-10-02T09:19:18.898Z",
+  "identityNamespace": "run-2",
+  "sourceSHA": "b0ef7ae430f818d1d3b98bbf15a8ed3e19b30d44",
+  "runtimeSourceSHA": "a826333eb68ff2b995933541bb4be44ca9acda7b",
+  "productionBuildStamp": "eraclash-assets:2.7.2:c3234f7053ad",
+  "companionMethod": "Vite source modules + test-only main import/provider transform; source client has no production build stamp. Actual API handler process with in-memory fake cloud writes rows; read-only bridge scopes rows by fake token. Not production-dist/auth/RLS evidence.",
+  "scope": "PARTIAL EMULATED: localhost actual handlers + Candidate4 + existing fakeCloud/test provider. No real Preview OAuth, SMTP, RLS, provider durability, physical device or deployment proof.",
+  "localBudgetOverrides": {
+    "RL_SIM_PER_MIN_SESSION": 500,
+    "RL_SIM_PER_MIN_IP": 500,
+    "purpose": "Local verification only; shared 120 actions/min and public 20 recaps/min remain enforced"
+  },
+  "checks": [
+    {
+      "name": "any-five actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_bzl636apxu",
+        "mode": "any-five",
+        "score": {
+          "gold": 111,
+          "blue": 122
+        },
+        "boardTag": "ANY_FIVE"
+      }
+    },
+    {
+      "name": "daily actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_two4drzr0k",
+        "mode": "daily",
+        "score": {
+          "gold": 86,
+          "blue": 105
+        },
+        "boardTag": "DAILY"
+      }
+    },
+    {
+      "name": "spin actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_c2hxl57bi6",
+        "mode": "spin",
+        "score": {
+          "gold": 128,
+          "blue": 95
+        },
+        "boardTag": "SPIN"
+      }
+    },
+    {
+      "name": "one-franchise actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_gwhkkgwp0m",
+        "mode": "one-franchise",
+        "score": {
+          "gold": 123,
+          "blue": 115
+        },
+        "boardTag": "ONE_FRANCHISE"
+      }
+    },
+    {
+      "name": "one-per-era actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_hb99x6aiqg",
+        "mode": "one-per-era",
+        "score": {
+          "gold": 118,
+          "blue": 125
+        },
+        "boardTag": "ONE_PER_ERA"
+      }
+    },
+    {
+      "name": "no-mvps actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_knfed6f64z",
+        "mode": "no-mvps",
+        "score": {
+          "gold": 155,
+          "blue": 163
+        },
+        "boardTag": "NO_MVPS"
+      }
+    },
+    {
+      "name": "gauntlet actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_o8kwwsrw8l",
+        "mode": "gauntlet",
+        "score": {
+          "gold": 145,
+          "blue": 120
+        },
+        "boardTag": "GAUNTLET"
+      }
+    },
+    {
+      "name": "lab actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_yp9p3wwplq",
+        "mode": "lab",
+        "score": {
+          "gold": 128,
+          "blue": 124
+        },
+        "boardTag": "LAB"
+      }
+    },
+    {
+      "name": "franchise actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_bm98ugscjb",
+        "mode": "franchise",
+        "score": {
+          "gold": 122,
+          "blue": 119
+        }
+      }
+    },
+    {
+      "name": "tonight actual guest result and tagged board",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_vkmxon5n30",
+        "mode": "tonight",
+        "score": {
+          "gold": 137,
+          "blue": 120
+        }
+      }
+    },
+    {
+      "name": "any-five account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted John Wall"
+    },
+    {
+      "name": "daily account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Mike Bibby"
+    },
+    {
+      "name": "spin account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Sleepy Floyd"
+    },
+    {
+      "name": "one-franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Jerry West"
+    },
+    {
+      "name": "one-per-era account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Rod Strickland"
+    },
+    {
+      "name": "no-mvps account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Clyde Drexler"
+    },
+    {
+      "name": "gauntlet account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Kobe Bryant"
+    },
+    {
+      "name": "lab account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Dejounte Murray"
+    },
+    {
+      "name": "franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Derrick Rose"
+    },
+    {
+      "name": "tonight account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "FAIL",
+      "error": "Report omitted Tony Parker"
+    },
+    {
+      "name": "Saved History survives a fresh browser context under the same account",
+      "status": "PASS",
+      "details": {
+        "originalRows": 10
+      }
+    },
+    {
+      "name": "Another account cannot read the original owner’s saved row",
+      "status": "PASS",
+      "details": {
+        "forbiddenResultId": "pv_dzj91v3b9d",
+        "rowsVisibleToOther": 0
+      }
+    },
+    {
+      "name": "Daily completed account cannot restart on a different device",
+      "status": "PASS",
+      "details": {
+        "status": "Second-device same-account attempt refused by server"
+      }
+    },
+    {
+      "name": "Two accounts join one private room and own-result checks work across devices",
+      "status": "PASS",
+      "details": {
+        "roomId": "s77k3cjbufv8jdy1",
+        "members": 2,
+        "ownResults": [
+          "pv_dzj91v3b9d",
+          "pv_g247642ujm"
+        ]
+      }
+    },
+    {
+      "name": "Room feed shares an actual governed Challenge created from a completed Chaos draft",
+      "status": "PASS",
+      "details": {
+        "code": "EC-GPGV-8WZE",
+        "feed": "Actual Challenge, not fixture insertion; owned sharing enforced"
+      }
+    },
+    {
+      "name": "Public card → guest fresh five → new authoritative result captures sharing and rematch events",
+      "status": "PASS",
+      "details": {
+        "originalResultId": "pv_dzj91v3b9d",
+        "newGuestResultId": "pv_zojsj43dn8",
+        "originalCard": "/card/51cef319f9dd6bdf"
+      }
+    },
+    {
+      "name": "Fake email signup dialog completes and emits signup instrumentation (SMTP unverified)",
+      "status": "PASS",
+      "details": {
+        "status": "PARTIAL EMULATED dialog and instrumentation only; no SMTP or OAuth delivery proof"
+      }
+    },
+    {
+      "name": "Actual first-party event batches have HTTP receipts and the closed Loop vocabulary",
+      "status": "FAIL",
+      "error": "No Loop events captured"
+    }
+  ],
+  "failures": [
+    {
+      "name": "any-five account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted John Wall\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "daily account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Mike Bibby\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "spin account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Sleepy Floyd\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "one-franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Jerry West\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "one-per-era account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Rod Strickland\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at runNextTicks (node:internal/process/task_queues:64:5)\n    at process.processImmediate (node:internal/timers:452:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "no-mvps account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Clyde Drexler\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "gauntlet account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Kobe Bryant\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at runNextTicks (node:internal/process/task_queues:64:5)\n    at process.processImmediate (node:internal/timers:452:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "lab account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Dejounte Murray\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "franchise account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Derrick Rose\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "tonight account save → History → full report → Breakdown → fresh casual rematch",
+      "error": "Error: Report omitted Tony Parker\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at saveHistoryRematch (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:107:109)\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:121:29"
+    },
+    {
+      "name": "Actual first-party event batches have HTTP receipts and the closed Loop vocabulary",
+      "error": "Error: No Loop events captured\n    at assert (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:27:42)\n    at file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:159:149\n    at async check (file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:29:59)\n    at async file:///Users/josephjohnson/Desktop/EraClash/EraClash%20Basketball/current/tests/loop-stateful-browser.mjs:157:3"
+    }
+  ],
+  "consoleErrors": [],
+  "results": [
+    {
+      "resultId": "pv_bzl636apxu",
+      "mode": "any-five",
+      "score": {
+        "gold": 111,
+        "blue": 122
+      },
+      "goldIds": [
+        "clint-70s",
+        "joe-j-00s",
+        "david-t-70s",
+        "julius-80s",
+        "mitch-r-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_two4drzr0k",
+      "mode": "daily",
+      "score": {
+        "gold": 86,
+        "blue": 105
+      },
+      "goldIds": [
+        "bibby-00s",
+        "smart-20s",
+        "jamison-00s",
+        "lamar-00s",
+        "draymond-20s"
+      ],
+      "blueIds": [
+        "cousy-60s",
+        "chet-60s",
+        "luka-20s",
+        "elton-00s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "lenny-wilkens",
+        "blue": "larry-brown"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_c2hxl57bi6",
+      "mode": "spin",
+      "score": {
+        "gold": 128,
+        "blue": 95
+      },
+      "goldIds": [
+        "shai-20s",
+        "majerle-90s",
+        "magic-80s",
+        "embiid-10s",
+        "barkley-90s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_gwhkkgwp0m",
+      "mode": "one-franchise",
+      "score": {
+        "gold": 123,
+        "blue": 115
+      },
+      "goldIds": [
+        "van-ex-90s",
+        "kobe-10s",
+        "lamar-00s",
+        "worthy-80s",
+        "mychal-80s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_hb99x6aiqg",
+      "mode": "one-per-era",
+      "score": {
+        "gold": 118,
+        "blue": 125
+      },
+      "goldIds": [
+        "stock-90s",
+        "artest-2ks",
+        "arizin-50s",
+        "turner-20s",
+        "dwight-10s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_knfed6f64z",
+      "mode": "no-mvps",
+      "score": {
+        "gold": 155,
+        "blue": 163
+      },
+      "goldIds": [
+        "gary-90s",
+        "chet-60s",
+        "ced-90s",
+        "pg-10s",
+        "walt-b-70s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_84y5skcbzz",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 142,
+        "blue": 131
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "guerin-60s",
+        "chet-60s",
+        "tom-s-60s",
+        "billy-60s",
+        "bill-60s"
+      ],
+      "eraId": "1960s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_ih8l8z4v2b",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 103,
+        "blue": 93
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "clint-70s",
+        "chet-70s",
+        "bobby-70s",
+        "julius-70s",
+        "dave-c-70s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_f92mza9tdz",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 123,
+        "blue": 114
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "lever-80s",
+        "dj-80s",
+        "clyde-80s",
+        "mcHale-80s",
+        "buck-80s"
+      ],
+      "eraId": "1980s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_91qtc7r9tc",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 135,
+        "blue": 118
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "mookie-90s",
+        "van-ex-90s",
+        "vin-b-90s",
+        "bigdog-90s",
+        "hak-90s"
+      ],
+      "eraId": "1990s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_253oqha8uj",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 111,
+        "blue": 91
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "marbury-00s",
+        "rip-00s",
+        "jamison-00s",
+        "marion-00s",
+        "amare-00s"
+      ],
+      "eraId": "2000s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_he37ve68jf",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 119,
+        "blue": 105
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "lebron-10s",
+        "booker-10s",
+        "demar-2010s",
+        "al-10s",
+        "ibaka-2010s"
+      ],
+      "eraId": "2010s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_o8kwwsrw8l",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 145,
+        "blue": 120
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "cade-20s",
+        "jdub-20s",
+        "durant-20s",
+        "barnes-20s",
+        "ad-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_yp9p3wwplq",
+      "mode": "lab",
+      "score": {
+        "gold": 128,
+        "blue": 124
+      },
+      "goldIds": [
+        "billups-00s",
+        "herro-20s",
+        "dave-d-60s",
+        "butler-20s",
+        "shaq-00s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_bm98ugscjb",
+      "mode": "franchise",
+      "score": {
+        "gold": 122,
+        "blue": 119
+      },
+      "goldIds": [
+        "drose-10s",
+        "jordan-90s",
+        "pippen-90s",
+        "rodman-90s",
+        "artis-70s"
+      ],
+      "blueIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_vkmxon5n30",
+      "mode": "tonight",
+      "score": {
+        "gold": 137,
+        "blue": 120
+      },
+      "goldIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "blueIds": [
+        "russ-10s",
+        "shai-20s",
+        "durant-10s",
+        "ibaka-2010s",
+        "chet-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_dzj91v3b9d",
+      "mode": "any-five",
+      "score": {
+        "gold": 120,
+        "blue": 93
+      },
+      "goldIds": [
+        "wall-2010s",
+        "smart-20s",
+        "tmac-00s",
+        "schayes-50s",
+        "dwight-00s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_v8sxadf5m6",
+      "mode": "daily",
+      "score": {
+        "gold": 86,
+        "blue": 105
+      },
+      "goldIds": [
+        "bibby-00s",
+        "smart-20s",
+        "jamison-00s",
+        "lamar-00s",
+        "draymond-20s"
+      ],
+      "blueIds": [
+        "cousy-60s",
+        "chet-60s",
+        "luka-20s",
+        "elton-00s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "lenny-wilkens",
+        "blue": "larry-brown"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_siq7nbf1hd",
+      "mode": "spin",
+      "score": {
+        "gold": 101,
+        "blue": 107
+      },
+      "goldIds": [
+        "sleepy-80s",
+        "dantley-80s",
+        "coward-20s",
+        "jamison-00s",
+        "barkley-90s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_5ni66epzv7",
+      "mode": "one-franchise",
+      "score": {
+        "gold": 151,
+        "blue": 109
+      },
+      "goldIds": [
+        "jerry-60s",
+        "cooper-80s",
+        "elgin-60s",
+        "lebron-20s",
+        "shaq-00s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_jxv4nkfodv",
+      "mode": "one-per-era",
+      "score": {
+        "gold": 119,
+        "blue": 111
+      },
+      "goldIds": [
+        "rod-90s",
+        "dj-80s",
+        "ak47-2ks",
+        "marques-70s",
+        "mikan-50s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_bira4mbwjx",
+      "mode": "no-mvps",
+      "score": {
+        "gold": 116,
+        "blue": 110
+      },
+      "goldIds": [
+        "monroe-70s",
+        "clyde-80s",
+        "george-70s",
+        "paul-s-60s",
+        "tom-b-70s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_2ld0v938aj",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 148,
+        "blue": 109
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "emmette-60s",
+        "clem-60s",
+        "bailey-60s",
+        "paul-s-60s",
+        "wilt-60s"
+      ],
+      "eraId": "1960s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_yybosma4gq",
+      "mode": "gauntlet",
+      "score": {
+        "gold": 121,
+        "blue": 123
+      },
+      "goldIds": [
+        "magic-80s",
+        "kobe-10s",
+        "bird-80s",
+        "kg-10s",
+        "kareem-80s"
+      ],
+      "blueIds": [
+        "murphy-70s",
+        "james-70s",
+        "david-t-70s",
+        "curtis-perry-70s",
+        "dave-c-70s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_4eqf8k4wwp",
+      "mode": "lab",
+      "score": {
+        "gold": 139,
+        "blue": 141
+      },
+      "goldIds": [
+        "dejounte-20s",
+        "dom-80s",
+        "jbrown-20s",
+        "julius-70s",
+        "malone-90s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "1970s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_dhy1eofzco",
+      "mode": "franchise",
+      "score": {
+        "gold": 113,
+        "blue": 118
+      },
+      "goldIds": [
+        "drose-10s",
+        "jordan-90s",
+        "pippen-90s",
+        "rodman-90s",
+        "artis-70s"
+      ],
+      "blueIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_6dyvxnulqt",
+      "mode": "tonight",
+      "score": {
+        "gold": 119,
+        "blue": 120
+      },
+      "goldIds": [
+        "parker-00s",
+        "manu-00s",
+        "kawhi-10s",
+        "duncan-00s",
+        "rob-90s"
+      ],
+      "blueIds": [
+        "russ-10s",
+        "shai-20s",
+        "durant-10s",
+        "ibaka-2010s",
+        "chet-20s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_g247642ujm",
+      "mode": "any-five",
+      "score": {
+        "gold": 111,
+        "blue": 116
+      },
+      "goldIds": [
+        "emmette-60s",
+        "butler-20s",
+        "prince-00s",
+        "kg-10s",
+        "mcHale-80s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_zojsj43dn8",
+      "mode": "any-five",
+      "score": {
+        "gold": 124,
+        "blue": 105
+      },
+      "goldIds": [
+        "curry-20s",
+        "jordan-90s",
+        "lebron-20s",
+        "duncan-00s",
+        "shaq-00s"
+      ],
+      "blueIds": [
+        "wall-2010s",
+        "smart-20s",
+        "tmac-00s",
+        "schayes-50s",
+        "dwight-00s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "neutral",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    }
+  ],
+  "eventBatches": [
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph second device",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Bea",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "guest",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "emulated signup",
+      "status": 204,
+      "events": []
+    }
+  ],
+  "beacons": [
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932788069,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790932788071,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790932790261,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932790302,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932790308,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "guest_play_started",
+          "ts": 1790932793894,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932794013,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932794028,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790932797485,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932797560,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932797578,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "guest_play_started",
+          "ts": 1790932801146,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932801423,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932801440,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790932804716,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932804783,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932804786,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "guest_play_started",
+          "ts": 1790932808323,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932808552,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932808610,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790932811950,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932812107,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932812125,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932820392,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790932820393,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "franchise"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790932822813,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "tonight",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932822937,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "tonight"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932822956,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932846998,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790932846999,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932848939,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "gauntlet"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932848960,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790932863826,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790932864434,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_tonight"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790932864481,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_tonight"
+        }
+      ]
+    },
+    {
+      "label": "Joseph second device",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932867813,
+          "uid": "4df47b07-3f00-4612-a7c6-f9c3e6bb5441",
+          "session_id": "a1a7e7d8-9374-404d-9472-083212886d63",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790932867814,
+          "uid": "4df47b07-3f00-4612-a7c6-f9c3e6bb5441",
+          "session_id": "a1a7e7d8-9374-404d-9472-083212886d63",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "daily"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932869830,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "rooms"
+        }
+      ]
+    },
+    {
+      "label": "Bea",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932872480,
+          "uid": "12db5e40-1aeb-4933-b82c-a8e2a6aa8c74",
+          "session_id": "1071697a-f37b-49f0-b0b9-02e8cc7f9dbc",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790932872481,
+          "uid": "12db5e40-1aeb-4933-b82c-a8e2a6aa8c74",
+          "session_id": "1071697a-f37b-49f0-b0b9-02e8cc7f9dbc",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932873651,
+          "uid": "12db5e40-1aeb-4933-b82c-a8e2a6aa8c74",
+          "session_id": "1071697a-f37b-49f0-b0b9-02e8cc7f9dbc",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932873685,
+          "uid": "12db5e40-1aeb-4933-b82c-a8e2a6aa8c74",
+          "session_id": "1071697a-f37b-49f0-b0b9-02e8cc7f9dbc",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "card_opened",
+          "source": "card",
+          "ts": 1790932881539,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "rematch_started_from_card",
+          "source": "card",
+          "ts": 1790932883175,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790932879213,
+          "uid": "c9d88d9b-ab31-4b46-8bf8-ca557ce4d5c9",
+          "session_id": "480edc71-07fd-44b5-b054-704e6d6c3d10",
+          "app_version": "2.7.2",
+          "build": "dev"
+        }
+      ]
+    },
+    {
+      "label": "guest",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932883827,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790932883830,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "guest_play_started",
+          "ts": 1790932884750,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five",
+          "source": "direct"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790932884907,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790932884932,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "card_shared",
+          "ts": 1790932885062,
+          "uid": "342be1ab-ccd0-4275-a94d-2219662758cc",
+          "session_id": "37d0abe0-3d51-4e7f-9d3e-3791a9bc5b61",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five",
+          "channel": "copy"
+        }
+      ]
+    },
+    {
+      "label": "emulated signup",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790932886863,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790932886871,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790932886872,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790932886873,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_gate_shown",
+          "ts": 1790932887675,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_signup_started",
+          "ts": 1790932887829,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_gate_shown",
+          "ts": 1790932887877,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_gate_shown",
+          "ts": 1790932887881,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "account_signin_completed",
+          "ts": 1790932887881,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "signup_completed",
+          "ts": 1790932887881,
+          "uid": "aa59c56e-837f-4f06-a56b-6f3508250ac6",
+          "session_id": "9f964d79-edbd-45e5-b126-078825bbdd87",
+          "app_version": "2.7.2",
+          "build": "dev"
+        }
+      ]
+    }
+  ],
+  "governedChallenges": [
+    {
+      "chaosResultId": "pv_itj9qt7ins",
+      "score": {
+        "gold": 119,
+        "blue": 134
+      }
+    }
+  ],
+  "endedAt": "2026-10-02T09:21:30.125Z",
+  "summary": {
+    "passed": 17,
+    "failed": 11,
+    "consoleErrors": 0,
+    "actualLoopGames": 29,
+    "governedChaosGames": 1,
+    "eventBatches": 15
+  }
+}

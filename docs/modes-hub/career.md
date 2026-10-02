@@ -1,0 +1,11 @@
+# Loop modes in saved Career
+
+Version: 1.0.0. This is a presentation adapter over the existing authoritative game result and account save path. It does not change Candidate4, calibration, game eligibility or account authorization.
+
+Each new mode is saved under a closed underscore-separated source key such as `loop_spin`, `loop_daily` or `loop_one_franchise`. The existing `saved_clashes.mode` column accepts text. These keys also satisfy the existing saved-roster `source_mode` length and character contract. No schema migration is required. The immutable result snapshot retains the original Loop mode and its governed metadata; lightweight History rows now identify that mode without loading a full private result. Legacy Chaos and Dream records retain their current keys. New York Daily is distinguishable from the existing UTC Daily surface.
+
+History calls a new-mode rematch **Fresh casual rematch**. It sends the saved Gold and Blue identities, both coaches and the era to the existing server as a new Any Five casual request. The server creates a new result and seed. The original Daily attempt, Spin receipt, filter constraint, Lab scenario and Gauntlet progress remain with the original saved report; the fresh game makes none of those governed claims. Full report and Breakdown reopen the original authoritative snapshot. Exact re-simulation remains unavailable because the API does not accept a caller-chosen seed.
+
+The local companion at ports 4321/4322 injects the existing test provider only through a Vite test transform. Its read-only bridge returns the signed-in test account’s actual server-created fake-cloud saved rows. It does not synthesize saved scores or invoke a privileged result-insertion fixture. Account browser evidence from this companion is explicitly **PARTIAL EMULATED**: it verifies client and handler behavior, not real Preview OAuth, SMTP, provider durability or RLS. The companion must never be deployed.
+
+Targeted checks exercise all ten source-key projections, server-created result identity, exact rosters/coaches/era in a fresh casual rematch, a fresh private seed, closed-key rejection, legacy Career behavior and the existing schema contract. Browser verification separately covers actual governed results for each mode.

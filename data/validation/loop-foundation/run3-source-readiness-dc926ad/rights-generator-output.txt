@@ -1,0 +1,43 @@
+fatal: invalid object name '16ea908'.
+node:internal/errors:985
+  const err = new Error(message);
+              ^
+
+Error: Command failed: git show 16ea908:src/players.js
+fatal: invalid object name '16ea908'.
+
+    at genericNodeError (node:internal/errors:985:15)
+    at wrappedFn (node:internal/errors:539:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at execFileSync (node:child_process:978:15)
+    at file:///private/tmp/eraclash-run3-final-20261002/scripts/loop-rights-inventory.mjs:29:45
+    at Array.map (<anonymous>)
+    at file:///private/tmp/eraclash-run3-final-20261002/scripts/loop-rights-inventory.mjs:28:46
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  status: 128,
+  signal: null,
+  output: [
+    null,
+    Buffer(0) [Uint8Array] [],
+    Buffer(38) [Uint8Array] [
+      102, 97, 116,  97, 108, 58,  32, 105, 110,
+      118, 97, 108, 105, 100, 32, 111,  98, 106,
+      101, 99, 116,  32, 110, 97, 109, 101,  32,
+       39, 49,  54, 101,  97, 57,  48,  56,  39,
+       46, 10
+    ]
+  ],
+  pid: 99707,
+  stdout: Buffer(0) [Uint8Array] [],
+  stderr: Buffer(38) [Uint8Array] [
+    102, 97, 116,  97, 108, 58,  32, 105, 110,
+    118, 97, 108, 105, 100, 32, 111,  98, 106,
+    101, 99, 116,  32, 110, 97, 109, 101,  32,
+     39, 49,  54, 101,  97, 57,  48,  56,  39,
+     46, 10
+  ]
+}
+
+Node.js v24.19.0

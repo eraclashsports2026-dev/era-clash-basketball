@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T13:11:15.041789+00:00",
+  "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "scope": "Fresh SOURCE-ONLY findings recorded before consulting prior results, handoff ledger, rights inventory or release outcomes. No product edits, browser probes, database operations or provider/dashboard calls.",
+  "sourceHashes": {
+    "src/navigation.js": "8193602209a4a4c356aa52b72237f6fadd5ae078b4868014901164be2ea3a5ff",
+    "src/loop/modes/LoopModes.jsx": "b59c7ba6201042c8576b2f399d46237fe6c09eb794920e18d7a6f5bbc5e006eb",
+    "src/App.jsx": "09f5820de3ba51313d0dcbaa84660ff403bb1bec9d0b12168c0531782cb886e4",
+    "src/components/CoachPick.jsx": "1afda140db44ae4818a55e638e057db8f10e6d37c2ffe1e1676a2d8a34b19eb1",
+    "src/components/lobby/PlayLobby.jsx": "17f07cbb5089097920ba3c62375ab79b302e811539af230b638d8998a31a0c8a",
+    "src/components/arena/ArenaHeader.jsx": "fddf0b7da0d9eb2e67888a91cee41eb15b90c1b01491278640a066733f41fee8",
+    "src/entitlements.js": "c4713bf34fe6aad11c45b0103a58aa157a4efc242b3e176e22e339984ed41b5f",
+    "scripts/foundation/fullPassSweep.mjs": "f812dbe9fe653756acf921ce2d13ba8eea80144cd6e4eaf2e76dd6d6ab4f8dcb",
+    "scripts/loop/loopQa.mjs": "9ad3e90a0fb93d34f1e6e4cc5266ab2a1f10e14b14f5799ae657a590dd6c4010",
+    "src/loop/rights.js": "f93e6ef526d499bbaaac6911a14d51e542a5886917c1924bc49b54a4f61ca864",
+    "scripts/loop-rights-inventory.mjs": "275184ccab4cd17f15346625b3b2346510c164fe0b620929ae6290ee4bdcb50e",
+    "src/loop/PolicyPages.jsx": "eca8b6f089c3de382a48aacbc81f5a1c45b04ef06d7cd83e73f272f511a72e31",
+    "vercel.json": "ef53ca48a48ae5cbf013e8cd31c0981c90d602db1236294eaf93690dc93e553c",
+    "src/versions.js": "37090d59a0553eb6273aa522e2e6c596ba8085c012178fa7c58ba2fce2e82f8c"
+  },
+  "findings": [
+    {
+      "id": "constraint-hub-two-tap",
+      "classification": "SOURCE_REQUIREMENT_GAP_RUNTIME_PENDING",
+      "requirement": "Every mode reachable in two taps from the mobile homepage.",
+      "sources": [
+        {
+          "file": "src/App.jsx",
+          "line": 2351,
+          "fact": "Homepage/footer All modes anchor goes to /clash/modes."
+        },
+        {
+          "file": "src/loop/modes/LoopModes.jsx",
+          "line": 26,
+          "fact": "Hub has one Constraint filters card to /clash/filters, without three direct variant links."
+        },
+        {
+          "file": "src/loop/modes/LoopModes.jsx",
+          "line": 41,
+          "fact": "FiltersHub has the actual /clash/one-franchise, /clash/one-per-era and /clash/no-mvps actions."
+        }
+      ],
+      "inference": "The source-defined All modes\u2192Constraint filters\u2192variant path takes three interactions. A shorter actual mobile path needs browser evidence; do not label a measured runtime failure from source alone.",
+      "requestedRuntimeEvidence": "Fresh native mobile homepage\u2192hub\u2192each specific variant route; count actual interactions."
+    },
+    {
+      "id": "coach-change-target-42",
+      "classification": "SOURCE_TARGET_POLICY_RISK_RUNTIME_PENDING",
+      "requirement": "44px targets on requested mobile profiles.",
+      "sources": [
+        {
+          "file": "src/components/CoachPick.jsx",
+          "line": 54,
+          "fact": "Selected Change coach button has explicit minHeight42, padding9px12px, fontSize13."
+        }
+      ],
+      "inference": "Declared minimum is below44; actual rendered geometry and native access need independent browser measurement.",
+      "requestedRuntimeEvidence": "Select a real coach then measure Change coach on SE/14/ProMax/Pixel; preserve computed box and native click/focus."
+    },
+    {
+      "id": "gate-source-coverage",
+      "classification": "SOURCE_PRESENT_NOT_EXECUTED",
+      "sources": [
+        {
+          "file": "scripts/foundation/fullPassSweep.mjs",
+          "fact": "Existing GATES array includes loopQa modes any-five,daily,franchise,tonight,spin,one-franchise,one-per-era,no-mvps,gauntlet,lab,rooms."
+        }
+      ],
+      "limit": "Source presence does not prove gate execution or PASS."
+    },
+    {
+      "id": "separate-daily-and-gauntlet-surfaces",
+      "classification": "SOURCE_CONTRACT_BOUNDARY",
+      "sources": [
+        {
+          "file": "src/navigation.js",
+          "fact": "Legacy /play/daily remains separate; legacy /play/era-gauntlet has implemented:false."
+        },
+        {
+          "file": "src/loop/modes/LoopModes.jsx",
+          "fact": "New hub Daily uses /clash/daily; new Era Gauntlet uses /clash/gauntlet."
+        },
+        {
+          "file": "src/loop/daily/clock.js",
+          "fact": "New Daily uses America/New_York and DST-aware calendar."
+        }
+      ],
+      "limit": "Tests and results must retain route/calendar/source distinctions; no runtime success assumed."
+    },
+    {
+      "id": "rights-script-visual-wording",
+      "classification": "SOURCE_INVENTORY_LIMIT",
+      "sources": [
+        {
+          "file": "scripts/loop-rights-inventory.mjs",
+          "fact": "Script emits a static limitation claiming three fresh manual visual spot checks; the inventory generator itself does no image rendering or visual inspection."
+        }
+      ],
+      "limit": "Fresh generator output alone cannot prove fresh visual inspection or rights clearance. Asset category strings are source heuristics, not independently verified rights."
+    }
+  ],
+  "pending": [
+    "Fresh SQL syntax/structural review after QUIETDONE.",
+    "Fresh rights inventory after QUIETDONE.",
+    "Independent source-derived modes/pages/11DoD manifest.",
+    "All runtime unit/journey/gate/OG/event/mobile/axe outcomes."
+  ],
+  "blindBoundary": "No Run2 results/artifacts or handoff ledger/release outcome documents read before this record."
+}

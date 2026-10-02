@@ -1,0 +1,44 @@
+{
+  "artifact": "capability-qa",
+  "phase": "Clash Breakdown V1",
+  "generatedAt": "2026-09-24T05:00:00.632Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "Candidate 4 result records the box score, team totals and period scores",
+      "pass": true,
+      "detail": "{\"engine\":\"possession-preview\",\"candidate\":\"Candidate 4\"}"
+    },
+    {
+      "check": "player lines carry exactly the A-classified fields (plus id/name/pos/pf)",
+      "pass": true,
+      "detail": "id,name,pos,pts,fgm,fga,tpm,tpa,ftm,fta,oreb,dreb,ast,stl,blk,to,pf"
+    },
+    {
+      "check": "the box sums to the stored team totals and to the final score (counted, not allocated)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "fouls: the pf column is always 0 → classified N",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no score timeline or structured lead-change count is stored → lead changes/runs/largest lead classified N and deferred",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the breakdown is available with period-level game flow on Candidate 4",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the engine's fallback path records the box score and totals but no period scores → breakdown without game flow",
+      "pass": true,
+      "detail": "{\"engine\":\"v3-possession\"}"
+    }
+  ],
+  "passed": true
+}

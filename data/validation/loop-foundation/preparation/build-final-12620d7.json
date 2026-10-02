@@ -1,0 +1,57 @@
+[
+  {
+    "name": "build",
+    "argv": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "start": "2026-10-02T12:16:06.112706+00:00",
+    "end": "2026-10-02T12:16:08.106011+00:00",
+    "log": "/private/tmp/loop-temp-build-12620d7.log"
+  },
+  {
+    "name": "fixtures",
+    "argv": [
+      "npm",
+      "run",
+      "build:fixtures"
+    ],
+    "exit": 0,
+    "start": "2026-10-02T12:16:08.106200+00:00",
+    "end": "2026-10-02T12:16:09.748514+00:00",
+    "log": "/private/tmp/loop-temp-fixtures-12620d7.log"
+  },
+  {
+    "name": "pairings",
+    "argv": [
+      "node",
+      "scripts/loop/franchise-pages.mjs",
+      "http://localhost:4320"
+    ],
+    "exit": 1,
+    "start": "2026-10-02T12:16:09.748736+00:00",
+    "end": "2026-10-02T12:16:09.838333+00:00",
+    "log": "/private/tmp/loop-temp-pairings-12620d7.log"
+  },
+  {
+    "name": "pairings-reverify",
+    "argv": [
+      "node",
+      "scripts/loop/franchise-pages.mjs",
+      "--origin",
+      "http://localhost:4320",
+      "--output",
+      "artifacts/loop/franchise-pages"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/loop-temp-pairings-12620d7-artifacts.log",
+    "assertedFromLog": {
+      "count": 435,
+      "output": "/private/tmp/eraclash-loop-verification-20261002/artifacts/loop/franchise-pages",
+      "sitemap": "/private/tmp/eraclash-loop-verification-20261002/artifacts/loop/franchise-pages/franchise-sitemap.xml"
+    },
+    "initialFailure": "Root supplied positional origin; generator correctly rejected missing --origin. No product fix or origin guard relaxation."
+  }
+]

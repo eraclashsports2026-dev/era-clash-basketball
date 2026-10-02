@@ -1,0 +1,45 @@
+[
+  {
+    "name": "unit",
+    "argv": [
+      "./node_modules/.bin/vitest",
+      "run",
+      "--maxWorkers=2",
+      "--testTimeout=15000",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/private/tmp/loop-unit-run3-final-dc926ad.json"
+    ],
+    "exit": 1,
+    "start": "2026-10-02T13:10:08.231028+00:00",
+    "end": "2026-10-02T13:11:25.804509+00:00",
+    "log": "/private/tmp/loop-unit-run3-final-dc926ad.log",
+    "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5"
+  },
+  {
+    "name": "playwright",
+    "argv": [
+      "./node_modules/.bin/playwright",
+      "test",
+      "--workers=1"
+    ],
+    "exit": 0,
+    "start": "2026-10-02T13:11:25.811929+00:00",
+    "end": "2026-10-02T13:14:28.570637+00:00",
+    "log": "/private/tmp/loop-playwright-run3-final-dc926ad.log",
+    "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5"
+  },
+  {
+    "name": "gates",
+    "argv": [
+      "node",
+      "scripts/foundation/fullPassSweep.mjs",
+      "loop-run3-final-dc926ad"
+    ],
+    "exit": 1,
+    "start": "2026-10-02T13:14:28.652687+00:00",
+    "end": "2026-10-02T13:17:59.240475+00:00",
+    "log": "/private/tmp/loop-gates-run3-final-dc926ad.log",
+    "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5"
+  }
+]

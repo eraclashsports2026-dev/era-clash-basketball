@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-10-02T13:12:10.632393+00:00",
+  "failures": [
+    {
+      "tool": "release SQL source parser",
+      "command": "python3 /private/tmp/eraclash-run3-sql-source-review.py",
+      "failure": "ImportError: cannot import parser from pglast",
+      "cause": "System Python3.9 cannot load the installed parser.cpython-312-darwin.so; bundled3.12 recovery is a tool-runtime correction, not SQL or product repair."
+    },
+    {
+      "tool": "rights source inventory",
+      "failure": "fatal: invalid object name16ea908",
+      "rawArtifact": "rights-generator-output.txt",
+      "cause": "Fresh checkout lacks the immutable absorbed historical source object. Root is importing source-only objects; no current source-byte mismatch is established.",
+      "restoration": "Only docs/rights-exposure/inventory.json captured before generator invocation and restored in finally; no primary or other product paths changed."
+    }
+  ],
+  "status": "INSTRUMENTATION_FAILURES_PRESERVED_NOT_PRODUCT_FAILURES"
+}

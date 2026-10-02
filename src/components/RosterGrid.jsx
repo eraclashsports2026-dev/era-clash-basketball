@@ -1,3 +1,4 @@
+import { teamDisplayName } from "../loop/rights.js";
 // ── Roster grid — the concept's five-across card row ─────────────────────────
 // Position header above each card, portrait, name split (given name small /
 // family name bold), OVR beneath. Five columns on desktop, two on tablet, one
@@ -9,7 +10,7 @@
 // the card data, and the grid has a PLACEMENT mode. While a player is being
 // placed, each slot carries a state — ELIGIBLE, OCCUPIED (a swap), INELIGIBLE,
 // SELECTED — as a word and a border, and only the legal slots are controls.
-import { POSITIONS, DECADE_COLORS } from "../players.js";
+import { POSITIONS } from "../players.js";
 import { displayOVR } from "../rating.js";
 import { T, R, FONT, teamAccent } from "../theme.js";
 import { fitColor } from "../chemistryView.js";
@@ -48,8 +49,8 @@ function FilledCard({ p, pos, team, accent, fit, hideStats, flash, onSwap, place
       <div style={{ fontSize: 20, fontWeight: 900, fontStyle: "italic", color: accent, textAlign: "center", fontFamily: FONT.display, marginTop: 2 }}>
         {hideStats ? "—" : ovr}
       </div>
-      <div style={{ fontSize: 9.5, color: DECADE_COLORS[p.decade] ?? T.textMuted, fontWeight: 700, textAlign: "center" }}>
-        {p.decade}<span style={{ color: T.textMuted }}> · {p.team}</span>
+      <div style={{ fontSize: 9.5, color: T.textMuted, fontWeight: 700, textAlign: "center" }}>
+        {p.decade}<span style={{ color: T.textMuted }}> · {teamDisplayName(p.team,p.decade)}</span>
       </div>
       {/* Every eligible position, from the card. The primary reads first. */}
       <div className="ec-elig" style={{ color: T.textDim }} aria-label={`Eligible positions: ${eligibleLabel(p)}`}>

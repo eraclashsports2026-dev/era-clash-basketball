@@ -1,0 +1,27 @@
+{
+  "status": "PASS_ACTUAL_20_CHECKS",
+  "runtimeSourceSha": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+  "origin": "http://localhost:4320",
+  "normalBuildStamp": "eraclash-assets:2.7.2:f94eb9fb10ab",
+  "toolRevisionSha256": "136b15e893a93aba47cc10aa903b7c7926d1d4cf4e60241c786950a215b6efa0",
+  "failuresPreserved": [
+    {
+      "name": "logo-browser-final-27630a1-initial-fixture-timeout.json",
+      "sha256": "f69317700b0f2da62910ed68bb2f6f17c36ee4f4ee6ea172982d91f370425a96",
+      "actualProductChecksPass": 18,
+      "reason": "Fallback fixture document lifecycle timeout on native image viewer"
+    },
+    {
+      "name": "logo-browser-final-27630a1-opaque-origin-fixture-timeout.json",
+      "sha256": "912532f44ac963c25634423e21685ff238329c216e6b22b3f476a56b29024e62",
+      "actualProductChecksPass": 18,
+      "reason": "Fallback fixture used opaque about:blank origin under real same-origin image protection"
+    }
+  ],
+  "final": {
+    "name": "logo-browser-final-27630a1-reverify-same-origin.json",
+    "sha256": "4350e4e7fc05f313fd4c98af436ef376dfe7f4ddbf1f9cff28d0710b7fe3e470",
+    "checks": 20
+  },
+  "scope": "Actual native canonical/derivative canvas equality, matching layout/attrs/srcSet/preload/deduplication/HTTP and same-origin no-srcSet fixture; no performance threshold acceptance or real Safari claim."
+}

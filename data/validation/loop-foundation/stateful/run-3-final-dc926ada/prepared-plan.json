@@ -1,0 +1,245 @@
+{
+  "status": "PREPARED_HOLD_FOR_ROOT_GO_AFTER_FINAL_BUILD_AND_QUIET_LIGHTHOUSE",
+  "preparedAt": "2026-10-02T13:04:14.333795+00:00",
+  "runtimeSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "primaryPath": "/private/tmp/eraclash-run3-final-20261002",
+  "executionPath": "/private/tmp/eraclash-run3-final-20261002",
+  "normalBuildStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "normalBuildStampStatus": "Fresh Run3 dist/index.html source-read; execution held for independent quiet Lighthouse.",
+  "identityNamespace": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+  "reportNamespace": "run-3-final-dc926ada",
+  "clientOrigin": "http://localhost:4321",
+  "apiOrigin": "http://localhost:4322",
+  "rootOriginsUntouched": [
+    "http://localhost:4320",
+    "http://localhost:4330"
+  ],
+  "localOnlyQuotas": {
+    "RL_SIM_PER_MIN_SESSION": 500,
+    "RL_SIM_PER_MIN_IP": 500,
+    "loopActionsPerMinuteUnchanged": 120,
+    "publicRecapsPerMinuteUnchanged": 20
+  },
+  "requiredChecks": {
+    "stateful": 28,
+    "guestModes": 72,
+    "reset": 3,
+    "affected": 7,
+    "privacy": 5,
+    "survival": "Actual7wins; bound20runs/140games; exact stage/outcome/terminal/public/serverboard or UNVERIFIED",
+    "dataIdentity": "Every new row/rematch candidate/calibration/core and matching snapshot",
+    "events": "All10closed names/actual wire/native/ratios/current clock/censored cohorts",
+    "tonightDirect": "Direct route + hub + current schedule + actual sourced selection + real result/card + fresh guest rematch; prior section journey is not direct-route proof",
+    "legacyTerminal": "Two actual nativecodedtrial format completions; correct h1/axe/geometry and sourceproductionversion/round-or-finale metadata; no result injection."
+  },
+  "commands": [
+    {
+      "step": "fresh empty companion",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002"
+      },
+      "argv": [
+        "node",
+        "tests/loop-stateful-harness.mjs"
+      ]
+    },
+    {
+      "step": "full28 stateful actual rows/events",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_STATEFUL_RUN": "run-3-final-dc926ada",
+        "LOOP_STATEFUL_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "tests/loop-stateful-browser.mjs"
+      ]
+    },
+    {
+      "step": "actual fresh event metrics",
+      "argv": [
+        "node",
+        "tests/loop-journey-metrics.mjs",
+        "data/validation/loop-foundation/stateful/run-3-final-dc926ada/report.json"
+      ]
+    },
+    {
+      "step": "modes",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_BROWSER_RUN": "run-3-final-dc926ada-modes",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "tests/loop-modes-browser.mjs"
+      ]
+    },
+    {
+      "step": "reset",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_BROWSER_RUN": "run-3-final-dc926ada-reset",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "tests/loop-modes-state-reset.mjs"
+      ]
+    },
+    {
+      "step": "survival",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_BROWSER_RUN": "run-3-final-dc926ada-survival",
+        "LOOP_TEST_URL": "http://localhost:4321",
+        "LOOP_GAUNTLET_BOUND": "20"
+      },
+      "argv": [
+        "node",
+        "tests/loop-gauntlet-survival-browser.mjs"
+      ]
+    },
+    {
+      "step": "affected",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_BROWSER_RUN": "run-3-final-dc926ada-affected",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "/private/tmp/loop-run2-affected-state-browser.mjs"
+      ]
+    },
+    {
+      "step": "privacy",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_BROWSER_RUN": "run-3-final-dc926ada-privacy",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "/private/tmp/loop-run2-public-get-privacy-browser.mjs"
+      ]
+    },
+    {
+      "step": "tonight-direct",
+      "env": {
+        "LOOP_QA_IDENTITY_SALT": "run-3-final-dc926ada-acc921ca-c11a-4920-a05b-c5451e1d52eb",
+        "LOOP_RUNTIME_SOURCE_SHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_BROWSER_RUN": "run-3-final-dc926ada-tonight-direct",
+        "LOOP_TEST_URL": "http://localhost:4321"
+      },
+      "argv": [
+        "node",
+        "/private/tmp/loop-run2-tonight-direct-browser.mjs"
+      ]
+    },
+    {
+      "step": "focused Daily clock/claim/streak; report all unselected tests",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/loop-foundation-server.test.js",
+        "-t",
+        "guest identities|forged and other-owner tokens|one completion|next-day streak",
+        "--reporter=json",
+        "--outputFile",
+        "data/validation/loop-foundation/stateful/run-3-final-dc926ada/daily-clock-unit.json"
+      ]
+    },
+    {
+      "step": "fresh native legacy Tournament and Win82 terminal, productionversion/round-or-finale fingerprint/candidateabsence boundary",
+      "env": {
+        "LOOP_QA_CHECKOUT": "/private/tmp/eraclash-run3-final-20261002",
+        "LOOP_TEST_URL": "http://localhost:4320",
+        "LOOP_BROWSER_RUN": "run-3-final-dc926ada-legacy-terminal"
+      },
+      "argv": [
+        "node",
+        "/private/tmp/loop-run3-legacy-terminal-browser.mjs"
+      ]
+    },
+    {
+      "step": "export every Daily targeted-filter unselected test name/reason",
+      "argv": [
+        "python3",
+        "/private/tmp/loop-run3-daily-clock-scope.py",
+        "data/validation/loop-foundation/stateful/run-3-final-dc926ada/daily-clock-unit.json",
+        "dc926adaeebd573f435263265f4251f1814cc0a5"
+      ]
+    }
+  ],
+  "runnerHashes": {
+    "tests/loop-stateful-harness.mjs": "584e486d83547e2761c2349e9e03d6d4b0b3a2616fbe98a4133c8f7c13fdf8f8",
+    "tests/loop-stateful-browser.mjs": "d5bf646ef19a12501e7a781737437407cf09e8d62e9111e54c1ebc52d31bad3e",
+    "tests/loop-stateful-browser-provider.js": "5c3db74c93a34d6ca6364b48e363980d7a24dfae6db497d2bfa03c093cf10515",
+    "tests/loop-stateful-identities.mjs": "eee7966e2388a13ff79ab6067b90845d47bad4ddef72b964ae5afdb0810844b7",
+    "tests/loop-modes-browser.mjs": "2423917a8c48a1a87ac44654719ad960c4064f98d68fbc7aea10b8bc75129a0b",
+    "tests/loop-modes-state-reset.mjs": "45c8578aa67adbb47f96784c7e6582dabb0cbf57ba1afae9cf1f634c90cc1d88",
+    "tests/loop-gauntlet-survival-browser.mjs": "a24f850131fd21ab5a73c1d0fc8901c4d4b6b36d62a3fed3717699f5a1f05076",
+    "tests/loop-journey-metrics.mjs": "dd0779bbf8eeffdcad83281809be41e3c8295986b2c87f20146426617295c8c6",
+    "/private/tmp/loop-run2-affected-state-browser.mjs": "a643cfef3744a52a9bba5d96132cbb8651807bc0688e5277f38b3d354486cff9",
+    "/private/tmp/loop-run2-public-get-privacy-browser.mjs": "4d164ad6db6e29309aad372c5ad0a829c63d212be986d1be2bf4ef9db8318fad",
+    "/private/tmp/loop-run2-tonight-direct-browser.mjs": "bd35c37cbc2cbee23971b38d57fe8a63da1e98895222b1dad68985ed76add237",
+    "/private/tmp/loop-run3-legacy-terminal-browser.mjs": "e43c9b96d42060c8bacb1be65ae6ce2d9466527b4321d81e5291fb9e07aafbdf",
+    "/private/tmp/loop-run3-daily-clock-scope.py": "51a663b296ba2337016d4acd614e6dde336b3cebd6545d24036fac7312b9f199"
+  },
+  "sourceHashManifest": "/private/tmp/run-3-final-dc926ada-source-hashes.json",
+  "limits": [
+    "PARTIAL EMULATED two fresh UUID account actors; actual handler-created rows, no saved/game fixtures.",
+    "No real OAuth/SMTP/Preview/Postgres RLS/hosted durability acceptance.",
+    "Browser viewport emulation; no physical-device acceptance.",
+    "Companion Vite SOURCE client with test-only existing provider injection; normal production build recorded separately.",
+    "Fresh empty memory/context/results; no old report/result IDs reused as fixtures.",
+    "Candidate4/calibration/core and saved snapshot identity asserted; no engine/data/calibration edits.",
+    "No seed/stage/result/victory injection; seven-win bounded real survival or honest UNVERIFIED.",
+    "Local session/IP500 only; shared120Loop actions/min and20public recaps/min unchanged.",
+    "Native beacon acceptance/wire receipts measured; durable/vendor ingestion unverified without readback.",
+    "Actual current clocks; immature day2/day7 censored null, no future timestamps or demand claim.",
+    "Focused Daily -t records all skipped names/reasons; parent owns separate full-unit acceptance.",
+    "Residual LCP and broader rights/provider/release blockers remain open; no threshold waiver."
+  ],
+  "runtimeOrBrowserExecution": false,
+  "oldReportsUsedAsFixtures": false,
+  "run2ArtifactsOrReportsReadInPreparation": false,
+  "independentChildOutcomeDisclosure": false,
+  "fixtureBuildStamp": "eraclash-assets:2.7.2:41957b5894a1",
+  "selectedTrackedTempClean": true,
+  "lastPreparedAt": "2026-10-02T13:06:20.173702+00:00",
+  "actualRuntimeReadyFromParent": true,
+  "executionHold": "All heavy browser/units/builds held until independent child QUIET DONE.",
+  "readiness": {
+    "hostedImmutableURL": "https://era-clash-basketball-hvswd87pz-era-clash.vercel.app",
+    "deployment": 6808986059,
+    "source": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "anonymousStatus": 401,
+    "localProductionFallback": true,
+    "realPreviewCredentialsAvailable": false
+  },
+  "independence": "Parent mode/data verifier creates fresh inputs/results; blind child independently freezes fullcrawl/sharing/neutral/Lighthouse/DoD findings before comparison. No claim that parent inherited context is outcome-blind.",
+  "commandsMustUseAuthorizedLocalExecution": true,
+  "rootOriginsUntouchedByCompanion": [
+    "http://localhost:4320",
+    "http://localhost:4330"
+  ],
+  "sourceHashManifestSHA256": "d787824259c675c0f1ad87174cd6a3cca26f1f1cbbb1c08c425bcca5529e49c8"
+}

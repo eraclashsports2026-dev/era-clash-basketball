@@ -1,0 +1,10 @@
+{
+  "scope": "Collector control/CTA coverage boundaries; root owns combined semantic verification",
+  "inventory": "All visible initial-page controls in each route/profile are enumerated. Hidden controls are not recursively enumerated.",
+  "navigation": "Anchor URLs receive exact bounded HEAD checks; every inventoried route is rendered. The collector does not click every anchor or exhaust all query/state combinations.",
+  "localControls": "Each initially visible safe control gets one fresh-context probe: one alternate selection, one search input, one toggle or one disclosure action. This is observed behavior, not all possible values or states.",
+  "disclosures": "Axe runs after observable visible-content changes. New modal/menu controls are not recursively clicked and measured by this collector.",
+  "stateful": "Game play, save, Daily rolls, room/account/provider/payment/deletion controls remain UNVERIFIED or N/A when disabled. Real-handler fixture generation and root dedicated journeys are separate evidence.",
+  "devices": "Five fresh Chromium desktop/viewport/touch contexts; no physical iOS Safari/Android Chrome, screen-reader or native share proof.",
+  "toolFailure": "Blocked writes, missing auth/provider access, no observable control change and protected/timed-out external HEADs remain explicitly UNVERIFIED."
+}

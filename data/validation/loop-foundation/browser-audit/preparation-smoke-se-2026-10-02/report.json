@@ -1,0 +1,5716 @@
+{
+  "label": "preparation-smoke-se-2026-10-02",
+  "startedAt": "2026-10-02T08:37:23.982Z",
+  "origin": "http://localhost:4320",
+  "environment": "local-production-harness",
+  "requestedSha": null,
+  "checkoutSha": "9f109dcda4609b9608bba968cb6001e931009d2f",
+  "checkoutDirty": true,
+  "scope": "smoke",
+  "profiles": [
+    {
+      "id": "iphone-se",
+      "name": "iPhone SE",
+      "device": "iPhone SE",
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "mobile": true
+    }
+  ],
+  "inventory": {
+    "routes": [
+      {
+        "path": "/",
+        "kind": "application",
+        "sources": [
+          "public entrance"
+        ]
+      },
+      {
+        "path": "/auth/callback",
+        "kind": "auth-callback",
+        "sources": [
+          "App route branch"
+        ]
+      },
+      {
+        "path": "/challenges",
+        "kind": "application",
+        "sources": [
+          "KNOWN_ROUTES",
+          "LOOP_MODE_LINKS",
+          "App route branch"
+        ]
+      },
+      {
+        "path": "/clash/all-time/atlanta-vs-boston",
+        "kind": "programmatic",
+        "sources": [
+          "FRANCHISE_PAIRINGS + franchise sitemap"
+        ],
+        "pairingId": "atlanta-vs-boston"
+      },
+      {
+        "path": "/clash/any-five",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS"
+        ]
+      },
+      {
+        "path": "/clash/daily",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS"
+        ]
+      },
+      {
+        "path": "/clash/filters",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS",
+          "LoopModes branches"
+        ]
+      },
+      {
+        "path": "/clash/franchise",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS"
+        ]
+      },
+      {
+        "path": "/clash/gauntlet",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS"
+        ]
+      },
+      {
+        "path": "/clash/lab",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS"
+        ]
+      },
+      {
+        "path": "/clash/modes",
+        "kind": "loop-mode",
+        "sources": [
+          "LoopModes branches"
+        ]
+      },
+      {
+        "path": "/clash/no-mvps",
+        "kind": "loop-mode",
+        "sources": [
+          "LoopModes branches"
+        ]
+      },
+      {
+        "path": "/clash/one-franchise",
+        "kind": "loop-mode",
+        "sources": [
+          "LoopModes branches"
+        ]
+      },
+      {
+        "path": "/clash/one-per-era",
+        "kind": "loop-mode",
+        "sources": [
+          "LoopModes branches"
+        ]
+      },
+      {
+        "path": "/clash/rooms",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS",
+          "App route branch"
+        ]
+      },
+      {
+        "path": "/clash/spin",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS"
+        ]
+      },
+      {
+        "path": "/fantasy/eraclash",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS",
+          "fantasy registry"
+        ],
+        "implemented": false
+      },
+      {
+        "path": "/fantasy/live",
+        "kind": "loop-mode",
+        "sources": [
+          "LOOP_MODE_LINKS",
+          "fantasy registry"
+        ],
+        "implemented": false
+      },
+      {
+        "path": "/leaderboard",
+        "kind": "leaderboard",
+        "sources": [
+          "KNOWN_ROUTES"
+        ]
+      },
+      {
+        "path": "/membership",
+        "kind": "application",
+        "sources": [
+          "KNOWN_ROUTES"
+        ]
+      },
+      {
+        "path": "/modes/bo7",
+        "kind": "mode-information",
+        "sources": [
+          "navigation information contract"
+        ],
+        "modeId": "bo7"
+      },
+      {
+        "path": "/modes/chaos",
+        "kind": "mode-information",
+        "sources": [
+          "navigation information contract"
+        ],
+        "modeId": "chaos"
+      },
+      {
+        "path": "/modes/daily",
+        "kind": "mode-information",
+        "sources": [
+          "navigation information contract"
+        ],
+        "modeId": "daily"
+      },
+      {
+        "path": "/modes/dream",
+        "kind": "mode-information",
+        "sources": [
+          "navigation information contract"
+        ],
+        "modeId": "dream"
+      },
+      {
+        "path": "/modes/gauntlet",
+        "kind": "mode-information",
+        "sources": [
+          "navigation information contract"
+        ],
+        "modeId": "gauntlet"
+      },
+      {
+        "path": "/modes/tournament",
+        "kind": "mode-information",
+        "sources": [
+          "navigation information contract"
+        ],
+        "modeId": "tournament"
+      },
+      {
+        "path": "/modes/win82",
+        "kind": "mode-information",
+        "sources": [
+          "navigation information contract"
+        ],
+        "modeId": "win82"
+      },
+      {
+        "path": "/my-eraclash",
+        "kind": "account",
+        "sources": [
+          "KNOWN_ROUTES",
+          "App route branch"
+        ]
+      },
+      {
+        "path": "/play",
+        "kind": "application",
+        "sources": [
+          "navigation registry"
+        ]
+      },
+      {
+        "path": "/play/best-of-7",
+        "kind": "mode",
+        "sources": [
+          "PLAY_MODES",
+          "LOOP_MODE_LINKS"
+        ],
+        "modeId": "bo7",
+        "implemented": true
+      },
+      {
+        "path": "/play/chaos",
+        "kind": "mode",
+        "sources": [
+          "PLAY_MODES",
+          "LOOP_MODE_LINKS"
+        ],
+        "modeId": "chaos",
+        "implemented": true
+      },
+      {
+        "path": "/play/daily",
+        "kind": "mode",
+        "sources": [
+          "PLAY_MODES"
+        ],
+        "modeId": "daily",
+        "implemented": true
+      },
+      {
+        "path": "/play/dream",
+        "kind": "mode",
+        "sources": [
+          "PLAY_MODES",
+          "LOOP_MODE_LINKS"
+        ],
+        "modeId": "dream",
+        "implemented": true
+      },
+      {
+        "path": "/play/era-gauntlet",
+        "kind": "mode",
+        "sources": [
+          "PLAY_MODES"
+        ],
+        "modeId": "gauntlet",
+        "implemented": false
+      },
+      {
+        "path": "/play/tournament",
+        "kind": "mode",
+        "sources": [
+          "PLAY_MODES",
+          "LOOP_MODE_LINKS"
+        ],
+        "modeId": "tournament",
+        "implemented": true
+      },
+      {
+        "path": "/play/win-82",
+        "kind": "mode",
+        "sources": [
+          "PLAY_MODES",
+          "LOOP_MODE_LINKS"
+        ],
+        "modeId": "win82",
+        "implemented": true
+      },
+      {
+        "path": "/privacy",
+        "kind": "application",
+        "sources": [
+          "KNOWN_ROUTES",
+          "App route branch"
+        ]
+      },
+      {
+        "path": "/support",
+        "kind": "application",
+        "sources": [
+          "KNOWN_ROUTES",
+          "App route branch"
+        ]
+      },
+      {
+        "path": "/terms",
+        "kind": "application",
+        "sources": [
+          "KNOWN_ROUTES",
+          "App route branch"
+        ]
+      }
+    ],
+    "sitemap": {
+      "path": "artifacts/loop/franchise-pages/franchise-sitemap.xml",
+      "status": "PASS",
+      "expected": 435,
+      "found": 435,
+      "unique": 435,
+      "sha256": "06dd3fe01a847e3b9bc1051e66ada650f9bab399d805d5343059582b7da52090",
+      "declaredOrigins": [
+        "http://localhost:4320"
+      ]
+    },
+    "suppliedResults": [],
+    "sourceVersion": "loop-franchises-1.0.0"
+  },
+  "sources": {
+    "axe": "https://github.com/dequelabs/axe-core/blob/develop/doc/API.md",
+    "lighthouse": "https://github.com/GoogleChrome/lighthouse/blob/main/docs/readme.md",
+    "emulation": "https://playwright.dev/docs/emulation"
+  },
+  "limitations": [
+    "Chromium viewport/touch emulation does not verify physical iOS Safari or Android Chrome.",
+    "Automated axe findings do not establish full accessibility conformance or screen-reader usability.",
+    "Audit contexts bypass CSP solely to inject the local axe instrument; server security headers are not validated by this runner.",
+    "Read-only control probes do not establish stateful gameplay, account, private-data, email or payment correctness.",
+    "The local checkout SHA and health identity are recorded separately; a caller-provided deployment SHA is not independently verified by this runner."
+  ],
+  "physicalDeviceChecklist": [
+    "iOS Safari on an actual iPhone SE: keyboard, scrolling, dialogs and tap targets.",
+    "Actual iPhone 14 and Pro Max: safe areas, rotation, text zoom and sharing.",
+    "Actual Android Pixel Chrome: soft keyboard, back navigation, clipboard/share and touch."
+  ],
+  "health": {
+    "status": 200,
+    "payload": {
+      "status": "ok",
+      "build": "2.7.2",
+      "coreEngine": "ok",
+      "persistence": "ok",
+      "aiNarrative": "ok",
+      "simV3": true,
+      "cloudAccounts": {
+        "enabled": false,
+        "ready": false
+      },
+      "preview": {
+        "enabled": true,
+        "candidateId": "Candidate 4",
+        "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "calibrationVersion": "1.4.0"
+      }
+    }
+  },
+  "tools": {
+    "axeVersion": "4.13.0",
+    "playwrightVersion": "1.62.1",
+    "browserVersion": "154.0.8037.95"
+  },
+  "browserCoverage": {
+    "inventoried": 39,
+    "selected": 4,
+    "scope": "smoke"
+  },
+  "routes": [
+    {
+      "path": "/",
+      "kind": "application",
+      "profile": "iphone-se",
+      "identity": "fresh guest context",
+      "startedAt": "2026-10-02T08:37:27.297Z",
+      "issues": [],
+      "statusCode": 200,
+      "finalUrl": "http://localhost:4320/",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "geometry": {
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "scrollWidth": 320,
+        "overflow": false,
+        "theme": "night-court-production-hybrid",
+        "loopBackground": null,
+        "metaViewport": "width=device-width, initial-scale=1.0"
+      },
+      "controls": [
+        {
+          "index": 0,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Menu",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 44,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 1,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "EraClash Basketball home",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 196,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 2,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Create account",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 44,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 3,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Start Chaos Clash, recommended mode",
+          "href": "/play/chaos",
+          "disabled": false,
+          "visible": true,
+          "width": 258,
+          "height": 48,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 4,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Build Dream Matchup, free account required",
+          "href": "/play/dream",
+          "disabled": false,
+          "visible": true,
+          "width": 258,
+          "height": 48,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 5,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Play Daily Clash",
+          "href": "/play/daily",
+          "disabled": false,
+          "visible": true,
+          "width": 258,
+          "height": 48,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 6,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Start Best of 7, free account required",
+          "href": "/play/best-of-7",
+          "disabled": false,
+          "visible": true,
+          "width": 266,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 7,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Start Win 82, free account required",
+          "href": "/play/win-82",
+          "disabled": false,
+          "visible": true,
+          "width": 266,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 8,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Enter Tournament, free account required",
+          "href": "/play/tournament",
+          "disabled": false,
+          "visible": true,
+          "width": 266,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 9,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Learn more about Era Gauntlet, coming soon",
+          "href": "/modes/era-gauntlet",
+          "disabled": false,
+          "visible": true,
+          "width": 266,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 10,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "All modes",
+          "href": "/clash/modes",
+          "disabled": false,
+          "visible": true,
+          "width": 87.28,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 11,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Private rooms",
+          "href": "/clash/rooms",
+          "disabled": false,
+          "visible": true,
+          "width": 115.73,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 12,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Privacy",
+          "href": "/privacy",
+          "disabled": false,
+          "visible": true,
+          "width": 68.86,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 13,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Terms",
+          "href": "/terms",
+          "disabled": false,
+          "visible": true,
+          "width": 60.7,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 14,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Founding Player",
+          "href": "/support",
+          "disabled": false,
+          "visible": true,
+          "width": 132.3,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 15,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Image credits",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 84.27,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        }
+      ],
+      "smallTargets": [],
+      "authGate": false,
+      "availability": "RENDERED",
+      "axe": {
+        "version": "4.13.0",
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "#ec-mode-title-chaos"
+                ],
+                "html": "<h2 id=\"ec-mode-title-chaos\" class=\"ec-mode-title\">Chaos Clash</h2>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-desc-chaos"
+                ],
+                "html": "<p id=\"ec-mode-desc-chaos\" class=\"ec-mode-line\">Three rolls. Hold your legends. History picks the era.</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "a[href$=\"chaos\"]"
+                ],
+                "html": "<a class=\"ec-mode-action\" href=\"/play/chaos\" aria-label=\"Start Chaos Clash, recommended mode\" data-intent=\"OPEN_MODE\" data-hierarchy=\"primary\" data-accent=\"gold\" data-browser-audit-control=\"3\">Start Chaos Clash</a>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "article[data-mode=\"dream\"] > .ec-mode-card-top > .ec-mode-badge--gold.ec-mode-badge"
+                ],
+                "html": "<span class=\"ec-mode-badge ec-mode-badge--gold\">Free account</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-title-dream"
+                ],
+                "html": "<h2 id=\"ec-mode-title-dream\" class=\"ec-mode-title\">Dream Matchup</h2>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-desc-dream"
+                ],
+                "html": "<p id=\"ec-mode-desc-dream\" class=\"ec-mode-line\">Build any historical matchup.</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-title-daily"
+                ],
+                "html": "<h2 id=\"ec-mode-title-daily\" class=\"ec-mode-title\">Daily Clash</h2>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-desc-daily"
+                ],
+                "html": "<p id=\"ec-mode-desc-daily\" class=\"ec-mode-line\">One shared challenge for everyone.</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "article[data-mode=\"bo7\"] > .ec-mode-card-top > .ec-mode-badge--gold.ec-mode-badge"
+                ],
+                "html": "<span class=\"ec-mode-badge ec-mode-badge--gold\">Free account</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-title-bo7"
+                ],
+                "html": "<h2 id=\"ec-mode-title-bo7\" class=\"ec-mode-title\">Best of 7</h2>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-desc-bo7"
+                ],
+                "html": "<p id=\"ec-mode-desc-bo7\" class=\"ec-mode-line\">Settle it over a series.</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "article[data-mode=\"win82\"] > .ec-mode-card-top > .ec-mode-badge--gold.ec-mode-badge"
+                ],
+                "html": "<span class=\"ec-mode-badge ec-mode-badge--gold\">Free account</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-title-win82"
+                ],
+                "html": "<h2 id=\"ec-mode-title-win82\" class=\"ec-mode-title\">Win 82</h2>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-desc-win82"
+                ],
+                "html": "<p id=\"ec-mode-desc-win82\" class=\"ec-mode-line\">Survive a full season.</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "article[data-mode=\"tournament\"] > .ec-mode-card-top > .ec-mode-badge--gold.ec-mode-badge"
+                ],
+                "html": "<span class=\"ec-mode-badge ec-mode-badge--gold\">Free account</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-title-tournament"
+                ],
+                "html": "<h2 id=\"ec-mode-title-tournament\" class=\"ec-mode-title\">Tournament</h2>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-desc-tournament"
+                ],
+                "html": "<p id=\"ec-mode-desc-tournament\" class=\"ec-mode-line\">Four rounds to a title.</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  ".ec-mode-badge--muted"
+                ],
+                "html": "<span class=\"ec-mode-badge ec-mode-badge--muted\">Coming soon</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-title-gauntlet"
+                ],
+                "html": "<h2 id=\"ec-mode-title-gauntlet\" class=\"ec-mode-title\">Era Gauntlet</h2>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "#ec-mode-desc-gauntlet"
+                ],
+                "html": "<p id=\"ec-mode-desc-gauntlet\" class=\"ec-mode-line\">Conquer the eras.</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "a[href$=\"era-gauntlet\"]"
+                ],
+                "html": "<a class=\"ec-mode-action\" href=\"/modes/era-gauntlet\" aria-label=\"Learn more about Era Gauntlet, coming soon\" data-intent=\"MODE_INFO\" data-hierarchy=\"unavailable\" data-accent=\"violet\" data-browser-audit-control=\"9\">Learn More</a>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "footer"
+                ],
+                "html": "<footer style=\"text-align: center; padding: 20px; font-size: 10.5px; color: var(--ec-t-text-dim, #5a6577); border-top: 1px solid var(--ec-t-border, #d9dee7);\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passedRules": 35,
+        "critical": 0,
+        "serious": 0
+      },
+      "screenshot": "screenshots/iphone-se--.png",
+      "interactions": [
+        {
+          "status": "UNVERIFIED",
+          "reason": "Controls disabled by command option."
+        }
+      ],
+      "status": "PASS",
+      "errors": [],
+      "consoleErrors": [],
+      "failedResponses": [],
+      "failedRequests": [],
+      "endedAt": "2026-10-02T08:37:29.002Z",
+      "artifact": "routes/iphone-se---8a5edab2.json"
+    },
+    {
+      "path": "/clash/all-time/atlanta-vs-boston",
+      "kind": "programmatic",
+      "profile": "iphone-se",
+      "identity": "fresh guest context",
+      "startedAt": "2026-10-02T08:37:27.288Z",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "44px minimum target dimension",
+          "detail": [
+            {
+              "index": 2,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Historical source 1",
+              "href": "https://www.nba.com/news/history-legend-dominique-wilkins",
+              "disabled": false,
+              "visible": true,
+              "width": 125.58,
+              "height": 18,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 3,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Historical source 2",
+              "href": "https://www.nba.com/news/history-nba-legend-bob-pettit",
+              "disabled": false,
+              "visible": true,
+              "width": 127.67,
+              "height": 18,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 4,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Historical source 1",
+              "href": "https://www.nba.com/news/history-nba-legend-bob-cousy",
+              "disabled": false,
+              "visible": true,
+              "width": 125.58,
+              "height": 18,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 5,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Brooklyn Nets · All-time",
+              "href": "/clash/all-time/atlanta-vs-brooklyn",
+              "disabled": false,
+              "visible": true,
+              "width": 246.08,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 6,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Charlotte Hornets · All-time",
+              "href": "/clash/all-time/atlanta-vs-charlotte",
+              "disabled": false,
+              "visible": true,
+              "width": 249.5,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 7,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Chicago Bulls · All-time",
+              "href": "/clash/all-time/atlanta-vs-chicago",
+              "disabled": false,
+              "visible": true,
+              "width": 279.2,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 8,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Cleveland Cavaliers · All-time",
+              "href": "/clash/all-time/atlanta-vs-cleveland",
+              "disabled": false,
+              "visible": true,
+              "width": 253.33,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 9,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Dallas Mavericks · All-time",
+              "href": "/clash/all-time/atlanta-vs-dallas",
+              "disabled": false,
+              "visible": true,
+              "width": 227.52,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 10,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Denver Nuggets · All-time",
+              "href": "/clash/all-time/atlanta-vs-denver",
+              "disabled": false,
+              "visible": true,
+              "width": 234.67,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 11,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Detroit Pistons · All-time",
+              "href": "/clash/all-time/atlanta-vs-detroit",
+              "disabled": false,
+              "visible": true,
+              "width": 232.83,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 12,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Golden State Warriors · All-time",
+              "href": "/clash/all-time/atlanta-vs-golden-state",
+              "disabled": false,
+              "visible": true,
+              "width": 275.03,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 13,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Houston Rockets · All-time",
+              "href": "/clash/all-time/atlanta-vs-houston",
+              "disabled": false,
+              "visible": true,
+              "width": 243.88,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 14,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Indiana Pacers · All-time",
+              "href": "/clash/all-time/atlanta-vs-indiana",
+              "disabled": false,
+              "visible": true,
+              "width": 235.39,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 15,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs LA Clippers · All-time",
+              "href": "/clash/all-time/atlanta-vs-la-clippers",
+              "disabled": false,
+              "visible": true,
+              "width": 273.05,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 16,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Los Angeles Lakers · All-time",
+              "href": "/clash/all-time/atlanta-vs-la-lakers",
+              "disabled": false,
+              "visible": true,
+              "width": 269.33,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 17,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Memphis Grizzlies · All-time",
+              "href": "/clash/all-time/atlanta-vs-memphis",
+              "disabled": false,
+              "visible": true,
+              "width": 248.67,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 18,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Miami Heat · All-time",
+              "href": "/clash/all-time/atlanta-vs-miami",
+              "disabled": false,
+              "visible": true,
+              "width": 271.39,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 19,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Milwaukee Bucks · All-time",
+              "href": "/clash/all-time/atlanta-vs-milwaukee",
+              "disabled": false,
+              "visible": true,
+              "width": 257.88,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 20,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Minnesota Timberwolves · All-time",
+              "href": "/clash/all-time/atlanta-vs-minnesota",
+              "disabled": false,
+              "visible": true,
+              "width": 257.25,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 21,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs New Orleans Pelicans · All-time",
+              "href": "/clash/all-time/atlanta-vs-new-orleans",
+              "disabled": false,
+              "visible": true,
+              "width": 273.52,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 22,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs New York Knicks · All-time",
+              "href": "/clash/all-time/atlanta-vs-new-york",
+              "disabled": false,
+              "visible": true,
+              "width": 251,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 23,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Oklahoma City Thunder · All-time",
+              "href": "/clash/all-time/atlanta-vs-oklahoma-city",
+              "disabled": false,
+              "visible": true,
+              "width": 254.97,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 24,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Orlando Magic · All-time",
+              "href": "/clash/all-time/atlanta-vs-orlando",
+              "disabled": false,
+              "visible": true,
+              "width": 240.58,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 25,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Philadelphia 76ers · All-time",
+              "href": "/clash/all-time/atlanta-vs-philadelphia",
+              "disabled": false,
+              "visible": true,
+              "width": 268.89,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 26,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Phoenix Suns · All-time",
+              "href": "/clash/all-time/atlanta-vs-phoenix",
+              "disabled": false,
+              "visible": true,
+              "width": 278.47,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 27,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Portland Trail Blazers · All-time",
+              "href": "/clash/all-time/atlanta-vs-portland",
+              "disabled": false,
+              "visible": true,
+              "width": 276.39,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 28,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Sacramento Kings · All-time",
+              "href": "/clash/all-time/atlanta-vs-sacramento",
+              "disabled": false,
+              "visible": true,
+              "width": 268.48,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 29,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs San Antonio Spurs · All-time",
+              "href": "/clash/all-time/atlanta-vs-san-antonio",
+              "disabled": false,
+              "visible": true,
+              "width": 268.64,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 30,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Toronto Raptors · All-time",
+              "href": "/clash/all-time/atlanta-vs-toronto",
+              "disabled": false,
+              "visible": true,
+              "width": 238.61,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 31,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Utah Jazz · All-time",
+              "href": "/clash/all-time/atlanta-vs-utah",
+              "disabled": false,
+              "visible": true,
+              "width": 262.48,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 32,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Atlanta Hawks · All-time vs Washington Wizards · All-time",
+              "href": "/clash/all-time/atlanta-vs-washington",
+              "disabled": false,
+              "visible": true,
+              "width": 266.98,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 33,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Brooklyn Nets · All-time",
+              "href": "/clash/all-time/boston-vs-brooklyn",
+              "disabled": false,
+              "visible": true,
+              "width": 247.77,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 34,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Charlotte Hornets · All-time",
+              "href": "/clash/all-time/boston-vs-charlotte",
+              "disabled": false,
+              "visible": true,
+              "width": 251.19,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 35,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Chicago Bulls · All-time",
+              "href": "/clash/all-time/boston-vs-chicago",
+              "disabled": false,
+              "visible": true,
+              "width": 244.03,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 36,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Cleveland Cavaliers · All-time",
+              "href": "/clash/all-time/boston-vs-cleveland",
+              "disabled": false,
+              "visible": true,
+              "width": 255.02,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 37,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Dallas Mavericks · All-time",
+              "href": "/clash/all-time/boston-vs-dallas",
+              "disabled": false,
+              "visible": true,
+              "width": 229.22,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 38,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Denver Nuggets · All-time",
+              "href": "/clash/all-time/boston-vs-denver",
+              "disabled": false,
+              "visible": true,
+              "width": 236.38,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 39,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Detroit Pistons · All-time",
+              "href": "/clash/all-time/boston-vs-detroit",
+              "disabled": false,
+              "visible": true,
+              "width": 234.52,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 40,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Golden State Warriors · All-time",
+              "href": "/clash/all-time/boston-vs-golden-state",
+              "disabled": false,
+              "visible": true,
+              "width": 276.72,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 41,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Houston Rockets · All-time",
+              "href": "/clash/all-time/boston-vs-houston",
+              "disabled": false,
+              "visible": true,
+              "width": 245.56,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 42,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Indiana Pacers · All-time",
+              "href": "/clash/all-time/boston-vs-indiana",
+              "disabled": false,
+              "visible": true,
+              "width": 237.08,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 43,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs LA Clippers · All-time",
+              "href": "/clash/all-time/boston-vs-la-clippers",
+              "disabled": false,
+              "visible": true,
+              "width": 274.73,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 44,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Los Angeles Lakers · All-time",
+              "href": "/clash/all-time/boston-vs-la-lakers",
+              "disabled": false,
+              "visible": true,
+              "width": 271.02,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 45,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Memphis Grizzlies · All-time",
+              "href": "/clash/all-time/boston-vs-memphis",
+              "disabled": false,
+              "visible": true,
+              "width": 250.36,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 46,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Miami Heat · All-time",
+              "href": "/clash/all-time/boston-vs-miami",
+              "disabled": false,
+              "visible": true,
+              "width": 273.08,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 47,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Milwaukee Bucks · All-time",
+              "href": "/clash/all-time/boston-vs-milwaukee",
+              "disabled": false,
+              "visible": true,
+              "width": 259.58,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 48,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Minnesota Timberwolves · All-time",
+              "href": "/clash/all-time/boston-vs-minnesota",
+              "disabled": false,
+              "visible": true,
+              "width": 258.95,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 49,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs New Orleans Pelicans · All-time",
+              "href": "/clash/all-time/boston-vs-new-orleans",
+              "disabled": false,
+              "visible": true,
+              "width": 275.22,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 50,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs New York Knicks · All-time",
+              "href": "/clash/all-time/boston-vs-new-york",
+              "disabled": false,
+              "visible": true,
+              "width": 252.69,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 51,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Oklahoma City Thunder · All-time",
+              "href": "/clash/all-time/boston-vs-oklahoma-city",
+              "disabled": false,
+              "visible": true,
+              "width": 256.66,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 52,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Orlando Magic · All-time",
+              "href": "/clash/all-time/boston-vs-orlando",
+              "disabled": false,
+              "visible": true,
+              "width": 242.27,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 53,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Philadelphia 76ers · All-time",
+              "href": "/clash/all-time/boston-vs-philadelphia",
+              "disabled": false,
+              "visible": true,
+              "width": 270.59,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 54,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Phoenix Suns · All-time",
+              "href": "/clash/all-time/boston-vs-phoenix",
+              "disabled": false,
+              "visible": true,
+              "width": 242.2,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 55,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Portland Trail Blazers · All-time",
+              "href": "/clash/all-time/boston-vs-portland",
+              "disabled": false,
+              "visible": true,
+              "width": 278.08,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 56,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Sacramento Kings · All-time",
+              "href": "/clash/all-time/boston-vs-sacramento",
+              "disabled": false,
+              "visible": true,
+              "width": 270.17,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 57,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs San Antonio Spurs · All-time",
+              "href": "/clash/all-time/boston-vs-san-antonio",
+              "disabled": false,
+              "visible": true,
+              "width": 270.34,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 58,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Toronto Raptors · All-time",
+              "href": "/clash/all-time/boston-vs-toronto",
+              "disabled": false,
+              "visible": true,
+              "width": 240.3,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 59,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Utah Jazz · All-time",
+              "href": "/clash/all-time/boston-vs-utah",
+              "disabled": false,
+              "visible": true,
+              "width": 264.17,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 60,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Boston Celtics · All-time vs Washington Wizards · All-time",
+              "href": "/clash/all-time/boston-vs-washington",
+              "disabled": false,
+              "visible": true,
+              "width": 268.67,
+              "height": 40.5,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 61,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "EraClash Basketball",
+              "href": "/",
+              "disabled": false,
+              "visible": true,
+              "width": 127.34,
+              "height": 17,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 62,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Privacy",
+              "href": "/privacy",
+              "disabled": false,
+              "visible": true,
+              "width": 47.11,
+              "height": 17,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 63,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Terms",
+              "href": "/terms",
+              "disabled": false,
+              "visible": true,
+              "width": 39.73,
+              "height": 17,
+              "inline": true,
+              "value": ""
+            }
+          ]
+        },
+        {
+          "status": "FAIL",
+          "name": "console errors",
+          "detail": [
+            "Failed to load resource: the server responded with a status of 404 (Not Found)"
+          ]
+        },
+        {
+          "status": "FAIL",
+          "name": "axe critical/serious violations",
+          "detail": {
+            "critical": 0,
+            "serious": 2
+          }
+        }
+      ],
+      "statusCode": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+      "title": "Atlanta Hawks vs Boston Celtics | EraClash Basketball",
+      "geometry": {
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "scrollWidth": 320,
+        "overflow": false,
+        "theme": null,
+        "loopBackground": null,
+        "metaViewport": "width=device-width,initial-scale=1"
+      },
+      "controls": [
+        {
+          "index": 0,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Take control",
+          "href": "/clash/franchise?gold=atlanta&blue=boston&entry=control",
+          "disabled": false,
+          "visible": true,
+          "width": 149.25,
+          "height": 59,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 1,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Watch this Clash",
+          "href": "/clash/franchise?gold=atlanta&blue=boston&entry=watch",
+          "disabled": false,
+          "visible": true,
+          "width": 187.61,
+          "height": 59,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 2,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Historical source 1",
+          "href": "https://www.nba.com/news/history-legend-dominique-wilkins",
+          "disabled": false,
+          "visible": true,
+          "width": 125.58,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 3,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Historical source 2",
+          "href": "https://www.nba.com/news/history-nba-legend-bob-pettit",
+          "disabled": false,
+          "visible": true,
+          "width": 127.67,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 4,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Historical source 1",
+          "href": "https://www.nba.com/news/history-nba-legend-bob-cousy",
+          "disabled": false,
+          "visible": true,
+          "width": 125.58,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 5,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Brooklyn Nets · All-time",
+          "href": "/clash/all-time/atlanta-vs-brooklyn",
+          "disabled": false,
+          "visible": true,
+          "width": 246.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 6,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Charlotte Hornets · All-time",
+          "href": "/clash/all-time/atlanta-vs-charlotte",
+          "disabled": false,
+          "visible": true,
+          "width": 249.5,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 7,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Chicago Bulls · All-time",
+          "href": "/clash/all-time/atlanta-vs-chicago",
+          "disabled": false,
+          "visible": true,
+          "width": 279.2,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 8,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Cleveland Cavaliers · All-time",
+          "href": "/clash/all-time/atlanta-vs-cleveland",
+          "disabled": false,
+          "visible": true,
+          "width": 253.33,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 9,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Dallas Mavericks · All-time",
+          "href": "/clash/all-time/atlanta-vs-dallas",
+          "disabled": false,
+          "visible": true,
+          "width": 227.52,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 10,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Denver Nuggets · All-time",
+          "href": "/clash/all-time/atlanta-vs-denver",
+          "disabled": false,
+          "visible": true,
+          "width": 234.67,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 11,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Detroit Pistons · All-time",
+          "href": "/clash/all-time/atlanta-vs-detroit",
+          "disabled": false,
+          "visible": true,
+          "width": 232.83,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 12,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Golden State Warriors · All-time",
+          "href": "/clash/all-time/atlanta-vs-golden-state",
+          "disabled": false,
+          "visible": true,
+          "width": 275.03,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 13,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Houston Rockets · All-time",
+          "href": "/clash/all-time/atlanta-vs-houston",
+          "disabled": false,
+          "visible": true,
+          "width": 243.88,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 14,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Indiana Pacers · All-time",
+          "href": "/clash/all-time/atlanta-vs-indiana",
+          "disabled": false,
+          "visible": true,
+          "width": 235.39,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 15,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs LA Clippers · All-time",
+          "href": "/clash/all-time/atlanta-vs-la-clippers",
+          "disabled": false,
+          "visible": true,
+          "width": 273.05,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 16,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Los Angeles Lakers · All-time",
+          "href": "/clash/all-time/atlanta-vs-la-lakers",
+          "disabled": false,
+          "visible": true,
+          "width": 269.33,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 17,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Memphis Grizzlies · All-time",
+          "href": "/clash/all-time/atlanta-vs-memphis",
+          "disabled": false,
+          "visible": true,
+          "width": 248.67,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 18,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Miami Heat · All-time",
+          "href": "/clash/all-time/atlanta-vs-miami",
+          "disabled": false,
+          "visible": true,
+          "width": 271.39,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 19,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Milwaukee Bucks · All-time",
+          "href": "/clash/all-time/atlanta-vs-milwaukee",
+          "disabled": false,
+          "visible": true,
+          "width": 257.88,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 20,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Minnesota Timberwolves · All-time",
+          "href": "/clash/all-time/atlanta-vs-minnesota",
+          "disabled": false,
+          "visible": true,
+          "width": 257.25,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 21,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs New Orleans Pelicans · All-time",
+          "href": "/clash/all-time/atlanta-vs-new-orleans",
+          "disabled": false,
+          "visible": true,
+          "width": 273.52,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 22,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs New York Knicks · All-time",
+          "href": "/clash/all-time/atlanta-vs-new-york",
+          "disabled": false,
+          "visible": true,
+          "width": 251,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 23,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Oklahoma City Thunder · All-time",
+          "href": "/clash/all-time/atlanta-vs-oklahoma-city",
+          "disabled": false,
+          "visible": true,
+          "width": 254.97,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 24,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Orlando Magic · All-time",
+          "href": "/clash/all-time/atlanta-vs-orlando",
+          "disabled": false,
+          "visible": true,
+          "width": 240.58,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 25,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Philadelphia 76ers · All-time",
+          "href": "/clash/all-time/atlanta-vs-philadelphia",
+          "disabled": false,
+          "visible": true,
+          "width": 268.89,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 26,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Phoenix Suns · All-time",
+          "href": "/clash/all-time/atlanta-vs-phoenix",
+          "disabled": false,
+          "visible": true,
+          "width": 278.47,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 27,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Portland Trail Blazers · All-time",
+          "href": "/clash/all-time/atlanta-vs-portland",
+          "disabled": false,
+          "visible": true,
+          "width": 276.39,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 28,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Sacramento Kings · All-time",
+          "href": "/clash/all-time/atlanta-vs-sacramento",
+          "disabled": false,
+          "visible": true,
+          "width": 268.48,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 29,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs San Antonio Spurs · All-time",
+          "href": "/clash/all-time/atlanta-vs-san-antonio",
+          "disabled": false,
+          "visible": true,
+          "width": 268.64,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 30,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Toronto Raptors · All-time",
+          "href": "/clash/all-time/atlanta-vs-toronto",
+          "disabled": false,
+          "visible": true,
+          "width": 238.61,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 31,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Utah Jazz · All-time",
+          "href": "/clash/all-time/atlanta-vs-utah",
+          "disabled": false,
+          "visible": true,
+          "width": 262.48,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 32,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Washington Wizards · All-time",
+          "href": "/clash/all-time/atlanta-vs-washington",
+          "disabled": false,
+          "visible": true,
+          "width": 266.98,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 33,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Brooklyn Nets · All-time",
+          "href": "/clash/all-time/boston-vs-brooklyn",
+          "disabled": false,
+          "visible": true,
+          "width": 247.77,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 34,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Charlotte Hornets · All-time",
+          "href": "/clash/all-time/boston-vs-charlotte",
+          "disabled": false,
+          "visible": true,
+          "width": 251.19,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 35,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Chicago Bulls · All-time",
+          "href": "/clash/all-time/boston-vs-chicago",
+          "disabled": false,
+          "visible": true,
+          "width": 244.03,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 36,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Cleveland Cavaliers · All-time",
+          "href": "/clash/all-time/boston-vs-cleveland",
+          "disabled": false,
+          "visible": true,
+          "width": 255.02,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 37,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Dallas Mavericks · All-time",
+          "href": "/clash/all-time/boston-vs-dallas",
+          "disabled": false,
+          "visible": true,
+          "width": 229.22,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 38,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Denver Nuggets · All-time",
+          "href": "/clash/all-time/boston-vs-denver",
+          "disabled": false,
+          "visible": true,
+          "width": 236.38,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 39,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Detroit Pistons · All-time",
+          "href": "/clash/all-time/boston-vs-detroit",
+          "disabled": false,
+          "visible": true,
+          "width": 234.52,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 40,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Golden State Warriors · All-time",
+          "href": "/clash/all-time/boston-vs-golden-state",
+          "disabled": false,
+          "visible": true,
+          "width": 276.72,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 41,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Houston Rockets · All-time",
+          "href": "/clash/all-time/boston-vs-houston",
+          "disabled": false,
+          "visible": true,
+          "width": 245.56,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 42,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Indiana Pacers · All-time",
+          "href": "/clash/all-time/boston-vs-indiana",
+          "disabled": false,
+          "visible": true,
+          "width": 237.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 43,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs LA Clippers · All-time",
+          "href": "/clash/all-time/boston-vs-la-clippers",
+          "disabled": false,
+          "visible": true,
+          "width": 274.73,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 44,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Los Angeles Lakers · All-time",
+          "href": "/clash/all-time/boston-vs-la-lakers",
+          "disabled": false,
+          "visible": true,
+          "width": 271.02,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 45,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Memphis Grizzlies · All-time",
+          "href": "/clash/all-time/boston-vs-memphis",
+          "disabled": false,
+          "visible": true,
+          "width": 250.36,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 46,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Miami Heat · All-time",
+          "href": "/clash/all-time/boston-vs-miami",
+          "disabled": false,
+          "visible": true,
+          "width": 273.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 47,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Milwaukee Bucks · All-time",
+          "href": "/clash/all-time/boston-vs-milwaukee",
+          "disabled": false,
+          "visible": true,
+          "width": 259.58,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 48,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Minnesota Timberwolves · All-time",
+          "href": "/clash/all-time/boston-vs-minnesota",
+          "disabled": false,
+          "visible": true,
+          "width": 258.95,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 49,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs New Orleans Pelicans · All-time",
+          "href": "/clash/all-time/boston-vs-new-orleans",
+          "disabled": false,
+          "visible": true,
+          "width": 275.22,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 50,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs New York Knicks · All-time",
+          "href": "/clash/all-time/boston-vs-new-york",
+          "disabled": false,
+          "visible": true,
+          "width": 252.69,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 51,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Oklahoma City Thunder · All-time",
+          "href": "/clash/all-time/boston-vs-oklahoma-city",
+          "disabled": false,
+          "visible": true,
+          "width": 256.66,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 52,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Orlando Magic · All-time",
+          "href": "/clash/all-time/boston-vs-orlando",
+          "disabled": false,
+          "visible": true,
+          "width": 242.27,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 53,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Philadelphia 76ers · All-time",
+          "href": "/clash/all-time/boston-vs-philadelphia",
+          "disabled": false,
+          "visible": true,
+          "width": 270.59,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 54,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Phoenix Suns · All-time",
+          "href": "/clash/all-time/boston-vs-phoenix",
+          "disabled": false,
+          "visible": true,
+          "width": 242.2,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 55,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Portland Trail Blazers · All-time",
+          "href": "/clash/all-time/boston-vs-portland",
+          "disabled": false,
+          "visible": true,
+          "width": 278.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 56,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Sacramento Kings · All-time",
+          "href": "/clash/all-time/boston-vs-sacramento",
+          "disabled": false,
+          "visible": true,
+          "width": 270.17,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 57,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs San Antonio Spurs · All-time",
+          "href": "/clash/all-time/boston-vs-san-antonio",
+          "disabled": false,
+          "visible": true,
+          "width": 270.34,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 58,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Toronto Raptors · All-time",
+          "href": "/clash/all-time/boston-vs-toronto",
+          "disabled": false,
+          "visible": true,
+          "width": 240.3,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 59,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Utah Jazz · All-time",
+          "href": "/clash/all-time/boston-vs-utah",
+          "disabled": false,
+          "visible": true,
+          "width": 264.17,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 60,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Washington Wizards · All-time",
+          "href": "/clash/all-time/boston-vs-washington",
+          "disabled": false,
+          "visible": true,
+          "width": 268.67,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 61,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "EraClash Basketball",
+          "href": "/",
+          "disabled": false,
+          "visible": true,
+          "width": 127.34,
+          "height": 17,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 62,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Privacy",
+          "href": "/privacy",
+          "disabled": false,
+          "visible": true,
+          "width": 47.11,
+          "height": 17,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 63,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Terms",
+          "href": "/terms",
+          "disabled": false,
+          "visible": true,
+          "width": 39.73,
+          "height": 17,
+          "inline": true,
+          "value": ""
+        }
+      ],
+      "smallTargets": [
+        {
+          "index": 2,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Historical source 1",
+          "href": "https://www.nba.com/news/history-legend-dominique-wilkins",
+          "disabled": false,
+          "visible": true,
+          "width": 125.58,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 3,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Historical source 2",
+          "href": "https://www.nba.com/news/history-nba-legend-bob-pettit",
+          "disabled": false,
+          "visible": true,
+          "width": 127.67,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 4,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Historical source 1",
+          "href": "https://www.nba.com/news/history-nba-legend-bob-cousy",
+          "disabled": false,
+          "visible": true,
+          "width": 125.58,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 5,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Brooklyn Nets · All-time",
+          "href": "/clash/all-time/atlanta-vs-brooklyn",
+          "disabled": false,
+          "visible": true,
+          "width": 246.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 6,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Charlotte Hornets · All-time",
+          "href": "/clash/all-time/atlanta-vs-charlotte",
+          "disabled": false,
+          "visible": true,
+          "width": 249.5,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 7,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Chicago Bulls · All-time",
+          "href": "/clash/all-time/atlanta-vs-chicago",
+          "disabled": false,
+          "visible": true,
+          "width": 279.2,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 8,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Cleveland Cavaliers · All-time",
+          "href": "/clash/all-time/atlanta-vs-cleveland",
+          "disabled": false,
+          "visible": true,
+          "width": 253.33,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 9,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Dallas Mavericks · All-time",
+          "href": "/clash/all-time/atlanta-vs-dallas",
+          "disabled": false,
+          "visible": true,
+          "width": 227.52,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 10,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Denver Nuggets · All-time",
+          "href": "/clash/all-time/atlanta-vs-denver",
+          "disabled": false,
+          "visible": true,
+          "width": 234.67,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 11,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Detroit Pistons · All-time",
+          "href": "/clash/all-time/atlanta-vs-detroit",
+          "disabled": false,
+          "visible": true,
+          "width": 232.83,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 12,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Golden State Warriors · All-time",
+          "href": "/clash/all-time/atlanta-vs-golden-state",
+          "disabled": false,
+          "visible": true,
+          "width": 275.03,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 13,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Houston Rockets · All-time",
+          "href": "/clash/all-time/atlanta-vs-houston",
+          "disabled": false,
+          "visible": true,
+          "width": 243.88,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 14,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Indiana Pacers · All-time",
+          "href": "/clash/all-time/atlanta-vs-indiana",
+          "disabled": false,
+          "visible": true,
+          "width": 235.39,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 15,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs LA Clippers · All-time",
+          "href": "/clash/all-time/atlanta-vs-la-clippers",
+          "disabled": false,
+          "visible": true,
+          "width": 273.05,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 16,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Los Angeles Lakers · All-time",
+          "href": "/clash/all-time/atlanta-vs-la-lakers",
+          "disabled": false,
+          "visible": true,
+          "width": 269.33,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 17,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Memphis Grizzlies · All-time",
+          "href": "/clash/all-time/atlanta-vs-memphis",
+          "disabled": false,
+          "visible": true,
+          "width": 248.67,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 18,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Miami Heat · All-time",
+          "href": "/clash/all-time/atlanta-vs-miami",
+          "disabled": false,
+          "visible": true,
+          "width": 271.39,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 19,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Milwaukee Bucks · All-time",
+          "href": "/clash/all-time/atlanta-vs-milwaukee",
+          "disabled": false,
+          "visible": true,
+          "width": 257.88,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 20,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Minnesota Timberwolves · All-time",
+          "href": "/clash/all-time/atlanta-vs-minnesota",
+          "disabled": false,
+          "visible": true,
+          "width": 257.25,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 21,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs New Orleans Pelicans · All-time",
+          "href": "/clash/all-time/atlanta-vs-new-orleans",
+          "disabled": false,
+          "visible": true,
+          "width": 273.52,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 22,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs New York Knicks · All-time",
+          "href": "/clash/all-time/atlanta-vs-new-york",
+          "disabled": false,
+          "visible": true,
+          "width": 251,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 23,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Oklahoma City Thunder · All-time",
+          "href": "/clash/all-time/atlanta-vs-oklahoma-city",
+          "disabled": false,
+          "visible": true,
+          "width": 254.97,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 24,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Orlando Magic · All-time",
+          "href": "/clash/all-time/atlanta-vs-orlando",
+          "disabled": false,
+          "visible": true,
+          "width": 240.58,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 25,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Philadelphia 76ers · All-time",
+          "href": "/clash/all-time/atlanta-vs-philadelphia",
+          "disabled": false,
+          "visible": true,
+          "width": 268.89,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 26,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Phoenix Suns · All-time",
+          "href": "/clash/all-time/atlanta-vs-phoenix",
+          "disabled": false,
+          "visible": true,
+          "width": 278.47,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 27,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Portland Trail Blazers · All-time",
+          "href": "/clash/all-time/atlanta-vs-portland",
+          "disabled": false,
+          "visible": true,
+          "width": 276.39,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 28,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Sacramento Kings · All-time",
+          "href": "/clash/all-time/atlanta-vs-sacramento",
+          "disabled": false,
+          "visible": true,
+          "width": 268.48,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 29,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs San Antonio Spurs · All-time",
+          "href": "/clash/all-time/atlanta-vs-san-antonio",
+          "disabled": false,
+          "visible": true,
+          "width": 268.64,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 30,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Toronto Raptors · All-time",
+          "href": "/clash/all-time/atlanta-vs-toronto",
+          "disabled": false,
+          "visible": true,
+          "width": 238.61,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 31,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Utah Jazz · All-time",
+          "href": "/clash/all-time/atlanta-vs-utah",
+          "disabled": false,
+          "visible": true,
+          "width": 262.48,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 32,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Atlanta Hawks · All-time vs Washington Wizards · All-time",
+          "href": "/clash/all-time/atlanta-vs-washington",
+          "disabled": false,
+          "visible": true,
+          "width": 266.98,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 33,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Brooklyn Nets · All-time",
+          "href": "/clash/all-time/boston-vs-brooklyn",
+          "disabled": false,
+          "visible": true,
+          "width": 247.77,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 34,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Charlotte Hornets · All-time",
+          "href": "/clash/all-time/boston-vs-charlotte",
+          "disabled": false,
+          "visible": true,
+          "width": 251.19,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 35,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Chicago Bulls · All-time",
+          "href": "/clash/all-time/boston-vs-chicago",
+          "disabled": false,
+          "visible": true,
+          "width": 244.03,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 36,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Cleveland Cavaliers · All-time",
+          "href": "/clash/all-time/boston-vs-cleveland",
+          "disabled": false,
+          "visible": true,
+          "width": 255.02,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 37,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Dallas Mavericks · All-time",
+          "href": "/clash/all-time/boston-vs-dallas",
+          "disabled": false,
+          "visible": true,
+          "width": 229.22,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 38,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Denver Nuggets · All-time",
+          "href": "/clash/all-time/boston-vs-denver",
+          "disabled": false,
+          "visible": true,
+          "width": 236.38,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 39,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Detroit Pistons · All-time",
+          "href": "/clash/all-time/boston-vs-detroit",
+          "disabled": false,
+          "visible": true,
+          "width": 234.52,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 40,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Golden State Warriors · All-time",
+          "href": "/clash/all-time/boston-vs-golden-state",
+          "disabled": false,
+          "visible": true,
+          "width": 276.72,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 41,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Houston Rockets · All-time",
+          "href": "/clash/all-time/boston-vs-houston",
+          "disabled": false,
+          "visible": true,
+          "width": 245.56,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 42,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Indiana Pacers · All-time",
+          "href": "/clash/all-time/boston-vs-indiana",
+          "disabled": false,
+          "visible": true,
+          "width": 237.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 43,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs LA Clippers · All-time",
+          "href": "/clash/all-time/boston-vs-la-clippers",
+          "disabled": false,
+          "visible": true,
+          "width": 274.73,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 44,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Los Angeles Lakers · All-time",
+          "href": "/clash/all-time/boston-vs-la-lakers",
+          "disabled": false,
+          "visible": true,
+          "width": 271.02,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 45,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Memphis Grizzlies · All-time",
+          "href": "/clash/all-time/boston-vs-memphis",
+          "disabled": false,
+          "visible": true,
+          "width": 250.36,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 46,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Miami Heat · All-time",
+          "href": "/clash/all-time/boston-vs-miami",
+          "disabled": false,
+          "visible": true,
+          "width": 273.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 47,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Milwaukee Bucks · All-time",
+          "href": "/clash/all-time/boston-vs-milwaukee",
+          "disabled": false,
+          "visible": true,
+          "width": 259.58,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 48,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Minnesota Timberwolves · All-time",
+          "href": "/clash/all-time/boston-vs-minnesota",
+          "disabled": false,
+          "visible": true,
+          "width": 258.95,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 49,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs New Orleans Pelicans · All-time",
+          "href": "/clash/all-time/boston-vs-new-orleans",
+          "disabled": false,
+          "visible": true,
+          "width": 275.22,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 50,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs New York Knicks · All-time",
+          "href": "/clash/all-time/boston-vs-new-york",
+          "disabled": false,
+          "visible": true,
+          "width": 252.69,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 51,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Oklahoma City Thunder · All-time",
+          "href": "/clash/all-time/boston-vs-oklahoma-city",
+          "disabled": false,
+          "visible": true,
+          "width": 256.66,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 52,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Orlando Magic · All-time",
+          "href": "/clash/all-time/boston-vs-orlando",
+          "disabled": false,
+          "visible": true,
+          "width": 242.27,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 53,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Philadelphia 76ers · All-time",
+          "href": "/clash/all-time/boston-vs-philadelphia",
+          "disabled": false,
+          "visible": true,
+          "width": 270.59,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 54,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Phoenix Suns · All-time",
+          "href": "/clash/all-time/boston-vs-phoenix",
+          "disabled": false,
+          "visible": true,
+          "width": 242.2,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 55,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Portland Trail Blazers · All-time",
+          "href": "/clash/all-time/boston-vs-portland",
+          "disabled": false,
+          "visible": true,
+          "width": 278.08,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 56,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Sacramento Kings · All-time",
+          "href": "/clash/all-time/boston-vs-sacramento",
+          "disabled": false,
+          "visible": true,
+          "width": 270.17,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 57,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs San Antonio Spurs · All-time",
+          "href": "/clash/all-time/boston-vs-san-antonio",
+          "disabled": false,
+          "visible": true,
+          "width": 270.34,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 58,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Toronto Raptors · All-time",
+          "href": "/clash/all-time/boston-vs-toronto",
+          "disabled": false,
+          "visible": true,
+          "width": 240.3,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 59,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Utah Jazz · All-time",
+          "href": "/clash/all-time/boston-vs-utah",
+          "disabled": false,
+          "visible": true,
+          "width": 264.17,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 60,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Boston Celtics · All-time vs Washington Wizards · All-time",
+          "href": "/clash/all-time/boston-vs-washington",
+          "disabled": false,
+          "visible": true,
+          "width": 268.67,
+          "height": 40.5,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 61,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "EraClash Basketball",
+          "href": "/",
+          "disabled": false,
+          "visible": true,
+          "width": 127.34,
+          "height": 17,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 62,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Privacy",
+          "href": "/privacy",
+          "disabled": false,
+          "visible": true,
+          "width": 47.11,
+          "height": 17,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 63,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Terms",
+          "href": "/terms",
+          "disabled": false,
+          "visible": true,
+          "width": 39.73,
+          "height": 17,
+          "inline": true,
+          "value": ""
+        }
+      ],
+      "authGate": false,
+      "availability": "RENDERED",
+      "axe": {
+        "version": "4.13.0",
+        "violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".side:nth-child(1) > ul > li:nth-child(1) > span"
+                ],
+                "html": "<span>PG</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.74 (foreground color: #6b7382, background color: #f3e3b5, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".side:nth-child(1) > ul > li:nth-child(2) > span"
+                ],
+                "html": "<span>SG</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.74 (foreground color: #6b7382, background color: #f3e3b5, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".side:nth-child(1) > ul > li:nth-child(3) > span"
+                ],
+                "html": "<span>SF</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.74 (foreground color: #6b7382, background color: #f3e3b5, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".side:nth-child(1) > ul > li:nth-child(4) > span"
+                ],
+                "html": "<span>PF</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.74 (foreground color: #6b7382, background color: #f3e3b5, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".side:nth-child(2) > ul > li:nth-child(1) > span"
+                ],
+                "html": "<span>PG</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.8 (foreground color: #6b7382, background color: #dce6fa, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".side:nth-child(2) > ul > li:nth-child(2) > span"
+                ],
+                "html": "<span>SG</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.8 (foreground color: #6b7382, background color: #dce6fa, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".side:nth-child(2) > ul > li:nth-child(3) > span"
+                ],
+                "html": "<span>SF</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.8 (foreground color: #6b7382, background color: #dce6fa, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".side:nth-child(2) > ul > li:nth-child(4) > span"
+                ],
+                "html": "<span>PF</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.8 (foreground color: #6b7382, background color: #dce6fa, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".note"
+                ],
+                "html": "<p class=\"note\">Curated all-time lineups drawn from the available player catalog. Not an official ranking or a live-game forecast. Neutral staff; no home-court modifier. Play as a guest.</p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.23 (foreground color: #6b7382, background color: #f6f1e7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ]
+          },
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "description": "Ensure touch targets have sufficient size and space",
+            "help": "All touch targets must be 24px large, or leave sufficient space",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "a[data-browser-audit-control=\"2\"]"
+                ],
+                "html": "<a href=\"https://www.nba.com/news/history-legend-dominique-wilkins\" data-browser-audit-control=\"2\">Historical source 1</a>",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size (125.6px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px."
+              },
+              {
+                "target": [
+                  "a[data-browser-audit-control=\"3\"]"
+                ],
+                "html": "<a href=\"https://www.nba.com/news/history-nba-legend-bob-pettit\" data-browser-audit-control=\"3\">Historical source 2</a>",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size (127.7px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px."
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".side:nth-child(1) > ul > li:nth-child(5) > span"
+                ],
+                "html": "<span>C</span>",
+                "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+              },
+              {
+                "target": [
+                  ".side:nth-child(2) > ul > li:nth-child(5) > span"
+                ],
+                "html": "<span>C</span>",
+                "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+              }
+            ]
+          }
+        ],
+        "passedRules": 21,
+        "critical": 0,
+        "serious": 2
+      },
+      "screenshot": "screenshots/iphone-se--clash-all-time-atlanta-vs-boston.png",
+      "interactions": [
+        {
+          "status": "UNVERIFIED",
+          "reason": "Controls disabled by command option."
+        }
+      ],
+      "status": "FAIL",
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "failedResponses": [],
+      "failedRequests": [],
+      "endedAt": "2026-10-02T08:37:29.008Z",
+      "artifact": "routes/iphone-se--clash-all-time-atlanta-vs-boston-ce51663c.json"
+    },
+    {
+      "path": "/clash/modes",
+      "kind": "loop-mode",
+      "profile": "iphone-se",
+      "identity": "fresh guest context",
+      "startedAt": "2026-10-02T08:37:30.673Z",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "Light Court surface",
+          "detail": "rgb(241, 237, 228)"
+        }
+      ],
+      "statusCode": 200,
+      "finalUrl": "http://localhost:4320/clash/modes",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "geometry": {
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "scrollWidth": 320,
+        "overflow": false,
+        "theme": "night-court-production-hybrid",
+        "loopBackground": "rgb(241, 237, 228)",
+        "metaViewport": "width=device-width, initial-scale=1.0"
+      },
+      "controls": [
+        {
+          "index": 0,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Menu",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 44,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 1,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "EraClash Basketball home",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 196,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 2,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Create account",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 44,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 3,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Modes hub",
+          "href": "/clash/modes",
+          "disabled": false,
+          "visible": true,
+          "width": 81.05,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 4,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Chaos Clash →",
+          "href": "/play/chaos",
+          "disabled": false,
+          "visible": true,
+          "width": 161.23,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 5,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Clash Any Five →",
+          "href": "/clash/any-five",
+          "disabled": false,
+          "visible": true,
+          "width": 178.09,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 6,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Daily Clash →",
+          "href": "/clash/daily",
+          "disabled": false,
+          "visible": true,
+          "width": 151.06,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 7,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Franchise Clash →",
+          "href": "/clash/franchise",
+          "disabled": false,
+          "visible": true,
+          "width": 188.63,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 8,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Chaos Spin →",
+          "href": "/clash/spin",
+          "disabled": false,
+          "visible": true,
+          "width": 152.05,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 9,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Constraint filters →",
+          "href": "/clash/filters",
+          "disabled": false,
+          "visible": true,
+          "width": 197.13,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 10,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Era Gauntlet →",
+          "href": "/clash/gauntlet",
+          "disabled": false,
+          "visible": true,
+          "width": 160.78,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 11,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open What-If Lab →",
+          "href": "/clash/lab",
+          "disabled": false,
+          "visible": true,
+          "width": 156.61,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 12,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Private rooms →",
+          "href": "/clash/rooms",
+          "disabled": false,
+          "visible": true,
+          "width": 172.98,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 13,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Challenges →",
+          "href": "/challenges",
+          "disabled": false,
+          "visible": true,
+          "width": 151.42,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 14,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Dream Clash →",
+          "href": "/play/dream",
+          "disabled": false,
+          "visible": true,
+          "width": 163.61,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 15,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Best of 7 →",
+          "href": "/play/best-of-7",
+          "disabled": false,
+          "visible": true,
+          "width": 132.55,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 16,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Win 82 →",
+          "href": "/play/win-82",
+          "disabled": false,
+          "visible": true,
+          "width": 119,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 17,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Open Tournament →",
+          "href": "/play/tournament",
+          "disabled": false,
+          "visible": true,
+          "width": 158.73,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 18,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "View format →",
+          "href": "/fantasy/eraclash",
+          "disabled": false,
+          "visible": true,
+          "width": 113.77,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 19,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "View format →",
+          "href": "/fantasy/live",
+          "disabled": false,
+          "visible": true,
+          "width": 113.77,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 20,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "All modes",
+          "href": "/clash/modes",
+          "disabled": false,
+          "visible": true,
+          "width": 87.28,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 21,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Private rooms",
+          "href": "/clash/rooms",
+          "disabled": false,
+          "visible": true,
+          "width": 115.73,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 22,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Privacy",
+          "href": "/privacy",
+          "disabled": false,
+          "visible": true,
+          "width": 68.86,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 23,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Terms",
+          "href": "/terms",
+          "disabled": false,
+          "visible": true,
+          "width": 60.7,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 24,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Founding Player",
+          "href": "/support",
+          "disabled": false,
+          "visible": true,
+          "width": 132.3,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 25,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Image credits",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 84.27,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        }
+      ],
+      "smallTargets": [],
+      "authGate": false,
+      "availability": "RENDERED",
+      "axe": {
+        "version": "4.13.0",
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "footer"
+                ],
+                "html": "<footer style=\"text-align: center; padding: 20px; font-size: 10.5px; color: var(--ec-t-text-dim, #5a6577); border-top: 1px solid var(--ec-t-border, #d9dee7);\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passedRules": 34,
+        "critical": 0,
+        "serious": 0
+      },
+      "screenshot": "screenshots/iphone-se--clash-modes.png",
+      "interactions": [
+        {
+          "status": "UNVERIFIED",
+          "reason": "Controls disabled by command option."
+        }
+      ],
+      "status": "FAIL",
+      "errors": [],
+      "consoleErrors": [],
+      "failedResponses": [],
+      "failedRequests": [],
+      "endedAt": "2026-10-02T08:37:31.904Z",
+      "artifact": "routes/iphone-se--clash-modes-18540a51.json"
+    },
+    {
+      "path": "/privacy",
+      "kind": "application",
+      "profile": "iphone-se",
+      "identity": "fresh guest context",
+      "startedAt": "2026-10-02T08:37:30.671Z",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "44px minimum target dimension",
+          "detail": [
+            {
+              "index": 3,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Play a mode",
+              "href": "/clash/modes",
+              "disabled": false,
+              "visible": true,
+              "width": 88.16,
+              "height": 18,
+              "inline": true,
+              "value": ""
+            },
+            {
+              "index": 4,
+              "tag": "a",
+              "type": null,
+              "role": null,
+              "name": "Terms",
+              "href": "/terms",
+              "disabled": false,
+              "visible": true,
+              "width": 44.7,
+              "height": 18,
+              "inline": true,
+              "value": ""
+            }
+          ]
+        }
+      ],
+      "statusCode": 200,
+      "finalUrl": "http://localhost:4320/privacy",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "geometry": {
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "scrollWidth": 320,
+        "overflow": false,
+        "theme": "night-court-production-hybrid",
+        "loopBackground": null,
+        "metaViewport": "width=device-width, initial-scale=1.0"
+      },
+      "controls": [
+        {
+          "index": 0,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Menu",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 44,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 1,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "EraClash Basketball home",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 196,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 2,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Create account",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 44,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 3,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Play a mode",
+          "href": "/clash/modes",
+          "disabled": false,
+          "visible": true,
+          "width": 88.16,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 4,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Terms",
+          "href": "/terms",
+          "disabled": false,
+          "visible": true,
+          "width": 44.7,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 5,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "All modes",
+          "href": "/clash/modes",
+          "disabled": false,
+          "visible": true,
+          "width": 87.28,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 6,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Private rooms",
+          "href": "/clash/rooms",
+          "disabled": false,
+          "visible": true,
+          "width": 115.73,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 7,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Privacy",
+          "href": "/privacy",
+          "disabled": false,
+          "visible": true,
+          "width": 68.86,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 8,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Terms",
+          "href": "/terms",
+          "disabled": false,
+          "visible": true,
+          "width": 60.7,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 9,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Founding Player",
+          "href": "/support",
+          "disabled": false,
+          "visible": true,
+          "width": 132.3,
+          "height": 56.8,
+          "inline": false,
+          "value": ""
+        },
+        {
+          "index": 10,
+          "tag": "button",
+          "type": "submit",
+          "role": null,
+          "name": "Image credits",
+          "href": null,
+          "disabled": false,
+          "visible": true,
+          "width": 84.27,
+          "height": 44,
+          "inline": false,
+          "value": ""
+        }
+      ],
+      "smallTargets": [
+        {
+          "index": 3,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Play a mode",
+          "href": "/clash/modes",
+          "disabled": false,
+          "visible": true,
+          "width": 88.16,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        },
+        {
+          "index": 4,
+          "tag": "a",
+          "type": null,
+          "role": null,
+          "name": "Terms",
+          "href": "/terms",
+          "disabled": false,
+          "visible": true,
+          "width": 44.7,
+          "height": 18,
+          "inline": true,
+          "value": ""
+        }
+      ],
+      "authGate": false,
+      "availability": "RENDERED",
+      "axe": {
+        "version": "4.13.0",
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "footer"
+                ],
+                "html": "<footer style=\"text-align: center; padding: 20px; font-size: 10.5px; color: var(--ec-t-text-dim, #5a6577); border-top: 1px solid var(--ec-t-border, #d9dee7);\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passedRules": 34,
+        "critical": 0,
+        "serious": 0
+      },
+      "screenshot": "screenshots/iphone-se--privacy.png",
+      "interactions": [
+        {
+          "status": "UNVERIFIED",
+          "reason": "Controls disabled by command option."
+        }
+      ],
+      "status": "FAIL",
+      "errors": [],
+      "consoleErrors": [],
+      "failedResponses": [],
+      "failedRequests": [],
+      "endedAt": "2026-10-02T08:37:31.904Z",
+      "artifact": "routes/iphone-se--privacy-0ece7f7c.json"
+    }
+  ],
+  "links": [
+    {
+      "url": "http://localhost:4320/clash/franchise?gold=atlanta&blue=boston&entry=control",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/franchise?gold=atlanta&blue=boston&entry=control",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/franchise?gold=atlanta&blue=boston&entry=watch",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/franchise?gold=atlanta&blue=boston&entry=watch",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-brooklyn",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-brooklyn",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-charlotte",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-charlotte",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-chicago",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-chicago",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-cleveland",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-cleveland",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-dallas",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-dallas",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-denver",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-denver",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-detroit",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-detroit",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-golden-state",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-golden-state",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-houston",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-houston",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-indiana",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-indiana",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-la-clippers",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-la-clippers",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-la-lakers",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-la-lakers",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-memphis",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-memphis",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-miami",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-miami",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-milwaukee",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-milwaukee",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-minnesota",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-minnesota",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-new-orleans",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-new-orleans",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-new-york",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-new-york",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-oklahoma-city",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-oklahoma-city",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-orlando",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-orlando",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-philadelphia",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-philadelphia",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-phoenix",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-phoenix",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-portland",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-portland",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-sacramento",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-sacramento",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-san-antonio",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-san-antonio",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-toronto",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-toronto",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-utah",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-utah",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-washington",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-washington",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-brooklyn",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-brooklyn",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-charlotte",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-charlotte",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-chicago",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-chicago",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-cleveland",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-cleveland",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-dallas",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-dallas",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-denver",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-denver",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-detroit",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-detroit",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-golden-state",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-golden-state",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-houston",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-houston",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-indiana",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-indiana",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-la-clippers",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-la-clippers",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-la-lakers",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-la-lakers",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-memphis",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-memphis",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-miami",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-miami",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-milwaukee",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-milwaukee",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-minnesota",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-minnesota",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-new-orleans",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-new-orleans",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-new-york",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-new-york",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-oklahoma-city",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-oklahoma-city",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-orlando",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-orlando",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-philadelphia",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-philadelphia",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-phoenix",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-phoenix",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-portland",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-portland",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-sacramento",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-sacramento",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-san-antonio",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-san-antonio",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-toronto",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-toronto",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-utah",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-utah",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/boston-vs-washington",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/boston-vs-washington",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/privacy",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/privacy",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/terms",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/terms",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play/chaos",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play/chaos",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play/dream",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play/dream",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play/daily",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play/daily",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play/best-of-7",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play/best-of-7",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play/win-82",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play/win-82",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play/tournament",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play/tournament",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/era-gauntlet",
+      "source": "/",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/era-gauntlet",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/modes",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/modes",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/rooms",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/rooms",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/support",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/support",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/any-five",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/any-five",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/daily",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/daily",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/franchise",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/franchise",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/spin",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/spin",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/filters",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/filters",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/gauntlet",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/gauntlet",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/lab",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/lab",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/challenges",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 404,
+      "finalUrl": "http://localhost:4320/challenges",
+      "redirects": [],
+      "status": "FAIL",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/fantasy/eraclash",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/fantasy/eraclash",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/fantasy/live",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/fantasy/live",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/auth/callback",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/auth/callback",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/no-mvps",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/no-mvps",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/one-franchise",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/one-franchise",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/clash/one-per-era",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/clash/one-per-era",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/leaderboard",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/leaderboard",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/membership",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/membership",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/bo7",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/bo7",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/chaos",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/chaos",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/daily",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/daily",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/dream",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/dream",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/gauntlet",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/gauntlet",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/tournament",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/tournament",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/modes/win82",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/modes/win82",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/my-eraclash",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/my-eraclash",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "http://localhost:4320/play/era-gauntlet",
+      "source": "route inventory",
+      "internal": true,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "http://localhost:4320/play/era-gauntlet",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "https://www.nba.com/news/history-legend-dominique-wilkins",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": false,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "https://www.nba.com/news/history-legend-dominique-wilkins",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "https://www.nba.com/news/history-nba-legend-bob-pettit",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": false,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "https://www.nba.com/news/history-nba-legend-bob-pettit",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "url": "https://www.nba.com/news/history-nba-legend-bob-cousy",
+      "source": "/clash/all-time/atlanta-vs-boston",
+      "internal": false,
+      "method": "HEAD",
+      "httpStatus": 200,
+      "finalUrl": "https://www.nba.com/news/history-nba-legend-bob-cousy",
+      "redirects": [],
+      "status": "PASS",
+      "reason": null
+    }
+  ],
+  "servedSitemap": {
+    "path": "/sitemap.xml",
+    "httpStatus": 404,
+    "entries": 0,
+    "unique": 0,
+    "origins": [],
+    "sha256": "974bfd0e103cbd8830e3e48d93baa36005273a2d1d84e30dc6ec1952f3a0c60a",
+    "status": "FAIL"
+  },
+  "notFound": [
+    {
+      "path": "/this-page-does-not-exist-browser-audit",
+      "httpStatus": 404,
+      "status": "PASS",
+      "bodyHasNotice": true
+    },
+    {
+      "path": "/clash/all-time/not-a-real-franchise-pairing",
+      "httpStatus": 404,
+      "status": "PASS",
+      "bodyHasNotice": true
+    },
+    {
+      "path": "/card/not-a-real-public-recap",
+      "httpStatus": 200,
+      "status": "FAIL",
+      "bodyHasNotice": false
+    }
+  ],
+  "social": [
+    {
+      "path": "/",
+      "status": "FAIL",
+      "issues": [
+        "Missing title/canonical",
+        "Canonical and og:url do not match the inspected URL",
+        "OG image is outside the inspected origin."
+      ],
+      "httpStatus": 200,
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "canonical": "",
+      "metas": {
+        "theme-color": "#0b0e17",
+        "apple-mobile-web-app-capable": "yes",
+        "apple-mobile-web-app-status-bar-style": "black-translucent",
+        "viewport": "width=device-width, initial-scale=1.0",
+        "description": "Build your all-time basketball five and clash across eras with an era-aware possession simulation. Pick legends, play as a guest, and share your result.",
+        "eraclash-build": "eraclash-assets:2.7.2:a31f21e83c2d",
+        "og:type": "website",
+        "og:title": "EraClash Basketball — Build Your All-Time Squad",
+        "og:description": "Build your all-time basketball five, play across eras, and share the matchup.",
+        "og:url": "https://eraclashbasketball.com",
+        "og:image": "https://eraclashbasketball.com/og-home.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "EraClash Basketball: build your all-time five and play across eras",
+        "twitter:card": "summary_large_image",
+        "twitter:title": "EraClash Basketball",
+        "twitter:description": "Build your all-time basketball five and play across eras.",
+        "twitter:image": "https://eraclashbasketball.com/og-home.png"
+      },
+      "links": []
+    },
+    {
+      "path": "/clash/all-time/atlanta-vs-boston",
+      "status": "PASS",
+      "issues": [],
+      "httpStatus": 200,
+      "title": "Atlanta Hawks vs Boston Celtics | EraClash Basketball",
+      "canonical": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+      "metas": {
+        "viewport": "width=device-width,initial-scale=1",
+        "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+        "og:type": "website",
+        "og:site_name": "EraClash Basketball",
+        "og:title": "Atlanta Hawks vs Boston Celtics",
+        "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+        "og:url": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+        "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-boston&format=png&v=2",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Atlanta Hawks vs Boston Celtics",
+        "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+        "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-boston&format=png&v=2"
+      },
+      "links": [
+        "/clash/franchise?gold=atlanta&blue=boston&entry=control",
+        "/clash/franchise?gold=atlanta&blue=boston&entry=watch",
+        "https://www.nba.com/news/history-legend-dominique-wilkins",
+        "https://www.nba.com/news/history-nba-legend-bob-pettit",
+        "https://www.nba.com/news/history-nba-legend-bob-cousy",
+        "/clash/all-time/atlanta-vs-brooklyn",
+        "/clash/all-time/atlanta-vs-charlotte",
+        "/clash/all-time/atlanta-vs-chicago",
+        "/clash/all-time/atlanta-vs-cleveland",
+        "/clash/all-time/atlanta-vs-dallas",
+        "/clash/all-time/atlanta-vs-denver",
+        "/clash/all-time/atlanta-vs-detroit",
+        "/clash/all-time/atlanta-vs-golden-state",
+        "/clash/all-time/atlanta-vs-houston",
+        "/clash/all-time/atlanta-vs-indiana",
+        "/clash/all-time/atlanta-vs-la-clippers",
+        "/clash/all-time/atlanta-vs-la-lakers",
+        "/clash/all-time/atlanta-vs-memphis",
+        "/clash/all-time/atlanta-vs-miami",
+        "/clash/all-time/atlanta-vs-milwaukee",
+        "/clash/all-time/atlanta-vs-minnesota",
+        "/clash/all-time/atlanta-vs-new-orleans",
+        "/clash/all-time/atlanta-vs-new-york",
+        "/clash/all-time/atlanta-vs-oklahoma-city",
+        "/clash/all-time/atlanta-vs-orlando",
+        "/clash/all-time/atlanta-vs-philadelphia",
+        "/clash/all-time/atlanta-vs-phoenix",
+        "/clash/all-time/atlanta-vs-portland",
+        "/clash/all-time/atlanta-vs-sacramento",
+        "/clash/all-time/atlanta-vs-san-antonio",
+        "/clash/all-time/atlanta-vs-toronto",
+        "/clash/all-time/atlanta-vs-utah",
+        "/clash/all-time/atlanta-vs-washington",
+        "/clash/all-time/boston-vs-brooklyn",
+        "/clash/all-time/boston-vs-charlotte",
+        "/clash/all-time/boston-vs-chicago",
+        "/clash/all-time/boston-vs-cleveland",
+        "/clash/all-time/boston-vs-dallas",
+        "/clash/all-time/boston-vs-denver",
+        "/clash/all-time/boston-vs-detroit",
+        "/clash/all-time/boston-vs-golden-state",
+        "/clash/all-time/boston-vs-houston",
+        "/clash/all-time/boston-vs-indiana",
+        "/clash/all-time/boston-vs-la-clippers",
+        "/clash/all-time/boston-vs-la-lakers",
+        "/clash/all-time/boston-vs-memphis",
+        "/clash/all-time/boston-vs-miami",
+        "/clash/all-time/boston-vs-milwaukee",
+        "/clash/all-time/boston-vs-minnesota",
+        "/clash/all-time/boston-vs-new-orleans",
+        "/clash/all-time/boston-vs-new-york",
+        "/clash/all-time/boston-vs-oklahoma-city",
+        "/clash/all-time/boston-vs-orlando",
+        "/clash/all-time/boston-vs-philadelphia",
+        "/clash/all-time/boston-vs-phoenix",
+        "/clash/all-time/boston-vs-portland",
+        "/clash/all-time/boston-vs-sacramento",
+        "/clash/all-time/boston-vs-san-antonio",
+        "/clash/all-time/boston-vs-toronto",
+        "/clash/all-time/boston-vs-utah",
+        "/clash/all-time/boston-vs-washington",
+        "/",
+        "/privacy",
+        "/terms"
+      ],
+      "image": {
+        "url": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-boston&format=png&v=2",
+        "status": 200,
+        "bytes": 63845,
+        "type": "image/png",
+        "dimensions": [
+          1200,
+          630
+        ]
+      }
+    },
+    {
+      "status": "UNVERIFIED",
+      "reason": "Only 0 real result URLs supplied; ten are required for the full sharing matrix."
+    }
+  ],
+  "lighthouse": [
+    {
+      "name": "home",
+      "path": "/",
+      "status": "UNVERIFIED",
+      "reason": "Lighthouse disabled by command option."
+    },
+    {
+      "name": "daily",
+      "path": "/clash/daily",
+      "status": "UNVERIFIED",
+      "reason": "Lighthouse disabled by command option."
+    },
+    {
+      "name": "result",
+      "status": "UNVERIFIED",
+      "reason": "Lighthouse disabled by command option."
+    },
+    {
+      "name": "programmatic",
+      "path": "/clash/all-time/atlanta-vs-boston",
+      "status": "UNVERIFIED",
+      "reason": "Lighthouse disabled by command option."
+    },
+    {
+      "name": "modes-hub",
+      "path": "/clash/modes",
+      "status": "UNVERIFIED",
+      "reason": "Lighthouse disabled by command option."
+    }
+  ],
+  "summary": {
+    "routes": 4,
+    "routeFailures": 3,
+    "criticalAxe": 0,
+    "seriousAxe": 2,
+    "links": 101,
+    "failedLinks": 1,
+    "unverifiedLinks": 0,
+    "controls": 4,
+    "observedControls": 0,
+    "unverifiedControls": 4,
+    "disabledControls": 0,
+    "socialFailures": 1,
+    "lighthouseReports": 0
+  },
+  "status": "FAIL",
+  "endedAt": "2026-10-02T08:37:33.010Z"
+}

@@ -2,9 +2,40 @@
   "functions": {
     "api/narrative.js": {
       "maxDuration": 60
+    },
+    "api/share-page.js": {
+      "includeFiles": "api/_lib/fonts/**"
     }
   },
   "rewrites": [
+    {
+      "source": "/challenges",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/card/:id",
+      "destination": "/api/share-page?kind=result&id=:id"
+    },
+    {
+      "source": "/clash/all-time/:slug",
+      "destination": "/api/share-page?kind=franchise&id=:slug"
+    },
+    {
+      "source": "/clash/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/index.html"
+    },
     {
       "source": "/result/:id",
       "destination": "/api/share-page?kind=result&id=:id"
@@ -80,7 +111,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
         }
       ]
     },

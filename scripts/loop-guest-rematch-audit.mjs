@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+// Sharing-only real UI acceptance: anonymous public recap -> typed five -> own recap.
+import { chromium, request } from '@playwright/test';
+import { existsSync } from 'node:fs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { PLAYERS } from '../src/players.js';
+const origin = new URL(process.argv[2] || 'http://localhost:4320').origin;
+if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) throw new Error('This acceptance audit publishes test results on a local harness only.');
+const directory = path.resolve(process.env.ECLASH_GUEST_AUDIT_DIR || 'data/validation/loop-foundation/sharing/guest-rematch');
+await mkdir(directory, { recursive: true });
+const checks = [], errors = [], requests = [];
+const check = (name, pass, detail = {}) => { checks.push({ name, pass: !!pass, ...detail }); if (!pass) throw new Error(name); };
+const goldIds = ['magic-80s', 'jordan-90s', 'bird-80s', 'duncan-00s', 'hak-90s'];
+const selectedIds = ['curry-10s', 'ray-00s', 'durant-10s', 'dirk-00s', 'jokic-20s'];
+const creator = await request.newContext({ baseURL: origin, extraHTTPHeaders: { Origin: origin } });
+const identity={checkoutSha:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),requestedSha:process.env.ECLASH_AUDIT_SHA||null};
+let browser, guest;
+try {
+  const servedHtml=await (await creator.get('/')).text();identity.clientBuildStamp=servedHtml.match(/name="eraclash-build" content="([^"]+)"/)?.[1]||null;identity.clientHtmlSha256=createHash('sha256').update(servedHtml).digest('hex');
+  const health=await creator.get('/api/health');identity.serverHealth=health.ok()?await health.json():{status:health.status()};
+  const response = await creator.post('/api/game', { data: { action: 'loop', op: 'play', mode: 'any-five', simulationId: `guest-entry-${crypto.randomUUID()}`, goldIds, blueIds: selectedIds, eraId: '1990s' } });
+  check('creator result is actually simulated by the existing server', response.ok(), { status: response.status() });
+  const initial = await response.json();
+  const publication = await creator.post('/api/result', { data: { resultId: initial.resultId, publicRecap: true } });
+  check('creator owns and publishes initial public recap', publication.ok());
+  const shared = await publication.json(), initialPath = `/card/${shared.id}`;
+  browser = await chromium.launch({ headless: true, executablePath: process.env.ECLASH_BROWSER_EXECUTABLE || (existsSync('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome') ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : undefined) });
+  guest = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await guest.newPage();
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('request', request => { if (request.url().includes('/api/game') && request.method() === 'POST') requests.push(request.postDataJSON()); });
+  check('fresh guest has no account or creator cookie', (await guest.cookies()).length === 0);
+  await page.goto(origin + initialPath, { waitUntil: 'networkidle' });
+  await page.screenshot({ path: path.join(directory, '01-public-recap-mobile.png'), fullPage: true });
+  check('public recap displays actual creator score', (await page.locator('main').innerText()).includes(initial.result.core.finalScore.gold.toString()));
+  await page.getByRole('link', { name: 'Run it back with your five', exact: true }).click();
+  await page.getByRole('heading', { name: 'Clash Any Five', exact: true }).waitFor();
+  await page.getByText('Run it back against the shared five:', { exact: false }).waitFor();
+  check('guest CTA keeps the exact recap reference', new URL(page.url()).searchParams.get('rematch') === shared.id);
+  check('guest starts with an empty five', await page.locator('.loop-selected').count() === 0);
+  check('pre-play public recap disclosure is visible', (await page.locator('body').innerText()).includes('public recap'));
+  for (let index = 0; index < selectedIds.length; index++) {
+    const player = PLAYERS.find(player => player.id === selectedIds[index]);
+    await page.getByTestId(`loop-player-${index}`).fill(player.name);
+    const option = page.getByRole('option').filter({ hasText: player.name }).filter({ hasText: player.decade });
+    check(`typed card ${index + 1} resolves one explicit era`, await option.count() === 1, { player: player.name, era: player.decade });
+    await option.click();
+  }
+  check('five actual chosen cards are visible', await page.locator('.loop-selected').count() === 5);
+  await page.screenshot({ path: path.join(directory, '02-typed-five-mobile.png'), fullPage: true });
+  const playResponse = page.waitForResponse(response => response.url().endsWith('/api/game') && response.request().method() === 'POST' && response.request().postDataJSON()?.op === 'play');
+  await page.getByRole('button', { name: 'Run this five', exact: true }).click();
+  const playedResponse = await playResponse, played = await playedResponse.json();
+  check('guest five is simulated without a signup gate', playedResponse.ok() && !!played.resultId, { status: playedResponse.status() });
+  const requestBody = requests.find(request => request.op === 'play');
+  check('UI submits the exact chosen five', JSON.stringify(requestBody.goldIds) === JSON.stringify(selectedIds));
+  check('shared creator five is the opponent', JSON.stringify(requestBody.blueIds) === JSON.stringify(goldIds));
+  const open = page.getByRole('link', { name: 'Open result card', exact: true });
+  await open.waitFor({ timeout: 30000 });
+  const cardUrl = await open.getAttribute('href');
+  check('guest receives a separate addressable public recap', !!cardUrl && new URL(cardUrl, origin).pathname !== initialPath && /\/card\/[a-f0-9]{16}$/.test(new URL(cardUrl, origin).pathname));
+  await page.screenshot({ path: path.join(directory, '03-own-result-mobile.png'), fullPage: true });
+  await open.click();
+  await page.locator('main[data-public-recap]').waitFor();
+  const score = played.result.core.finalScore;
+  const scoreTexts = await page.locator('.score').allTextContents();
+  check('own public recap displays the exact server score', scoreTexts[0] === String(score.gold) && scoreTexts[1] === String(score.blue));
+  check('own public recap displays both real fives', await page.locator('.sides li').count() === 10 && (await page.locator('.sides').innerText()).includes(PLAYERS.find(player => player.id === selectedIds[0]).name));
+  check('card remains within the mobile viewport', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+  check('no browser application errors', errors.length === 0, { errors });
+  await page.screenshot({ path: path.join(directory, '04-own-public-recap-mobile.png'), fullPage: true });
+  await writeFile(path.join(directory, 'report.json'), `${JSON.stringify({ scope: 'Basketball sharing-only real UI acceptance on local handler harness; not a full product verification or physical-device test', origin, identity, pass: true, checks, initialPath, guestPath: new URL(cardUrl, origin).pathname, serverScore: score, submitted: { goldIds: requestBody.goldIds, blueIds: requestBody.blueIds }, errors }, null, 2)}\n`);
+  console.log(JSON.stringify({ pass: true, checks: checks.length, directory }));
+} catch (error) {
+  await writeFile(path.join(directory, 'report.json'), `${JSON.stringify({ scope: 'Basketball sharing-only real UI acceptance on local handler harness', origin, identity, pass: false, checks, errors, failure: error.message }, null, 2)}\n`);
+  console.error(error); process.exitCode = 1;
+} finally { await guest?.close(); await browser?.close(); await creator.dispose(); }

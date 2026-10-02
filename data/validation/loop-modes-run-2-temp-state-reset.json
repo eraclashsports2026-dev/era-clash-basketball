@@ -1,0 +1,23 @@
+{
+  "label": "run-2-temp-state-reset",
+  "target": "http://localhost:4321",
+  "scope": "Local production-client actual games; controlled browser calendar refresh, not server next-day enforcement",
+  "checks": [
+    {
+      "name": "Non-Daily draft survives calendar-triggered server config refresh and plays",
+      "status": "PASS",
+      "resultId": "pv_pqyvyy0kcs"
+    },
+    {
+      "name": "Daily calendar refresh clears previous grid/card-copy/draft state",
+      "status": "PASS",
+      "resultId": "pv_jv4zk991xg",
+      "limitation": "Server date remained current; next-day enforcement tested separately by root clock-controlled handler tests"
+    },
+    {
+      "name": "390px mobile reset UI has no horizontal overflow",
+      "status": "PASS"
+    }
+  ],
+  "errors": []
+}

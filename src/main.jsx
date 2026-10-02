@@ -8,7 +8,7 @@ import "./index.css";
 // before the first render so no unthemed frame is ever painted. There is no
 // user-facing theme selector: the owner-only lab is the only other caller.
 import "./theme/basketball-themes.css";
-import { applyTheme, PRODUCTION_THEME_ID } from "./theme/themeResolver.js";
+import { applyTheme, PRODUCTION_THEME_ID } from "./theme/applyTheme.js";
 applyTheme(PRODUCTION_THEME_ID);
 
 // Service worker registration lives here (not inline in index.html) so the

@@ -453,6 +453,7 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   await withAccount(page);
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/play/chaos");
+  await expect(page.locator(".ec-ta")).toBeVisible();
 
   const draft = await page.evaluate(() => ({
     columns: getComputedStyle(document.querySelector(".ec-ta")).gridTemplateColumns.split(" ").length,

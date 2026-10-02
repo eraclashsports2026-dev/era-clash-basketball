@@ -1,0 +1,61 @@
+{
+  "runtimeSha": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+  "label": "run2-final-27630a1",
+  "files": 100,
+  "passedFiles": 96,
+  "failedFiles": 4,
+  "tests": 2963,
+  "passed": 2960,
+  "failed": 3,
+  "pending": 0,
+  "todo": 0,
+  "sourceRawSHA256": "f206a98e69b137b584037cf3cec1088966518169953e7a919ee5120649f881e2",
+  "runtimeBudgetMs": 5000,
+  "failedOrBlocked": [
+    {
+      "file": "v6c2c2-side-symmetry.test.js",
+      "collectionMessage": null,
+      "failedTests": [
+        {
+          "name": "array order does not decide the winner produces a complementary long-run record under side swap",
+          "duration": 6055.330916999999,
+          "failureMessages": [
+            "Error: STACK_TRACE_ERROR\n    at task (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1784:27)\n    at Object.<anonymous> (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1817:16)\n    at Object.<anonymous> (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1563:28)\n    at chain (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:599:14)\n    at /private/tmp/eraclash-loop-verification-20261002/tests/v6c2c2-side-symmetry.test.js:111:3\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:40\n    at runWithSuite (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2258:8)\n    at Object.collect (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:10)\n    at Object.collect (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1893:54)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "v6c2c4-scoped-calibration.test.js",
+      "collectionMessage": "run `npm run calibration:identifiability` first \u2014 readiness is derived from measured identifiability, not asserted",
+      "failedTests": []
+    },
+    {
+      "file": "v6c2c6-orientation-and-sidebias.test.js",
+      "collectionMessage": null,
+      "failedTests": [
+        {
+          "name": "prior failing cell was read from the artifact, not inferred",
+          "duration": 5.750874999999951,
+          "failureMessages": [
+            "Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'\n    at readFileSync (node:fs:440:20)\n    at /private/tmp/eraclash-loop-verification-20261002/tests/v6c2c6-orientation-and-sidebias.test.js:19:27\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "v6c2c6-side-bias-policy.test.js",
+      "collectionMessage": null,
+      "failedTests": [
+        {
+          "name": "side-bias policy v2 is frozen keeps the v1 policy unedited",
+          "duration": 6.36850000000004,
+          "failureMessages": [
+            "Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'\n    at readFileSync (node:fs:440:20)\n    at /private/tmp/eraclash-loop-verification-20261002/tests/v6c2c6-side-bias-policy.test.js:48:27\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+          ]
+        }
+      ]
+    }
+  ],
+  "declaredSkippedNames": []
+}

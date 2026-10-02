@@ -1,0 +1,13 @@
+# Clash Any Five contract
+
+Version: 1.0.0 · Route: `/clash/any-five` · Tag: `ANY_FIVE`.
+
+Guests choose five canonical player-decade cards. The searchable combobox accepts names, documented presentation aliases, and close spellings. It always presents explicit card choices, including the decade; a similar name is never silently accepted. Canonical person identity prevents two versions of the same human from entering a five. A legal position assignment is attempted without replacing any pick.
+
+Out-of-position combinations are an explicit unsupported subset. The protected `buildTeamIntelligence` rejects a player assigned to a position absent from the canonical card. A center-only five reproduced that exception during Run 1. The UI now explains the missing PG / SG / SF / PF / C coverage before play and disables that game action. It does not replace players, forge eligibility, or silently switch engines. The exact owner question is whether a future separately reviewed simulation contract should support arbitrary roles. This mode does not claim universal arbitrary-five compatibility until that question is resolved.
+
+The default opponent is the New York Loop Daily's actual initial Blue five, derived from the same existing Chaos seed. The final Daily opponent can change through the user's draft decisions; the default does not claim to reproduce that later roster. Alternatives are a seeded random roster or a curated five from the documented canonical franchise catalog. Default coaching is the existing League-Average Staff; the player may choose a researched existing coach. A public-card `rematch` query loads its authoritative `teamIds` as the opponent and leaves the guest’s five empty.
+
+`POST /api/game` with `action: loop`, `op: play`, and `mode: any-five` owns the result. The UI submits card ids and supported environment/coach selections; it never submits scores. Results reach the shared authoritative result callback, Breakdown, and explicit public-card publication. Share copy: “Ran this five through a real possession sim.” These editable practice inputs do not create competitive human rating.
+
+Protected Candidate 4, calibration 1.4.0, and core `55bb26a2…` remain unchanged. Tests: `tests/loop-modes-draft.test.js` includes twenty supported typed fives, typo/alias resolution, decade choices, duplicate people, legal placement, and unsupported-position rejection. The browser runner separately exercises the center-only guarded subset and preserves the original failure report. Actual browser and crawler evidence belongs in the three-run ledger; unit success does not establish deployment or provider readiness.
