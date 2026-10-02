@@ -2449,6 +2449,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on
   if (result.type === "tournament") {
     return (
       <div className="rise" style={{ ...card, padding: 20, marginTop: 14 }}>
+        <h1 className="sr-only">Tournament result</h1>
         <div style={{ textAlign: "center", marginBottom: 14 }}>
           <div style={{ fontSize: 30, fontWeight: 900, fontStyle: "italic" }}>{result.won ? "🏆 CHAMPION" : "Run Over"}</div>
           {result.won && result.rounds[3]?.sim?.mvp && (
