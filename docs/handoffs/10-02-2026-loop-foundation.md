@@ -1,4 +1,4 @@
-NEXT: 1.A.2
+NEXT: 2.1
 # Basketball Loop Foundation — 10-02-2026
 
 Scope: Basketball only. All other sports remain untouched. Local branch phase/loop-foundation; public deployment and database changes are prohibited during this session.
@@ -36,10 +36,55 @@ Scope: Basketball only. All other sports remain untouched. Local branch phase/lo
 | SalaryCap | disabled/unlisted | No dataset | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK; defensible salary data required |
 
 ## Fixes
-Run1 implementation in progress: A2 sharing authoritatively publishes owned results into actual1200x630PNG; A3 guestAnyFive rematch; A4neutral copy/naming; A8closed events; A6policy pages; A5ownerSMTPaudit; A7Previewbinding; A9optional support; A10links.
+Run1 closed. Build statuses describe the scope actually verified below; real provider/deployment acceptance is separate.
+
+| Item | Build status | Evidence / limit |
+|---|---|---|
+| 0.1 branch / absorb PR69 | FIXED_AND_VERIFIED | Mainb31d2ad, PR69 absorbed16ea908, local phase/loop-foundation; push/PR/Preview repair external below |
+| 0.2 inventory / 0.3 baseline / 0.4 ledger | FIXED_AND_VERIFIED | Live/dormant/removed inventory and governing contracts; current counts below replace historical2802/98/77 claims |
+| A.2 OG / A.3 guest rematch | FIXED_AND_VERIFIED | sharing/run1-final-a826333-local-access/report.json102/102; run1-final-guest-a826333/report.json21/21; real HTTP, PNG, typed guest play |
+| A.10 dead controls / links | FIXED_AND_VERIFIED | New routes72/72 and complete legacy98browser/88gates; exhaustive route/CTA coverage still must pass Runs2/3 |
+| A.4 exposure / neutral naming | FIXED_AND_VERIFIED | loop-rights unit/inventory, protected data unchanged, B3 neutral ON/OFF80checks; full rendered crawl still required |
+| A.8 events / metrics | FIXED_AND_VERIFIED | All10 events ingested by actual handler in server tests; optional vendor not configured; live retention not established |
+| A.6 policies | FIXED_AND_VERIFIED | Privacy/Terms linked from footer/signup/card; policy tests; operator/contact/retention/legal claims need owner confirmation |
+| A.5 SMTP | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK | Current official provider audit and browser smoke procedure written; live SMTP/dashboard/receipt unavailable |
+| A.7 Preview truth | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK | Pin/workaround and safe build log verified; exact dashboard values documented; Preview credentials absent; keepalive not applicable without pause evidence |
+| A.9 support | FIXED_AND_VERIFIED | Optional validated Stripe link, hidden unset; no paid play gating, no provider payment tested |
+| B.1 AnyFive | FIXED_AND_VERIFIED |20 actual scripted legal fives including fuzzy matching; sourceengine refuses out-of-position teams, guarded before compute |
+| B.2 NY Daily | FIXED_AND_VERIFIED | Two contexts/same constraints, server token+attempt guard, account streak/unit/DST checks, existing3roll Chaos adapter; real account provider acceptance external |
+| B.3 franchises / Tonight / pairings | FIXED_AND_VERIFIED |30 sourced franchise fives,435 artifacts,1200 released schedule games+30CupTBD,three10-20cards+12PNGframes; full roster set owner review |
+| C.1 Spin | FIXED_AND_VERIFIED | Canonical franchise+era per position, one skip each, hidden stats, signed receipt; tests and actual UI/gate |
+| C.2 three filters | FIXED_AND_VERIFIED | OneFranchise/OnePerEra/NoMVP identity constraints, own casual tags, actual UI/gates; SalaryCap external |
+| C.3 Gauntlet | FIXED_AND_VERIFIED | Seven-era completed/resumed run, immutable stage receipts, account-owned resume, actual Nof7 recap; real provider external |
+| C.4 Lab | FIXED_AND_VERIFIED | Existing eight era/rules environments only; scenario label/exploration card; no board, actual UI/gate |
+| C.5 rooms | FIXED_AND_VERIFIED | Guest invite/member board; two-account emulated ownership/unit tests, actual governed owned Challenge feed; email hook disabled, live provider external |
+| C.6 dormant | FIXED_AND_VERIFIED | Gauntlet proposal revived; FantasyLive planned flagOFF retained information-only; old ModeShelf history replacement recorded, no dormant code deleted |
+| C.7 hub | FIXED_AND_VERIFIED | Versioned contract, all new and legacy surfaces linked; new modes≤2taps using homepage Allmodes→hub; mobile route tests |
+| Push / replacement draft PR / live repair | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK | Invalid GitHub authorization, no repo-local helper; no Basketball Preview admin credentials. Local commits and reviewed SQL/release procedure prepared |
+| SalaryCap | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK | Unlisted, no invented salaries; sourced defensible dataset required |
 
 ## Modes
-Pure constraint adapters and UI are being integrated over unchanged current simulation. Root owns server persistence, rooms and App; agents own sharing, modeUI and franchise/schedule respectively. Every claim awaits recorded tests.
+New modes adapt inputs/presentation over the unchanged Candidate4/current production engine. Each new play route has a versioned contract, pure/HTTP tests, a gate, an actual guest journey, a public recap, named events, mobile evidence and a hub link. Full DoD remains PARTIAL until real authenticated Preview journeys and Runs2/3 pass. Existing governed Challenge creation remains Chaos-only by its inherited contract: it is not available for arbitrary new Loop results. New saved games support an explicitly casual AnyFive rematch; private rooms can share owned existing governed Challenges without inventing a new comparison contract.
+
+| New surface | Route | Contract directory | Local implementation commit / source |
+|---|---|---|---|
+| AnyFive | /clash/any-five | docs/clash-any-five |883faa9; src/loop/modes/TeamModes.jsx |
+| NY Daily | /clash/daily | docs/daily-loop |883faa9/3b8ec01; src/loop/daily/DailyMode.jsx |
+| Franchise | /clash/franchise | docs/franchise-clash |8a4a567/883faa9; src/loop/modes/FranchiseMode.jsx |
+| Tonight | /clash/tonight | docs/tonights-clash |8a4a567/883faa9; source-backed schedule selector; today can be honestly empty |
+|435 pairing pages | /clash/all-time/:slug | docs/franchise-clash |8a4a567/9f109dc; api/share-page.js + source catalog |
+| Spin | /clash/spin | docs/chaos-spin |883faa9; src/loop/modes/SpinMode.jsx |
+| OneFranchise | /clash/one-franchise | docs/constraint-filters |883faa9; canonical30 franchise pools |
+| OnePerEra | /clash/one-per-era | docs/constraint-filters |883faa9; unique person and era |
+| NoMVP | /clash/no-mvps | docs/constraint-filters |883faa9; person-level historical winners |
+| Gauntlet | /clash/gauntlet | docs/era-gauntlet |883faa9/a826333; src/loop/modes/GauntletMode.jsx |
+| Lab | /clash/lab | docs/what-if-lab |883faa9; existing rules environments |
+| Private rooms | /clash/rooms | docs/private-rooms |883faa9/43a63c0; src/loop/PrivateRooms.jsx |
+| Hub / filters picker | /clash/modes, /clash/filters | docs/modes-hub |883faa9/d9d28f9; LoopModes.jsx |
+| Public recap / OG | /card/:id, /result/:id | docs/sharing/public-recap-v2.md |9f109dc/a826333; public projection only |
+| Privacy / Terms / support | /privacy, /terms, /support | src/loop/PolicyPages.jsx |98a87c1; owner statements review pending |
+
+Inherited surface last commits (absorbedPR69 history): Chaos1f6b5d1(09-10), legacyDaily23d9ab3(08-24), ManualPicker7e45454(09-02), navigation/Best7/Win82/Tournament1f6b5d1(09-10), accounts9c45851(09-24), Challenges009030a(09-05), Cards/Rivalriesa6a6f0d(09-16), competitive97998d6(09-06), profiles886968b(09-09), Breakdown49b9bb4(09-24). Removed history-only ModeShelf:0482e2d(08-31), replaced by canonical TimeArena/navigation. The historical daily is UTC; the new Daily is a NewYork calendar adapter over the existing Chaos state machine. No historical standalone implemented Lab/Franchise/Gauntlet was found in the examined source tree history.
 
 ## Run2 results
 Pending mandatory execution.
@@ -58,11 +103,32 @@ Pending independent execution; do not consume Run2 results before recording Run3
 - Keepalive conditional: no evidence BasketballPreviewpaused frominactivity; no paidcron/configchange.
 
 ## Production release (browser-only steps)
-Will be written to docs/release/10-02-2026-production-release.md, SQLcompanionnotexecuted.
+Prepared in docs/release/10-02-2026-production-release.md, ordered SQL→env→SMTP→replacementPRmerge→post-releasechecks→rollback. SQL bundle contains eight unchanged inherited migrations and a separately reviewed guarded repair revision; source-only parser/review evidence in data/validation/loop-foundation/release-sql-source-review-2026-10-02.json. No SQL executed, no observed row counts, no dashboard changes. Merge remains blocked pending final reports and real Preview validation.
 
 ## Evidence
-Mainb31d2ad; absorbedPR69head16ea908. PreviewreadinessAPIrequest rejected endpoint; no loop-foundationpublicdeploymentexistsbecausepushblocked. Verificationtargetwillbelocalproductionclient+realserverlessharness. Historicalgatecount77andbrowser98remainhistoricalpendingrerun.
+Run1 frozen implementation a826333eb68ff2b995933541bb4be44ca9acda7b, local http://localhost:4320, production client stamp eraclash-assets:2.7.2:c3234f7053ad, real Candidate4 handlers + memory store (server NODE_ENVdevelopment for test memory; client production build). Explicit local simulation quota overrides500 for bounded scripted fixtures; defaults remain10session/20IP/global600. Full unit2954PASS/2FAIL plus1collection-blocked suite (99files,96pass/3fail); browser98/98; gate85/88. All three failed gates are unavailable owner diagnostics, not waived acceptance. New mode72/72 plus focused reset3/3; sharing102/102; guest rematch21/21. Protected122 file bytes unchanged versus PR69 and both Wave refs unchanged. No declared skipped tests found.
+
+Artifacts: data/validation/foundation/loop-run-1-final.json; data/validation/loop-modes-run-1-freeze-a826333-corrected-browser.json; data/validation/loop-modes-run-1-freeze-a826333-state-reset.json; final sharing reports above. Full logs under /private/tmp/loop-{unit,playwright,gates}-run-1-final.log. Historical failed iterations remain separate. Local result URLs are temporary test fixtures; reports preserve HTML/PNG/IDs and measurements after fresh-harness resets.
+
+Missing historical measurements: tests/v6c2c4-scoped-calibration.test.js cannot collect because measured identifiability cache is absent; tests/v6c2c6-orientation-and-sidebias.test.js and tests/v6c2c6-side-bias-policy.test.js each fail the frozen probability-validation-v3 artifact read. No protected calibration regeneration/stub. Gate security failures: Challenges,competitive,progression require an unavailable X-Preview-Key owner diagnostic. Before/after: first70/77→final85/88; fixed API duplicate deployment copies/CSP bounded host assertion/Challenge CLS. All11 new gates pass.
+
+Preview readiness API discovery rejected/unavailable authorization; no replacement-branch public deployment exists because push is blocked. Run2 will repeat discovery and local-build fallback, recording its own sourceSHA/served fingerprint. No oldPR69Preview is claimed as this build.
 
 ## Open questions
 - Full public release depends on credentials, actualSMTP/liveproviderconfiguration, rights/operatorpolicies and authenticatedtwo-accountRLSverification.
 - Openingnight schedule claims verified by official league release and PDF (sourcesin docs/data), not assumed.
+
+## Run1 evidence update (not a completion claim)
+- Frozen implementation a826333eb68ff2b995933541bb4be44ca9acda7b; client build eraclash-assets:2.7.2:c3234f7053ad; local target http://localhost:4320. Explicit local-only simulation session/IP quotas500 permit bounded scripted fixtures; production defaults remain10/20 and the inherited global ceiling600 applies to Loop compute. Full99-file unit run:2954 passed,2 failed,1 collection-blocked suite (three files total), all remaining failures are missing frozen historical calibration artifacts. No skipped tests declared.
+- Frozen browser run:98/98 passed; full88-gate sweep still running. New mode reverify72/72,41 actual games,zero page errors; prior71/72 test-only same-day refresh assumption failure is preserved and corrected by a real day-change focus test. Sharing102/102 and typed guest rematch21/21; sourceSHA/build stamp and actual server identity recorded in final sharing reports.
+- Career projection retains all ten new mode identities under schema-compatible loop_* keys. Fresh casual rematch preserves saved fives/coaches/era with a new authoritative AnyFive game and seed, without reusing a Daily attempt/Spin receipt/Gauntlet claim. Targeted155 tests plus final56-test boundary batch passed. Daily visible dates useMM-DD-YYYY; machine day keys stayISO. Reopening a result no longer duplicates completion events.
+- Full-history tree audit on absorbedPR69 found removed legacy src/components/arena/ModeShelf.jsx (0482e2d,08-31) replaced by canonical navigation; no historical standalone Gauntlet/Lab/Franchise implementation found in the examined src history. Proposed Gauntlet revived as newadapter; FantasyLive planned flagOFF remains information-only. This session deletes no dormant code.
+- Legacy browser suite:98/98 passed, actual complete invocation, /private/tmp/loop-playwright-run-1.log.
+- First complete legacy gate sweep:70/77; seven failures recorded in data/validation/foundation/loop-run-1.json. Two were identical untracked filesystem copies of PR69 result/share-page sources, preserved in .local-recovery outside deployable API; one strict CSP assertion required the bounded PostHog hosts; one Challenge CLS0.1284 is being rechecked after reserving loading height; three require an unavailable owner diagnostics key. No credentials fabricated and no authorization guard weakened.
+- Recovered full unit attempt:2890 passed,3 failed plus1 collection failure; one retry test compared in-process negative zero against JSON wire values and was corrected; remaining three historical cache-dependent assertions/suite remain blocked. Exact frozen identifiability/probability artifacts are absent; protected calibration is not regenerated or stubbed.
+- Current server contract suite23/23 passes: Candidate4/calibration1.4.0/core55bb26a2, immutable retries, daily day2/streak/account claim, signed receipt ownership, serialized skips and room joins, two-account room ownership across devices, owned live governed Challenge feed and all ten event counters. Fake cloud is explicitly local emulation.
+- A2 scope:101 actual HTTP/browser checks over ten new mode recaps; all three crawler UAs,1200×630PNG<1MB,warm<1s, five widths fit. Guest shared-card→ownfive→owncard21/21. Final build recheck pending.
+- B3 scope:435/435 pairing artifacts;30/30 runtime crawler requests;80/80 neutral ON/OFF layout checks; three opening-night Candidate4 cards and12PNG reveal frames. Full roster set remains owner review.
+- Protected engine boundary: src/v3/teamIntelligence.js:453 refuses out-of-position players. AnyFive/Lab/Gauntlet now require an eligible five; center-only input resolves names but cannot simulate. Unrestricted-five support would require a separate engine decision and is not silently approximated.
+- Canonical franchise filters and Spin now use the30 source-backed pools, avoiding Charlotte/NewOrleans Hornets ambiguity.
+- SMTP, actual Preview saved-row repair, real RLS and public Preview URL remain unverified; no production writes or deployment occurred.
