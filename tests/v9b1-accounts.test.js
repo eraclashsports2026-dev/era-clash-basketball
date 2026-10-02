@@ -608,7 +608,7 @@ describe("preservation", () => {
   });
   it("the content policy opens exactly one new destination: the provider's own hosts", () => {
     const csp = JSON.parse(read("vercel.json")).headers[0].headers.find((h) => h.key === "Content-Security-Policy").value;
-    expect(csp).toMatch(/connect-src 'self' https:\/\/\*\.supabase\.co https:\/\/\*\.supabase\.in;/);
+    expect(csp.match(/connect-src ([^;]+);/)[1].split(' ').sort()).toEqual(["'self'", 'https://*.supabase.co', 'https://*.supabase.in', 'https://us.i.posthog.com', 'https://eu.i.posthog.com'].sort());
     expect(csp).toMatch(/script-src 'self';/);          // no third-party script may run
     expect(csp).toMatch(/frame-ancestors 'none'/);
   });

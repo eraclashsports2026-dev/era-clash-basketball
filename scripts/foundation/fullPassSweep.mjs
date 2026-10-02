@@ -37,6 +37,7 @@ const GATES = [
   ["social", "scripts/social/socialQa.mjs", ["contract", "rls", "lifecycle", "cards", "harness", "fixture"]],
   ["breakdown", "scripts/breakdown/breakdownQa.mjs", ["capability", "journey", "responsive", "screens"]],
   ["foundation", "scripts/foundation/goldenFixtureQa.mjs", [""]],
+  ["loop", "scripts/loop/loopQa.mjs", ["any-five", "daily", "franchise", "tonight", "spin", "one-franchise", "one-per-era", "no-mvps", "gauntlet", "lab", "rooms"]],
 ];
 
 const rows = [];
@@ -59,7 +60,8 @@ for (const [group, script, modes] of GATES) {
 kill(4178); kill(4179);
 // restore every historical artifact a gate rewrote (this pass records only its own file)
 spawnSync("git", ["checkout", "--", "data/validation"], { stdio: "inherit" });
-spawnSync("git", ["clean", "-fdq", "data/validation"], { stdio: "inherit" });
+// Preserve unrelated new evidence: a sweep must never delete current-session
+// reports or user-owned untracked validation files.
 mkdirSync("data/validation/foundation", { recursive: true });
 const passed = rows.every((r) => r.exit === 0);
 writeFileSync(`data/validation/foundation/${LABEL}.json`, JSON.stringify({ artifact: LABEL, commit: SHA, generatedAt: new Date().toISOString(), gates: rows.length, passed: rows.filter((r) => r.exit === 0).length, failed: rows.filter((r) => r.exit !== 0).length, allPassed: passed, rows }, null, 2) + "\n");

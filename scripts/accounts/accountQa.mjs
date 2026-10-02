@@ -308,8 +308,9 @@ if (MODE === "security") {
     ["src/accounts/accountState.js", "src/accounts/cloudSave.js", "src/components/accounts/AccountDialog.jsx", "src/components/accounts/AuthCallback.jsx", "src/components/accounts/MyEraClash.jsx", "src/components/accounts/SaveThisClash.jsx"]
       .every((f) => [...src(f).matchAll(/track\("([^"]+)",\s*(\{[^}]*\})/g)].every(([, , props]) => !/@|accessToken|refresh|cookie|token|\bemail:/i.test(props))));
   ok("every account event is allowlisted on the server", ACTIVATION_EVENTS.filter((e) => /^(account|guest_|cloud_result|my_eraclash|recent_clash|saved_report|display_name)/.test(e)).every((e) => EVENTS_ALLOWLIST.has(e)));
-  ok("the content policy opens only the provider's own hosts and still forbids third-party script",
-    /connect-src 'self' https:\/\/\*\.supabase\.co https:\/\/\*\.supabase\.in;/.test(JSON.stringify(JSON.parse(read("vercel.json")))) && /script-src 'self';/.test(JSON.stringify(JSON.parse(read("vercel.json")))));
+  const csp = JSON.parse(read('vercel.json')).headers.flatMap(h=>h.headers).find(h=>h.key==='Content-Security-Policy').value;
+  ok("the content policy permits only provider and optional closed analytics hosts and forbids third-party script",
+    JSON.stringify(csp.match(/connect-src ([^;]+);/)[1].split(' ').sort()) === JSON.stringify(["'self'",'https://*.supabase.co','https://*.supabase.in','https://us.i.posthog.com','https://eu.i.posthog.com'].sort()) && /script-src 'self';/.test(csp));
   ok("the cloud actions are rate limited and origin checked like every other mutation", /rateLimit\(`acct:/.test(src("api/profile.js")) && /sameOrigin\(req\)/.test(src("api/profile.js")));
   extra.security = { serviceRoleInClient: 0, tokensInUrl: 0, openRedirects: 0, previewLeakage: 0 };
 }

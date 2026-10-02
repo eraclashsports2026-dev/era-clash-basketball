@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { REGISTRY } from "./src/versions.js";
 import { PREVIEW_SUPABASE_URL, PREVIEW_SUPABASE_PUBLISHABLE_KEY } from "./config/projectRefs.js";
+import { franchiseSitemapPlugin } from "./scripts/loop/sitemap.mjs";
 
 export const SW_PLACEHOLDER = "__ERACLASH_BUILD_ID__";
 export const CACHE_PREFIX = "eraclash-assets:";
@@ -97,9 +98,12 @@ if (process.env.VITE_SUPABASE_URL && process.env.SUPABASE_URL && refOf(process.e
   delete process.env.VITE_SUPABASE_URL; delete process.env.VITE_SUPABASE_ANON_KEY;
 }
 
+console.info('[provider binding] environment=' + (process.env.VERCEL_ENV || 'local') + ' project=' + (refOf(process.env.VITE_SUPABASE_URL) || 'unconfigured'));
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), swVersionPlugin()],
+  plugins: [react(), swVersionPlugin(), franchiseSitemapPlugin()],
   define: {
+    'import.meta.env.NEUTRAL_TEAM_NAMING': JSON.stringify(process.env.NEUTRAL_TEAM_NAMING || 'false'),
+    'import.meta.env.STRIPE_PAYMENT_LINK': JSON.stringify(/^https:\/\/buy\.stripe\.com\/[A-Za-z0-9_/-]+$/.test(process.env.STRIPE_PAYMENT_LINK || '') ? process.env.STRIPE_PAYMENT_LINK : ''),
     // The Basketball theme lab (Phase 9A.1): an owner decision surface at
     // /dev/basketball-theme-lab. Compiled INTO preview builds (VERCEL_ENV is
     // "preview" on every Git-integration branch deploy) and into the dev

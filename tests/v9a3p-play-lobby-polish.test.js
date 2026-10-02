@@ -301,7 +301,14 @@ describe("telemetry preservation", () => {
     // are pinned by behaviour below rather than by byte-identity.
     // config/previewAccess.js is the study's allowlist; config/projectRefs.js (2026-09-10) is the
     // environment-isolation guard's public Supabase refs and is not part of the study.
-    expect(git(`git diff --name-only ${PARENT} -- src/wave2.js config/previewAccess.js api/feedback.js api/game.js api/_lib/previewAccessCheck.js data/validation/9a3/wave2-test-plan.json data/validation/9a3/wave2-acceptance-policy.json`)).toBe("");
+    expect(git(`git diff --name-only ${PARENT} -- src/wave2.js config/previewAccess.js api/feedback.js api/_lib/previewAccessCheck.js data/validation/9a3/wave2-test-plan.json data/validation/9a3/wave2-acceptance-policy.json`)).toBe("");
+    // The new input adapter dispatches before the existing Chaos switch; every
+    // pre-existing game guard and study path must remain byte-identical.
+    const currentGame = read('api/game.js').replace(/import \{ loopHandler \} from ['"]\.\/_lib\/loopFoundation\.js['"];\n/, '').replace(/    if \(b\.action === ['"]loop['"]\) return await loopHandler\(req, res, \{ session, f \}\);\n/, '');
+    // PR69 intentionally corrected Challenge/result metadata. Its absorbed
+    // endpoint is the integration baseline for the additive Loop dispatch.
+    const parentGame = git('git show 16ea9085a9f864c607cad226e6577177004268e1:api/game.js');
+    expect(currentGame.trim()).toBe(parentGame.trim());
   });
   it("the Wave 2 telemetry partition still keys on wave, cohort, tester and build", async () => {
     const { wave2PartitionKey } = await import("../api/events.js");
