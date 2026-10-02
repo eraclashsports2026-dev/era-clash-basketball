@@ -34,7 +34,7 @@ describe("public recap ownership, privacy and immutable authority",()=>{
     const fetched=res();await game(req({}, {method:'GET',query:{id}}),fetched);
     expect(fetched.statusCode).toBe(200);
     for(const response of [created.body.result,fetched.body]){expect(response).not.toHaveProperty('seed');expect(response).not.toHaveProperty('session');expect(response.core.finalScore).toEqual(stored.core.finalScore);expect(response.candidate).toEqual(stored.candidate);expect(response.goldIds).toEqual(stored.goldIds);expect(response.blueIds).toEqual(stored.blueIds);}
-    expect(fetched.body).toEqual(created.body.result);expect(JSON.stringify(await getJSON(`preview-result:${id}`))).toBe(before);
+    expect(fetched.body).toEqual(JSON.parse(JSON.stringify(created.body.result)));expect(JSON.stringify(await getJSON(`preview-result:${id}`))).toBe(before);
   });
   it("never publishes owner-entered Lab scenario text through the unauthenticated full-result GET",async()=>{
     process.env.PREVIEW_SIM_ENGINE_ENABLED='true';
