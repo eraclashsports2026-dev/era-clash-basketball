@@ -47,8 +47,8 @@ try {
   await context.close();
  }
  // Feature-absent fixture: browser uses the retained original src when optional srcset is absent.
- const context=await browser.newContext({serviceWorkers:'block'}),page=await context.newPage();await page.goto(base+ORIGINAL,{waitUntil:'load'});
- await page.setContent(`<img id="fallback" src="${base+ORIGINAL}" width="760" height="304" alt="EraClash Basketball">`);
+ const context=await browser.newContext({serviceWorkers:'block'}),page=await context.newPage();await page.goto(base+'/privacy', { waitUntil: 'networkidle' });
+ await page.setContent(`<img id="fallback" src="${base+ORIGINAL}" width="760" height="304" alt="EraClash Basketball">`, { waitUntil: 'domcontentloaded' });
  await page.waitForFunction(()=>document.querySelector('#fallback')?.complete&&document.querySelector('#fallback').naturalWidth===760);
  const fallback=await page.locator('#fallback').evaluate(i=>({currentSrc:new URL(i.currentSrc).pathname,width:i.naturalWidth,height:i.naturalHeight,alt:i.alt,srcset:i.getAttribute('srcset')}));
  check('optional srcset absent retains native canonical PNG fallback',fallback.srcset===null&&fallback.currentSrc===ORIGINAL&&fallback.width===760&&fallback.height===304&&fallback.alt==='EraClash Basketball',fallback);

@@ -1,4 +1,4 @@
-NEXT: 2.1
+NEXT: 2.8
 # Basketball Loop Foundation — 10-02-2026
 
 Scope: Basketball only. All other sports remain untouched. Local branch phase/loop-foundation; public deployment and database changes are prohibited during this session.
@@ -6,7 +6,7 @@ Scope: Basketball only. All other sports remain untouched. Local branch phase/lo
 ## Delta since 09-26
 - Fetched current main: b31d2ada57e977cf1b2ce546bde86aaf1547e6c8, unchanged from the handoff. Main has no commits since 09-26; its latest commit is 09-20.
 - PR #69 remains OPEN, DRAFT, unmerged, head16ea9085a9f864c607cad226e6577177004268e1. Absorbed by fast-forward into phase/loop-foundation. Original PR remains open; this branch supersedes its integration work.
-- gh auth status: invalid default org token; no repo-local credential helper. Never changed authentication. Push/new draft PR: EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK. Local commits/builds are the fallback.
+- Initial sandbox gh check could not use authorization; the later elevated current check verified eraclashsports2026-dev with repo/workflow scopes. Authentication was never changed. Pushed phase/loop-foundation at b0ef7ae and created/attached ONE draft PR #70: https://github.com/eraclashsports2026-dev/era-clash-basketball/pull/70. GitHub push/PR blocker is resolved. PR69 remains unmerged and is superseded by this branch.
 - Connected Supabase lists only Dear Future projects. Basketball Preview lfybiphmqkiecfrqsfzt and production dxdtnhdeaanhfoqngdel are confirmed in config/projectRefs.js. No DB writes/migrations or test accounts created. Preview repair/auth/RLS remain EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK.
 - Repository has no CLAUDE.md or AGENTS.md at HEAD or examined ancestors. Read governing docs and validation records. Sparse recovery omitted public/image-pipeline/calibration-cache paths; restoring unchanged tracked baseline assets for tests.
 - First unit attempt: 90 files, 2700 passed, 41 failed plus3 collection failures; incomplete recovered assets/cache and I/O-timeout failures. Do NOT report the historical2802count as current. Re-run after recovery with bounded workers.
@@ -36,7 +36,7 @@ Scope: Basketball only. All other sports remain untouched. Local branch phase/lo
 | SalaryCap | disabled/unlisted | No dataset | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK; defensible salary data required |
 
 ## Fixes
-Run1 closed. Build statuses describe the scope actually verified below; real provider/deployment acceptance is separate.
+Run1 closed. This table records the historical Run1 implementation scope, not final release acceptance. Fresh final Run2/Run3 and real provider/deployment evidence are separate; unresolved full DoD remains PARTIAL.
 
 | Item | Build status | Evidence / limit |
 |---|---|---|
@@ -60,7 +60,8 @@ Run1 closed. Build statuses describe the scope actually verified below; real pro
 | C.5 rooms | FIXED_AND_VERIFIED | Guest invite/member board; two-account emulated ownership/unit tests, actual governed owned Challenge feed; email hook disabled, live provider external |
 | C.6 dormant | FIXED_AND_VERIFIED | Gauntlet proposal revived; FantasyLive planned flagOFF retained information-only; old ModeShelf history replacement recorded, no dormant code deleted |
 | C.7 hub | FIXED_AND_VERIFIED | Versioned contract, all new and legacy surfaces linked; new modes≤2taps using homepage Allmodes→hub; mobile route tests |
-| Push / replacement draft PR / live repair | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK | Invalid GitHub authorization, no repo-local helper; no Basketball Preview admin credentials. Local commits and reviewed SQL/release procedure prepared |
+| Push / replacement draft PR | FIXED_AND_VERIFIED | Branch pushed b0ef7ae; one draft PR70 created/attached; GitHub and Vercel deployment success recorded in preparation/preview-discovery-b0ef7ae.json |
+| Live Preview repair / RLS | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK | No Basketball Preview admin credentials. Reviewed SQL/release procedure prepared; no live repair or DB write occurred |
 | SalaryCap | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK | Unlisted, no invented salaries; sourced defensible dataset required |
 
 ## Modes
@@ -71,7 +72,7 @@ New modes adapt inputs/presentation over the unchanged Candidate4/current produc
 | AnyFive | /clash/any-five | docs/clash-any-five |883faa9; src/loop/modes/TeamModes.jsx |
 | NY Daily | /clash/daily | docs/daily-loop |883faa9/3b8ec01; src/loop/daily/DailyMode.jsx |
 | Franchise | /clash/franchise | docs/franchise-clash |8a4a567/883faa9; src/loop/modes/FranchiseMode.jsx |
-| Tonight | /clash/tonight | docs/tonights-clash |8a4a567/883faa9; source-backed schedule selector; today can be honestly empty |
+| Tonight | /clash/tonight | docs/tonights-clash |27630a1 direct route/hub correction; existing sourced schedule adapter; final journey pending |
 |435 pairing pages | /clash/all-time/:slug | docs/franchise-clash |8a4a567/9f109dc; api/share-page.js + source catalog |
 | Spin | /clash/spin | docs/chaos-spin |883faa9; src/loop/modes/SpinMode.jsx |
 | OneFranchise | /clash/one-franchise | docs/constraint-filters |883faa9; canonical30 franchise pools |
@@ -87,13 +88,28 @@ New modes adapt inputs/presentation over the unchanged Candidate4/current produc
 Inherited surface last commits (absorbedPR69 history): Chaos1f6b5d1(09-10), legacyDaily23d9ab3(08-24), ManualPicker7e45454(09-02), navigation/Best7/Win82/Tournament1f6b5d1(09-10), accounts9c45851(09-24), Challenges009030a(09-05), Cards/Rivalriesa6a6f0d(09-16), competitive97998d6(09-06), profiles886968b(09-09), Breakdown49b9bb4(09-24). Removed history-only ModeShelf:0482e2d(08-31), replaced by canonical TimeArena/navigation. The historical daily is UTC; the new Daily is a NewYork calendar adapter over the existing Chaos state machine. No historical standalone implemented Lab/Franchise/Gauntlet was found in the examined source tree history.
 
 ## Run2 results
-Pending mandatory execution.
+
+Last corrective source batch: the frozen276 affected crawl closed255 checks (235PASS/15rawFAIL/5ownerPARTIAL),0critical,0initialserious/contrast; native RandomTeam removed the h1 across allthree legacy formats and five profiles. Added a visually hidden, mode-correct heading only while a team replaces the legacy hero and a separate heading for the mutually exclusive simulation transition. No layout, roster, handler or engine changes. Fresh build, native heading proofs and final suites are pending; the prior raw moderate findings remain preserved. The PNG verification runner's canonical fallback fixture now retains the actual page origin/CORP policy after two preserved fixture-lifecycle failures; actual PNG20/20 acceptance on276 passed.
+
+IN PROGRESS. Current exact runtime/source: `27630a151c1c9e89c4a85a271f2b88a3173714fe`, pushed to the same draft PR70. Local production-build fallback: `http://localhost:4320`; normal stamp `eraclash-assets:2.7.2:f94eb9fb10ab`, fixtures `809e87cb7f99`. Normal and fixture builds passed;435 pairing artifacts rebuilt with the explicit local origin. Generated non-cloud checkout has no selected-source differences. Fresh final sharing, five quiet Lighthouse reports, full suites, mode/data/event journeys, affected route crawl and neutral ON/OFF checks are pending. No Run2 close or Run3 acceptance yet.
+
+Correction log awaiting final re-verification:
+- Initial full b0 crawl:2415 route/profile checks;182 rawFAIL. Frozen b271 full crawl:2425 checks,48 rawFAIL/sixPARTIAL;0critical axe before/after,22initial/256post-interaction serious instances;1404/1404 links PASS. All435 pairings and ten fresh recaps passed allfive profiles. Raw findings, controls and compressed archives remain preserved; these are historical exact-source results, not final276 acceptance.
+- Corrected contrast, empty-search combobox semantics, legacy tablists, mobile header scroll obstruction, selected guide tabs, roster decade/tradeoff text, Credits route precedence and local Profile/Challenges/Credits headings. Native input and fourth-search diagnostics establish actual keyboard/native-click access while preserving raw viewport-boundary findings. Selected/idempotent controls had separate5/5 evidence.
+- Corrected generic deferred-fallback top-margin collapse after18-context causal evidence (six reproduced, six height-only controls failed, six zero-margin controls CLS0). Full88 gates at b271 were82PASS/sixFAIL: three unavailable owner diagnostics and three measured CLS failures. Final full88 rerun remains pending; no failing gate is waived.
+- Fourteen conditional UI components now use stable module-scope loading boundaries. LoopModes shell is loaded with the entry; inner builders remain conditional. Runtime applyTheme/isThemeId bodies moved byte-for-byte into a lightweight module, retaining resolver exports, production theme/CSS and all engine/data bytes. Actual controlled PNG prototypes reduce initial compressed JavaScript but still measure3.30–3.46s Lighthouse mobile LCP: the2.5s criterion is NOT met. Final exact-source five-route measurements are required; no runtime latency/hosted CDN claim is inferred from Lantern simulation.
+- Removed our unused WebP derivative after native canvas equality FAILED despite Sharp raw-RGBA equality. Preserved the failed report and decoder causal controls. The selected197189-byte PNG derivative is16%smaller than the unchanged canonical PNG and has0differences in14native DOM/bitmap/background comparisons. Original PNG, dimensions and visual mark remain unchanged. Final built srcSet/preload/network/browser acceptance is pending.
+- A source review found that Tonight gameplay had only been tested inside `/clash/franchise`, while this ledger/release listed `/clash/tonight`. That direct route and hub entry were genuinely absent. Commit276 now connects the existing controller, requires a sourced scheduled pairing before direct-route play, displays an honest empty date and versions the two contracts. Fresh direct-route/card/rematch/mobile proof is pending; earlier section journeys are not direct-route evidence.
+
+Previous frozen b271 suites:100files,97PASS/3FAIL;2961PASS/2FAIL out of2963 plus one collection-blocked calibration file; no pending/todo/declared skips. Exact historical identifiability/probability cache files remain missing; GitHub Actions artifact API returned total_count0. No measurements were regenerated or stubbed. Browser reverify98/98 after test-only dialog scoping/loading-readiness fixes; earlier failures preserved. Stateful28/28, guest72/72, reset3/3, affected7/7, privacy5/5 and seven-win Gauntlet passed on b271;83unique Loop games plus1governed Chaos,0JS,32actual publication receipts/32completed/32card-created events,44native event batches/44HTTP204,all10event names. Those accounts were local emulation; real Supabase RLS/SMTP/provider readiness remain UNVERIFIED. Test ratios0.0625/0.5/1, day2/day7null/censored.
+
+Latest observed hosted identity before this fix batch: b271 GitHub deployment6806445888 SUCCESS; immutable `https://era-clash-basketball-ow0wx4540-era-clash.vercel.app` returned401 Private preview on one anonymous GET. No app200/runtime stamp observed. Repeat exact current-tip Preview discovery at Run2 close; no old Preview is substituted. Branch URL remains `https://era-clash-basketball-git-phase-loop-foundation-era-clash.vercel.app`.
 
 ## Run3 results
 Pending independent execution; do not consume Run2 results before recording Run3 own results.
 
 ## Owner decisions & actions
-- Restore correct GitHub authorization using browser GitHub/Codex connection; branch/push/PR creation remains blocked in this session by user-mandated auth fallback.
+- GitHub authorization/push/draft creation are verified now. Review draft PR70; do not merge until final substantive failures and real Preview account/RLS acceptance are resolved. No auth switch/login/setup was run.
 - Basketball Preview credentials are absent from the available harness and connector. No realPreviewaccount, repair, RLS, SMTP or publicPreviewverification claims.
 - Preserve existing simulation candidate/calibration/core and both Wave branches. Current modes only supply inputs/presentation; no engine changes.
 - Existing entitlement docs conflict with blanket guest-first play; preserve legacy contracts and provide newguest-adapter routes; explicit policy change remains flagged for review.
@@ -112,13 +128,13 @@ Artifacts: data/validation/foundation/loop-run-1-final.json; data/validation/loo
 
 Missing historical measurements: tests/v6c2c4-scoped-calibration.test.js cannot collect because measured identifiability cache is absent; tests/v6c2c6-orientation-and-sidebias.test.js and tests/v6c2c6-side-bias-policy.test.js each fail the frozen probability-validation-v3 artifact read. No protected calibration regeneration/stub. Gate security failures: Challenges,competitive,progression require an unavailable X-Preview-Key owner diagnostic. Before/after: first70/77→final85/88; fixed API duplicate deployment copies/CSP bounded host assertion/Challenge CLS. All11 new gates pass.
 
-Preview readiness API discovery rejected/unavailable authorization; no replacement-branch public deployment exists because push is blocked. Run2 will repeat discovery and local-build fallback, recording its own sourceSHA/served fingerprint. No oldPR69Preview is claimed as this build.
+Preview readiness was repeated after push. Vercel READY dpl_44HmV4ve1npeNRhpQCTEG6tk5t8v and GitHub deployment6805286186 SUCCESS at exact b0ef7ae. Branch URL https://era-clash-basketball-git-phase-loop-foundation-era-clash.vercel.app; immutable https://era-clash-basketball-3mhnd6jq5-era-clash.vercel.app. One anonymous request returned401 Private preview from the app invite-key gate. Available bypass/admin credential presence checks were allfalse; no public app200 or deployed runtime fingerprint was observed. Run2 uses the local production-build fallback; no oldPR69Preview is claimed.
 
 ## Open questions
 - Full public release depends on credentials, actualSMTP/liveproviderconfiguration, rights/operatorpolicies and authenticatedtwo-accountRLSverification.
 - Openingnight schedule claims verified by official league release and PDF (sourcesin docs/data), not assumed.
 
-## Run1 evidence update (not a completion claim)
+## Historical Run1 checkpoints (superseded by the closed Run1 counts above)
 - Frozen implementation a826333eb68ff2b995933541bb4be44ca9acda7b; client build eraclash-assets:2.7.2:c3234f7053ad; local target http://localhost:4320. Explicit local-only simulation session/IP quotas500 permit bounded scripted fixtures; production defaults remain10/20 and the inherited global ceiling600 applies to Loop compute. Full99-file unit run:2954 passed,2 failed,1 collection-blocked suite (three files total), all remaining failures are missing frozen historical calibration artifacts. No skipped tests declared.
 - Frozen browser run:98/98 passed; full88-gate sweep still running. New mode reverify72/72,41 actual games,zero page errors; prior71/72 test-only same-day refresh assumption failure is preserved and corrected by a real day-change focus test. Sharing102/102 and typed guest rematch21/21; sourceSHA/build stamp and actual server identity recorded in final sharing reports.
 - Career projection retains all ten new mode identities under schema-compatible loop_* keys. Fresh casual rematch preserves saved fives/coaches/era with a new authoritative AnyFive game and seed, without reusing a Daily attempt/Spin receipt/Gauntlet claim. Targeted155 tests plus final56-test boundary batch passed. Daily visible dates useMM-DD-YYYY; machine day keys stayISO. Reopening a result no longer duplicates completion events.

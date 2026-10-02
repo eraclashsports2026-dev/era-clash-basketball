@@ -1544,6 +1544,9 @@ export default function App() {
   const playView = (
     <div>
       <div className="sr-only" role="status" aria-live="polite">{announce}</div>
+      {team && !result && !isChaos && (
+        <h1 className="sr-only">{isDaily ? "Daily Clash" : isChallenge ? "Challenge matchup" : modeMeta(activeMode)?.label || "Basketball matchup"}</h1>
+      )}
       {undo && (
         <div className="ec-undo-toast" role="status">
           <span>{undo.message}</span>
@@ -1973,6 +1976,7 @@ export default function App() {
   // ── Dedicated simulation transition (builder leaves the stage) ──────────────
   const simulatingView = (
     <div style={{ maxWidth: 720, margin: "8vh auto 0" }}>
+      <h1 className="sr-only">Simulating your basketball matchup</h1>
       <SimulationLoading stage={simStage} progress={progress}
         goldLabel="TEAM GOLD" blueLabel={isChallenge ? (challenge?.challengerName || "TEAM BLUE").toUpperCase() : "TEAM BLUE"}
         coachGold={coachGold?.name} coachBlue={blueBuildable ? coachBlue?.name : null}
