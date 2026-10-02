@@ -1,0 +1,6 @@
+{
+  "scope": "Read-only evidence exporter error, not a runtime/browser/game failure.",
+  "error": "TypeError: response.ok is not a function",
+  "cause": "Node Fetch response.ok is a boolean; exporter initially used the Playwright method shape.",
+  "correction": "Use Node Fetch boolean; no source, result, score, seed, browser or server changes."
+}

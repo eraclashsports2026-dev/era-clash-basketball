@@ -1,0 +1,41 @@
+[
+  {
+    "name": "build",
+    "argv": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "start": "2026-10-02T12:27:40.996156+00:00",
+    "end": "2026-10-02T12:27:43.399409+00:00",
+    "log": "/private/tmp/loop-temp-build-6545f8c.log"
+  },
+  {
+    "name": "fixtures",
+    "argv": [
+      "npm",
+      "run",
+      "build:fixtures"
+    ],
+    "exit": 0,
+    "start": "2026-10-02T12:27:43.399797+00:00",
+    "end": "2026-10-02T12:27:45.153989+00:00",
+    "log": "/private/tmp/loop-temp-fixtures-6545f8c.log"
+  },
+  {
+    "name": "pairings",
+    "argv": [
+      "node",
+      "scripts/loop/franchise-pages.mjs",
+      "--origin",
+      "http://localhost:4320",
+      "--output",
+      "artifacts/loop/franchise-pages"
+    ],
+    "exit": 0,
+    "start": "2026-10-02T12:27:45.154141+00:00",
+    "end": "2026-10-02T12:27:55.670503+00:00",
+    "log": "/private/tmp/loop-temp-pairings-6545f8c.log"
+  }
+]

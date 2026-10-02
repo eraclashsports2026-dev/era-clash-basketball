@@ -1,0 +1,82 @@
+{
+  "sourceReport": "/private/tmp/eraclash-loop-verification-20261002/data/validation/loop-foundation/stateful/run-2-temp/report.json",
+  "sourceReportSHA256": "97f9d89b5b4436c3fbdfa9204b93b42ae6164e470dc038c6e7cc470254649d36",
+  "executionPath": "/private/tmp/eraclash-loop-verification-20261002",
+  "sourceSHA": "b0ef7ae430f818d1d3b98bbf15a8ed3e19b30d44",
+  "productionBuildStamp": "eraclash-assets:2.7.2:c3234f7053ad",
+  "observedFrom": "2026-10-02T09:38:10.720Z",
+  "observedThrough": "2026-10-02T09:40:54.308Z",
+  "input": {
+    "nativeBeaconBatches": 48,
+    "nativeBeaconAccepted": 48,
+    "httpReceiptCount": 48,
+    "httpReceiptStatuses": {
+      "204": 48
+    },
+    "capturedClosedEvents": 174,
+    "equalEventRecordsObserved": 10,
+    "deduplication": "None; equal records were actually emitted and accepted. No transport duplication inference.",
+    "closedNameCounts": {
+      "game_completed": 43,
+      "card_created": 34,
+      "card_shared": 2,
+      "card_opened": 1,
+      "rematch_started_from_card": 1,
+      "guest_play_started": 17,
+      "signup_completed": 1,
+      "daily_attempted": 2,
+      "daily_shared": 1,
+      "mode_started": 72
+    },
+    "missingClosedNames": []
+  },
+  "numbers": {
+    "sharesPerCompletedGame": 0.046511627906976744,
+    "cardTapsPerShare": 0.5,
+    "playsPerCardTap": 1,
+    "returnRate": {
+      "day2": null,
+      "day7": null
+    }
+  },
+  "cohort": {
+    "day2": {
+      "eligibleCompleteWindows": 0,
+      "returned": 0,
+      "totalObservedBrowserIdentities": 3,
+      "rate": null,
+      "status": "CENSORED: current journey has no completed follow-up window",
+      "observationOffsetDays": 1
+    },
+    "day7": {
+      "eligibleCompleteWindows": 0,
+      "returned": 0,
+      "totalObservedBrowserIdentities": 3,
+      "rate": null,
+      "status": "CENSORED: current journey has no completed follow-up window",
+      "observationOffsetDays": 6
+    }
+  },
+  "rawFunctionOutput": {
+    "sharesPerCompletedGame": 0.046511627906976744,
+    "cardTapsPerShare": 0.5,
+    "playsPerCardTap": 1,
+    "returnRate": {
+      "day2": 0,
+      "day7": 0
+    }
+  },
+  "formulas": {
+    "sharesPerCompletedGame": "card_shared / game_completed",
+    "cardTapsPerShare": "card_opened / card_shared",
+    "playsPerCardTap": "rematch_started_from_card / card_opened; this closed event is rematch start, not completion"
+  },
+  "verifiedCompletedCardRematchGames": 1,
+  "limits": [
+    "Local synthetic QA traffic using genuine current captured timestamps; no real-user retention or future observations.",
+    "Raw loopNumbers returns zero for immature cohorts; this report censors them to null using complete observed follow-up windows.",
+    "All actual dev StrictMode mounts remain in input, including exactly equal records. Ratios are journey telemetry, not deduplicated unique-user conversion.",
+    "Native sendBeacon acceptance and HTTP204 receipts are observed. Local in-memory ingest is configured, but durable storage, vendor ingestion and production provider receipt were not read back or proved. An unconfigured /api/events sink may also return204.",
+    "The harness explicitly flushes the real event queue before hard reloads. No production unload-delivery claim."
+  ]
+}

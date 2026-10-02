@@ -1,0 +1,151 @@
+{
+  "scope": "Basketball sharing-only real UI acceptance on local handler harness; not a full product verification or physical-device test",
+  "origin": "http://localhost:4320",
+  "identity": {
+    "checkoutSha": "12620d7ac0bece111dc9ce43fdc5a5415a98ae56",
+    "requestedSha": "12620d7ac0bece111dc9ce43fdc5a5415a98ae56",
+    "clientBuildStamp": "eraclash-assets:2.7.2:db4b82cf8f55",
+    "clientHtmlSha256": "e601c9d142e3bc54d5e370ab63601a8901cae1f3cb81081c28d5f1e0fc02f8de",
+    "serverHealth": {
+      "status": "ok",
+      "build": "2.7.2",
+      "coreEngine": "ok",
+      "persistence": "ok",
+      "aiNarrative": "ok",
+      "simV3": true,
+      "cloudAccounts": {
+        "enabled": false,
+        "ready": false
+      },
+      "preview": {
+        "enabled": true,
+        "candidateId": "Candidate 4",
+        "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "calibrationVersion": "1.4.0"
+      }
+    }
+  },
+  "pass": true,
+  "checks": [
+    {
+      "name": "creator result is actually simulated by the existing server",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "creator owns and publishes initial public recap",
+      "pass": true
+    },
+    {
+      "name": "fresh guest has no account or creator cookie",
+      "pass": true
+    },
+    {
+      "name": "public recap displays actual creator score",
+      "pass": true
+    },
+    {
+      "name": "guest CTA keeps the exact recap reference",
+      "pass": true
+    },
+    {
+      "name": "guest starts with an empty five",
+      "pass": true
+    },
+    {
+      "name": "pre-play public recap disclosure is visible",
+      "pass": true
+    },
+    {
+      "name": "typed card 1 resolves one explicit era",
+      "pass": true,
+      "player": "Stephen Curry",
+      "era": "2010s"
+    },
+    {
+      "name": "typed card 2 resolves one explicit era",
+      "pass": true,
+      "player": "Ray Allen",
+      "era": "2000s"
+    },
+    {
+      "name": "typed card 3 resolves one explicit era",
+      "pass": true,
+      "player": "Kevin Durant",
+      "era": "2010s"
+    },
+    {
+      "name": "typed card 4 resolves one explicit era",
+      "pass": true,
+      "player": "Dirk Nowitzki",
+      "era": "2000s"
+    },
+    {
+      "name": "typed card 5 resolves one explicit era",
+      "pass": true,
+      "player": "Nikola Jokic",
+      "era": "2020s"
+    },
+    {
+      "name": "five actual chosen cards are visible",
+      "pass": true
+    },
+    {
+      "name": "guest five is simulated without a signup gate",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "UI submits the exact chosen five",
+      "pass": true
+    },
+    {
+      "name": "shared creator five is the opponent",
+      "pass": true
+    },
+    {
+      "name": "guest receives a separate addressable public recap",
+      "pass": true
+    },
+    {
+      "name": "own public recap displays the exact server score",
+      "pass": true
+    },
+    {
+      "name": "own public recap displays both real fives",
+      "pass": true
+    },
+    {
+      "name": "card remains within the mobile viewport",
+      "pass": true
+    },
+    {
+      "name": "no browser application errors",
+      "pass": true,
+      "errors": []
+    }
+  ],
+  "initialPath": "/card/b9728eb32f81ff22",
+  "guestPath": "/card/992189c162c3f8b0",
+  "serverScore": {
+    "gold": 123,
+    "blue": 141
+  },
+  "submitted": {
+    "goldIds": [
+      "curry-10s",
+      "ray-00s",
+      "durant-10s",
+      "dirk-00s",
+      "jokic-20s"
+    ],
+    "blueIds": [
+      "magic-80s",
+      "jordan-90s",
+      "bird-80s",
+      "duncan-00s",
+      "hak-90s"
+    ]
+  },
+  "errors": []
+}

@@ -1,0 +1,1388 @@
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -14,7 +14,6 @@
+ } from "./career.js";
+ import { createChallenge, loadChallengeFromUrl } from "./challengeClient.js";
+ import { publishResult, shareText } from "./share.js";
+-import Postgame from "./components/Postgame.jsx";
+ import DailyPanel from "./components/DailyPanel.jsx";
+ import DailyCoachEra from "./components/DailyCoachEra.jsx";
+ import Profile from "./components/Profile.jsx";
+@@ -27,9 +26,6 @@
+ import PlayerImage from "./components/PlayerImage.jsx";
+ import StageWizard from "./components/StageWizard.jsx";
+ import ArenaHeader from "./components/arena/ArenaHeader.jsx";
+-import TimeArena from "./components/arena/TimeArena.jsx";
+-import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
+-import ProgressionReferenceFixture from "./ui/progression/ProgressionReferenceFixture.jsx";   // Phase 9D, same dev-only gate
+ import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
+ import {
+   PLAY_MODES, findMode, defaultMode, MODE_STATUS,
+@@ -41,7 +37,6 @@
+ import AccountDialog from "./components/accounts/AccountDialog.jsx";
+ import AuthCallback from "./components/accounts/AuthCallback.jsx";
+ import SaveThisClash from "./components/accounts/SaveThisClash.jsx";
+-import MyEraClash from "./components/accounts/MyEraClash.jsx";
+ import { startAccountState, subscribeAccount, accountState, signOutAccount } from "./accounts/accountState.js";
+ import { provider as accountProvider, withProvider } from "./accounts/provider.js";
+ import { saveResultToCareer, claimGuestResult } from "./accounts/cloudSave.js";
+@@ -56,7 +51,6 @@
+ // invitation; an accepted challenge is an ordinary Chaos run the arena resumes.
+ import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
+ import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
+-import ClashBreakdown from "./components/breakdown/ClashBreakdown.jsx";   // Clash Breakdown V1
+ import { loadSavedReport } from "./accounts/savedReport.js";
+ import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
+ import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
+@@ -64,13 +58,8 @@
+ import { rememberProgression, progressionFor, mergeProgression } from "./progression/client.js";
+ import CareerProgress from "./components/progression/CareerProgress.jsx";
+ // Phase 9E: the Challenge Rating leaderboard and the rating movement after a comparison.
+-import LeaderboardPage from "./components/competitive/LeaderboardPage.jsx";
+-import PublicProfilePage from "./components/profiles/PublicProfilePage.jsx";   // Phase 9F
+ import { slugFromPath, PUBLIC_PROFILE_ROUTE } from "./profiles/contract.js";
+ import RatingChange from "./components/competitive/RatingChange.jsx";
+-import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
+-import SocialReferenceFixture from "./ui/social/SocialReferenceFixture.jsx";   // dev-only gate (Clash Cards + Rivalries V1)
+-import ProfileReferenceFixture from "./ui/profiles/ProfileReferenceFixture.jsx";   // dev-only gate
+ import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
+ import { can, CAPABILITIES } from "./entitlements.js";
+ import RosterGrid from "./components/RosterGrid.jsx";
+@@ -82,12 +71,32 @@
+ import { v3meta } from "./v3meta.js";
+ import { runNarrative, toViewStatus } from "./narrativeMachine.js";
+ import { shortBuild, watchForNewBuild } from "./buildStamp.js";
+-import LoopModes from './loop/modes/LoopModes.jsx';
+-import LoopResult from './loop/LoopResult.jsx';
+-import PrivateRooms from './loop/PrivateRooms.jsx';
+ import { PolicyPage, SupportPage } from './loop/PolicyPages.jsx';
+ import { loopEvent } from './loop/events.js';
+ import { loopApi } from './loop/client.js';
++
++// Defer conditional screens while keeping the arena header and active mode visible.
++// Declared at module scope so navigating or rerendering preserves component identity.
++function deferredScreen(load, message) {
++  const Screen = lazy(load);
++  return function DeferredScreen(props) {
++    return (
++      <Suspense fallback={<div role="status" aria-busy="true" style={{ maxWidth: 1100, margin: "24px auto", padding: 24, minHeight: 120 }}>{message}</div>}>
++        <Screen {...props} />
++      </Suspense>
++    );
++  };
++}
++
++const TimeArena = deferredScreen(() => import("./components/arena/TimeArena.jsx"), "Loading the arena…");
++const MyEraClash = deferredScreen(() => import("./components/accounts/MyEraClash.jsx"), "Loading My EraClash…");
++const Postgame = deferredScreen(() => import("./components/Postgame.jsx"), "Loading the full report…");
++const ClashBreakdown = deferredScreen(() => import("./components/breakdown/ClashBreakdown.jsx"), "Loading the breakdown…");
++const LoopModes = deferredScreen(() => import("./loop/modes/LoopModes.jsx"), "Loading this mode…");
++const LeaderboardPage = deferredScreen(() => import("./components/competitive/LeaderboardPage.jsx"), "Loading the leaderboard…");
++const PublicProfilePage = deferredScreen(() => import("./components/profiles/PublicProfilePage.jsx"), "Loading this profile…");
++const PrivateRooms = deferredScreen(() => import("./loop/PrivateRooms.jsx"), "Loading private rooms…");
++const LoopResult = deferredScreen(() => import("./loop/LoopResult.jsx"), "Loading the result…");
+ 
+ // The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
+ // server's edges; placeholder until both fives exist. No numbers, no winner.
+@@ -167,6 +176,11 @@
+ // `npm run build:visual-qa` (and the dev server), so a production build
+ // statically eliminates both this route and the fixture module.
+ const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
++const ReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/time-arena/ReferenceFixture.jsx"), "Loading the reference fixture…") : null;
++const ProgressionReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/progression/ProgressionReferenceFixture.jsx"), "Loading the reference fixture…") : null;
++const CompetitiveReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/competitive/CompetitiveReferenceFixture.jsx"), "Loading the reference fixture…") : null;
++const SocialReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/social/SocialReferenceFixture.jsx"), "Loading the reference fixture…") : null;
++const ProfileReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/profiles/ProfileReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+ const FIXTURE_ROUTE = "/dev/time-arena-reference";
+ const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
+ const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
+--- a/src/loop/franchises.js
++++ b/src/loop/franchises.js
+@@ -1,588 +1,9 @@
+-// Curated proposals using the existing canonical player-decade cards only.
+-// Sources establish historical context, not an official all-time ranking.
+-// See docs/data/franchise-rosters-2026-10-02.md for availability limitations.
+-import { PLAYERS, POSITIONS, findCard } from "../players.js";
+-import { isLegalLineup } from "../lineupPlacement.js";
++// Preserve the existing synchronous franchise API while selection-only UI
++// consumes the catalog without the schedule snapshot.
++export * from "./franchiseCatalog.js";
++import { getFranchise, franchisePairingFor } from "./franchiseCatalog.js";
+ import schedule from "../../data/schedule/2026-27.json" with { type: "json" };
+ 
+-export const FRANCHISE_DATA_VERSION = "loop-franchises-1.0.0";
+-export const AUTOMATIC_FRANCHISE_COACH_ID = "neutral";
+-export const AUTOMATIC_FRANCHISE_ERA = "2020s";
+-const rows = [
+-  {
+-    "id": "atlanta",
+-    "city": "Atlanta",
+-    "name": "Atlanta Hawks",
+-    "lineage": "Hawks",
+-    "playerIds": [
+-      "trae-20s",
+-      "hudson-70s",
+-      "dom-80s",
+-      "bob-60s",
+-      "dik-90s"
+-    ],
+-    "notes": "Includes the St. Louis era through Bob Pettit; balances early interior play with later perimeter creators.",
+-    "sources": [
+-      "https://www.nba.com/news/history-legend-dominique-wilkins",
+-      "https://www.nba.com/news/history-nba-legend-bob-pettit"
+-    ]
+-  },
+-  {
+-    "id": "boston",
+-    "city": "Boston",
+-    "name": "Boston Celtics",
+-    "lineage": "Celtics",
+-    "playerIds": [
+-      "cousy-60s",
+-      "john-h-70s",
+-      "bird-80s",
+-      "mcHale-80s",
+-      "bill-60s"
+-    ],
+-    "notes": "Cousy and Russell join Havlicek and the Bird/McHale frontcourt across distinct championship eras.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-bob-cousy"
+-    ]
+-  },
+-  {
+-    "id": "brooklyn",
+-    "city": "Brooklyn",
+-    "name": "Brooklyn Nets",
+-    "lineage": "Nets",
+-    "playerIds": [
+-      "kidd-00s",
+-      "petrovic-90s",
+-      "julius-70s",
+-      "durant-20s",
+-      "buck-80s"
+-    ],
+-    "notes": "Includes New York ABA and New Jersey history. Buck Williams uses his existing C eligibility; Brook Lopez is absent from the source pool.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-drazen-petrovic",
+-      "https://www.nba.com/news/history-nba-legend-julius-erving"
+-    ]
+-  },
+-  {
+-    "id": "charlotte",
+-    "city": "Charlotte",
+-    "name": "Charlotte Hornets",
+-    "lineage": "Hornets/Bobcats",
+-    "playerIds": [
+-      "kemba-10s",
+-      "glen-90s",
+-      "gwallace-00s",
+-      "larry-j-90s",
+-      "alonzo-90s"
+-    ],
+-    "notes": "Includes original Charlotte and Bobcats eras. Mourning played in Charlotte before Miami; the reused 1990s card is not a Charlotte-only statistical slice.",
+-    "sources": [
+-      "https://www.nba.com/hornets/glen-rice-and-charlotte-hornets-crossed-paths-perfect-time-0",
+-      "https://www.nba.com/heat/history/hall-fame-alonzo-mourning"
+-    ]
+-  },
+-  {
+-    "id": "chicago",
+-    "city": "Chicago",
+-    "name": "Chicago Bulls",
+-    "lineage": "Bulls",
+-    "playerIds": [
+-      "drose-10s",
+-      "jordan-90s",
+-      "pippen-90s",
+-      "rodman-90s",
+-      "artis-70s"
+-    ],
+-    "notes": "Gilmore supplies center eligibility alongside the 1990s championship core and Derrick Rose.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-michael-jordan"
+-    ]
+-  },
+-  {
+-    "id": "cleveland",
+-    "city": "Cleveland",
+-    "name": "Cleveland Cavaliers",
+-    "lineage": "Cavaliers",
+-    "playerIds": [
+-      "mark-p-90s",
+-      "dmitch-20s",
+-      "lebron-00s",
+-      "nance-90s",
+-      "brad-80s"
+-    ],
+-    "notes": "Price, Nance and Daugherty anchor franchise continuity alongside James and Mitchell; mixes decades intentionally.",
+-    "sources": [
+-      "https://www.nba.com/news/archive-75-lebron-james"
+-    ]
+-  },
+-  {
+-    "id": "dallas",
+-    "city": "Dallas",
+-    "name": "Dallas Mavericks",
+-    "lineage": "Mavericks",
+-    "playerIds": [
+-      "luka-20s",
+-      "blackman-80s",
+-      "mark-80s",
+-      "dirk-00s",
+-      "james-d-80s"
+-    ],
+-    "notes": "Blackman, Aguirre and Donaldson represent the early franchise; Nowitzki and Doncic represent later eras.",
+-    "sources": [
+-      "https://www.nba.com/news/archive-75-dirk-nowitzki"
+-    ]
+-  },
+-  {
+-    "id": "denver",
+-    "city": "Denver",
+-    "name": "Denver Nuggets",
+-    "lineage": "Nuggets",
+-    "playerIds": [
+-      "murray-20s",
+-      "david-t-70s",
+-      "alex-80s",
+-      "dan-70s",
+-      "jokic-20s"
+-    ],
+-    "notes": "Includes the early Denver lineage. Issel uses existing PF eligibility beside Jokic.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-alex-english"
+-    ]
+-  },
+-  {
+-    "id": "detroit",
+-    "city": "Detroit",
+-    "name": "Detroit Pistons",
+-    "lineage": "Pistons",
+-    "playerIds": [
+-      "isiah-80s",
+-      "dumars-90s",
+-      "grant-90s",
+-      "sheed-2ks",
+-      "ben-00s"
+-    ],
+-    "notes": "Combines the Thomas/Dumars, Hill and Wallace eras; not a single historical season.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-joe-dumars"
+-    ]
+-  },
+-  {
+-    "id": "golden-state",
+-    "city": "San Francisco",
+-    "name": "Golden State Warriors",
+-    "lineage": "Warriors",
+-    "playerIds": [
+-      "curry-10s",
+-      "klay-10s",
+-      "rick-70s",
+-      "draymond-10s",
+-      "wilt-60s"
+-    ],
+-    "notes": "Includes Philadelphia/San Francisco/Oakland lineage. Chamberlain supplies the historical interior alongside modern perimeter play.",
+-    "sources": [
+-      "https://www.nba.com/team/1610612744/franchise-leaders"
+-    ]
+-  },
+-  {
+-    "id": "houston",
+-    "city": "Houston",
+-    "name": "Houston Rockets",
+-    "lineage": "Rockets",
+-    "playerIds": [
+-      "murphy-70s",
+-      "harden-10s",
+-      "rudy-t-70s",
+-      "moses-80s",
+-      "hak-90s"
+-    ],
+-    "notes": "Malone uses existing PF eligibility alongside Olajuwon; the 1980s Malone card spans more than Houston.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-hakeem-olajuwon",
+-      "https://www.nba.com/news/history-nba-legend-calvin-murphy"
+-    ]
+-  },
+-  {
+-    "id": "indiana",
+-    "city": "Indianapolis",
+-    "name": "Indiana Pacers",
+-    "lineage": "Pacers",
+-    "playerIds": [
+-      "tyrese-20s",
+-      "reggie-90s",
+-      "pg-10s",
+-      "jermaine-2ks",
+-      "turner-20s"
+-    ],
+-    "notes": "Curated from the available cards across the Miller, ONeal and modern eras; ABA legends missing from the pool are not fabricated.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-reggie-miller"
+-    ]
+-  },
+-  {
+-    "id": "la-clippers",
+-    "city": "Los Angeles",
+-    "name": "LA Clippers",
+-    "lineage": "Clippers/Braves",
+-    "playerIds": [
+-      "cp3-10s",
+-      "pg-20s",
+-      "kawhi-20s",
+-      "blake-10s",
+-      "bob-mc-70s"
+-    ],
+-    "notes": "Includes Buffalo Braves lineage through Bob McAdoo, rather than excluding the franchise original MVP center.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-bob-mcadoo",
+-      "https://www.nba.com/clippers/city-edition"
+-    ]
+-  },
+-  {
+-    "id": "la-lakers",
+-    "city": "Los Angeles",
+-    "name": "Los Angeles Lakers",
+-    "lineage": "Lakers",
+-    "playerIds": [
+-      "magic-80s",
+-      "kobe-00s",
+-      "elgin-60s",
+-      "worthy-80s",
+-      "kareem-80s"
+-    ],
+-    "notes": "Worthy uses existing PF eligibility to keep the perimeter and traditional center slots legal; Minneapolis lineage remains part of pool coverage.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-magic-johnson"
+-    ]
+-  },
+-  {
+-    "id": "memphis",
+-    "city": "Memphis",
+-    "name": "Memphis Grizzlies",
+-    "lineage": "Grizzlies",
+-    "playerIds": [
+-      "conley-10s",
+-      "ja-20s",
+-      "bane-20s",
+-      "melo-f-00s",
+-      "marc-10s"
+-    ],
+-    "notes": "Morant uses existing SG and Bane existing SF eligibility beside Conley. Tony Allen, Rudy Gay and Memphis-era Zach Randolph cards are unavailable; no rookie is substituted for a historical icon.",
+-    "sources": [
+-      "https://www.nba.com/team/1610612763",
+-      "https://www.nba.com/team/1610612763/franchise-leaders"
+-    ]
+-  },
+-  {
+-    "id": "miami",
+-    "city": "Miami",
+-    "name": "Miami Heat",
+-    "lineage": "Heat",
+-    "playerIds": [
+-      "timH-90s",
+-      "wade-00s",
+-      "lebron-10s",
+-      "bosh-10s",
+-      "alonzo-90s"
+-    ],
+-    "notes": "Combines Hardaway/Mourning, Wade and Big Three eras; James and Mourning cards include other teams in the same decade.",
+-    "sources": [
+-      "https://www.nba.com/news/archive-75-dwyane-wade",
+-      "https://www.nba.com/team/1610612748/franchise-leaders"
+-    ]
+-  },
+-  {
+-    "id": "milwaukee",
+-    "city": "Milwaukee",
+-    "name": "Milwaukee Bucks",
+-    "lineage": "Bucks",
+-    "playerIds": [
+-      "oscar-70s",
+-      "moncrief-80s",
+-      "marques-70s",
+-      "giannis-20s",
+-      "kareem-70s"
+-    ],
+-    "notes": "Robertson and Abdul-Jabbar anchor the first title era alongside Johnson, Moncrief and Antetokounmpo.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-sidney-moncrief",
+-      "https://www.nba.com/news/history-nba-legend-oscar-robertson"
+-    ]
+-  },
+-  {
+-    "id": "minnesota",
+-    "city": "Minneapolis",
+-    "name": "Minnesota Timberwolves",
+-    "lineage": "Timberwolves/Wolves",
+-    "playerIds": [
+-      "cassell-2ks",
+-      "ant-20s",
+-      "butler-10s",
+-      "kg-00s",
+-      "kat-20s"
+-    ],
+-    "notes": "Cassell, Garnett, Towns and Edwards are core eras. Butler had a short 2017-18 tenure and uses an existing mixed Bulls/Wolves card; owner review should consider longevity.",
+-    "sources": [
+-      "https://www.nba.com/timberwolves/history/all-time-numbers",
+-      "https://www.nba.com/news/archive-75-kevin-garnett"
+-    ]
+-  },
+-  {
+-    "id": "new-orleans",
+-    "city": "New Orleans",
+-    "name": "New Orleans Pelicans",
+-    "lineage": "Pelicans/New Orleans Hornets",
+-    "playerIds": [
+-      "cp3-00s",
+-      "dejounte-20s",
+-      "ingram-20s",
+-      "zion-20s",
+-      "ad-10s"
+-    ],
+-    "notes": "Uses New Orleans history from 2002 onward, including its Hornets name. Murray at SG is an availability/position choice, not a claim of consensus all-time status; missing New Orleans-era Jrue Holiday/David West cards are not invented.",
+-    "sources": [
+-      "https://cdn.nba.com/teams/uploads/sites/1610612740/2025/10/2025-26-Pelicans-Media-Guide-v2.pdf",
+-      "https://www.nba.com/news/2024-25-season-preview-nop"
+-    ]
+-  },
+-  {
+-    "id": "new-york",
+-    "city": "New York",
+-    "name": "New York Knicks",
+-    "lineage": "Knicks",
+-    "playerIds": [
+-      "walt-70s",
+-      "monroe-70s",
+-      "king-80s",
+-      "dave-d-60s",
+-      "ewing-90s"
+-    ],
+-    "notes": "Frazier/Monroe/DeBusschere championship lineage pairs with King and Ewing; DeBusschere joined New York during the 1968-69 season.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-walt-frazier"
+-    ]
+-  },
+-  {
+-    "id": "oklahoma-city",
+-    "city": "Oklahoma City",
+-    "name": "Oklahoma City Thunder",
+-    "lineage": "Thunder",
+-    "playerIds": [
+-      "russ-10s",
+-      "shai-20s",
+-      "durant-10s",
+-      "ibaka-2010s",
+-      "chet-20s"
+-    ],
+-    "notes": "Curated Oklahoma City era only, from 2008 onward. Seattle identities are not relabeled Oklahoma City; this is an explicit narrower content scope.",
+-    "sources": [
+-      "https://www.nba.com/news/oklahoma-city-acquires-chris-paul-houston-rockets-official-release"
+-    ]
+-  },
+-  {
+-    "id": "orlando",
+-    "city": "Orlando",
+-    "name": "Orlando Magic",
+-    "lineage": "Magic",
+-    "playerIds": [
+-      "penny-90s",
+-      "tmac-00s",
+-      "franz-20s",
+-      "paolo-20s",
+-      "shaq-90s"
+-    ],
+-    "notes": "Uses Shaq/Penny, McGrady and contemporary forward eras. Wagner/Banchero are young and longevity remains an owner-review choice.",
+-    "sources": [
+-      "https://www.nba.com/team/1610612753/franchise-leaders"
+-    ]
+-  },
+-  {
+-    "id": "philadelphia",
+-    "city": "Philadelphia",
+-    "name": "Philadelphia 76ers",
+-    "lineage": "76ers/Nationals",
+-    "playerIds": [
+-      "ai-00s",
+-      "hal-60s",
+-      "julius-80s",
+-      "charles-80s",
+-      "wilt-60s"
+-    ],
+-    "notes": "Syracuse/Philadelphia lineage; no player is added or moved based on an opening-night narrative.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-julius-erving"
+-    ]
+-  },
+-  {
+-    "id": "phoenix",
+-    "city": "Phoenix",
+-    "name": "Phoenix Suns",
+-    "lineage": "Suns",
+-    "playerIds": [
+-      "nash-00s",
+-      "booker-20s",
+-      "marion-00s",
+-      "barkley-90s",
+-      "amare-00s"
+-    ],
+-    "notes": "Stoudemire uses existing C eligibility with Nash/Marion and the Barkley/Booker eras.",
+-    "sources": [
+-      "https://www.nba.com/news/archive-75-steve-nash"
+-    ]
+-  },
+-  {
+-    "id": "portland",
+-    "city": "Portland",
+-    "name": "Portland Trail Blazers",
+-    "lineage": "Blazers",
+-    "playerIds": [
+-      "dame-10s",
+-      "porter-80s",
+-      "clyde-90s",
+-      "lucas-m-70s",
+-      "mychal-80s"
+-    ],
+-    "notes": "Porter uses existing SG and Drexler SF eligibility. Bill Walton has no 1970s card and the 1980s Celtics card would misrepresent Portland; Mychal Thompson is a documented available center.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-clyde-drexler",
+-      "https://www.nba.com/news/archive-75-damian-lillard"
+-    ]
+-  },
+-  {
+-    "id": "sacramento",
+-    "city": "Sacramento",
+-    "name": "Sacramento Kings",
+-    "lineage": "Kings/Royals",
+-    "playerIds": [
+-      "oscar-60s",
+-      "mitch-90s",
+-      "peja-00s",
+-      "webb-90s",
+-      "boogie-2010s"
+-    ],
+-    "notes": "Includes Rochester/Cincinnati/Kansas City/Sacramento lineage. Robertson is a Royals-era selection; Webber 1990s card includes Golden State/Washington/Sacramento.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-oscar-robertson"
+-    ]
+-  },
+-  {
+-    "id": "san-antonio",
+-    "city": "San Antonio",
+-    "name": "San Antonio Spurs",
+-    "lineage": "Spurs",
+-    "playerIds": [
+-      "parker-00s",
+-      "manu-00s",
+-      "kawhi-10s",
+-      "duncan-00s",
+-      "rob-90s"
+-    ],
+-    "notes": "The Duncan/Parker/Ginobili core joins Robinson and Leonard; Leonard card includes more than San Antonio in the decade.",
+-    "sources": [
+-      "https://www.nba.com/news/archive-75-tim-duncan"
+-    ]
+-  },
+-  {
+-    "id": "toronto",
+-    "city": "Toronto",
+-    "name": "Toronto Raptors",
+-    "lineage": "Raptors",
+-    "playerIds": [
+-      "lowry-2010s",
+-      "vince-00s",
+-      "kawhi-10s",
+-      "siakam-20s",
+-      "bosh-00s"
+-    ],
+-    "notes": "Leonard is a one-season championship selection; Bosh uses existing C eligibility. Longevity versus peak remains an explicit owner choice.",
+-    "sources": [
+-      "https://www.nba.com/raptors/kyle-lowry-rewriting-record-books-again"
+-    ]
+-  },
+-  {
+-    "id": "utah",
+-    "city": "Salt Lake City",
+-    "name": "Utah Jazz",
+-    "lineage": "Jazz",
+-    "playerIds": [
+-      "stock-90s",
+-      "hornacek-90s",
+-      "dantley-80s",
+-      "malone-90s",
+-      "eaton-80s"
+-    ],
+-    "notes": "Stockton/Malone, Dantley, Hornacek and Eaton give legal guard/wing/interior roles; includes the New Orleans Jazz lineage only as Jazz, separate from Pelicans history.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-karl-malone"
+-    ]
+-  },
+-  {
+-    "id": "washington",
+-    "city": "Washington",
+-    "name": "Washington Wizards",
+-    "lineage": "Wizards/Bullets",
+-    "playerIds": [
+-      "wall-2010s",
+-      "beal-10s",
+-      "jamison-00s",
+-      "elvin-70s",
+-      "wes-60s"
+-    ],
+-    "notes": "Includes Baltimore/Capital/Washington Bullets lineage. Jamison uses existing SF eligibility alongside Hayes and Unseld.",
+-    "sources": [
+-      "https://www.nba.com/news/history-nba-legend-wes-unseld"
+-    ]
+-  }
+-];
+-const aliasById = {
+-  atlanta:["Hawks"], boston:["Celtics"], brooklyn:["Nets"],
+-  charlotte:["Hornets","Bobcats"], chicago:["Bulls"], cleveland:["Cavaliers"],
+-  dallas:["Mavericks"], denver:["Nuggets"], detroit:["Pistons"],
+-  "golden-state":["Warriors"], houston:["Rockets"], indiana:["Pacers"],
+-  "la-clippers":["Clippers","Braves"], "la-lakers":["Lakers"], memphis:["Grizzlies"],
+-  miami:["Heat"], milwaukee:["Bucks"], minnesota:["Timberwolves","Wolves"],
+-  "new-orleans":["Pelicans"], "new-york":["Knicks"], "oklahoma-city":["Thunder"],
+-  orlando:["Magic"], philadelphia:["76ers","Nationals"], phoenix:["Suns"],
+-  portland:["Blazers"], sacramento:["Kings","Royals"], "san-antonio":["Spurs"],
+-  toronto:["Raptors"], utah:["Jazz"], washington:["Wizards","Bullets"],
+-};
+-
+-export const FRANCHISES = Object.freeze(rows.map((row) => {
+-  const matches = PLAYERS.filter((p) => (p.team || "").split("/")
+-    .some((segment) => aliasById[row.id].includes(segment.trim())))
+-    .filter((p) => !(row.id === "charlotte" && p.id === "cp3-00s"));
+-  // Chris Paul belongs to New Orleans in this decade, despite the old Hornets label.
+-  const poolIds = [...new Set([...matches.map((p) => p.id), ...row.playerIds])];
+-  return Object.freeze({ ...row, era:"All-time", neutralName: `${row.city}${row.id === "la-lakers" ? " Gold" : row.id === "la-clippers" ? " Blue" : ""} · All-time`,
+-    reviewStatus:"OWNER_REVIEW", coachId:AUTOMATIC_FRANCHISE_COACH_ID,
+-    playerIds:Object.freeze(row.playerIds), poolIds:Object.freeze(poolIds),
+-    slots:Object.freeze(row.playerIds.map((playerId, i) => Object.freeze({pos:POSITIONS[i], playerId}))),
+-    sources:Object.freeze(row.sources),
+-  });
+-}));
+-const byId = new Map(FRANCHISES.map((f) => [f.id, f]));
+-export function getFranchise(id) { return typeof id === "string" ? byId.get(id) || null : null; }
+-export function getFranchiseRoster(id) {
+-  const franchise = getFranchise(typeof id === "string" ? id : id?.id);
+-  if (!franchise) throw new Error("Unknown franchise");
+-  const five = franchise.playerIds.map(findCard);
+-  if (five.some((p) => !p) || !isLegalLineup(five)) throw new Error(`Unavailable franchise roster: ${franchise.id}`);
+-  return five;
+-}
+-export function franchiseDisplayName(franchise, {neutralNaming = false} = {}) {
+-  const found = getFranchise(typeof franchise === "string" ? franchise : franchise?.id);
+-  return found ? (neutralNaming ? found.neutralName : `${found.name} · All-time`) : "Unknown franchise";
+-}
+-export const FRANCHISE_PAIRINGS = Object.freeze(FRANCHISES.flatMap((home, index) =>
+-  FRANCHISES.slice(index + 1).map((away) => {
+-    const [a, b] = [home.id, away.id].sort();
+-    const slug = `${a}-vs-${b}`;
+-    return Object.freeze({ id:slug, slug, homeId:a, awayId:b, goldId:a, blueId:b, path:`/clash/all-time/${slug}` });
+-  })
+-));
+-const pairings = new Map(FRANCHISE_PAIRINGS.map((p) => [p.slug, p]));
+-export function getFranchisePairing(slug) { return typeof slug === "string" ? pairings.get(slug) || null : null; }
+-export function franchisePairingFor(a, b) {
+-  if (!getFranchise(a) || !getFranchise(b) || a === b) return null;
+-  return getFranchisePairing([a,b].sort().join("-vs-"));
+-}
+ export function isScheduleDateKey(value) {
+   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+   const parsed = new Date(`${value}T12:00:00Z`);
+--- /dev/null
++++ b/src/loop/franchiseCatalog.js
+@@ -0,0 +1,584 @@
++// Curated proposals using the existing canonical player-decade cards only.
++// Sources establish historical context, not an official all-time ranking.
++// See docs/data/franchise-rosters-2026-10-02.md for availability limitations.
++import { PLAYERS, POSITIONS, findCard } from "../players.js";
++import { isLegalLineup } from "../lineupPlacement.js";
++
++export const FRANCHISE_DATA_VERSION = "loop-franchises-1.0.0";
++export const AUTOMATIC_FRANCHISE_COACH_ID = "neutral";
++export const AUTOMATIC_FRANCHISE_ERA = "2020s";
++const rows = [
++  {
++    "id": "atlanta",
++    "city": "Atlanta",
++    "name": "Atlanta Hawks",
++    "lineage": "Hawks",
++    "playerIds": [
++      "trae-20s",
++      "hudson-70s",
++      "dom-80s",
++      "bob-60s",
++      "dik-90s"
++    ],
++    "notes": "Includes the St. Louis era through Bob Pettit; balances early interior play with later perimeter creators.",
++    "sources": [
++      "https://www.nba.com/news/history-legend-dominique-wilkins",
++      "https://www.nba.com/news/history-nba-legend-bob-pettit"
++    ]
++  },
++  {
++    "id": "boston",
++    "city": "Boston",
++    "name": "Boston Celtics",
++    "lineage": "Celtics",
++    "playerIds": [
++      "cousy-60s",
++      "john-h-70s",
++      "bird-80s",
++      "mcHale-80s",
++      "bill-60s"
++    ],
++    "notes": "Cousy and Russell join Havlicek and the Bird/McHale frontcourt across distinct championship eras.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-bob-cousy"
++    ]
++  },
++  {
++    "id": "brooklyn",
++    "city": "Brooklyn",
++    "name": "Brooklyn Nets",
++    "lineage": "Nets",
++    "playerIds": [
++      "kidd-00s",
++      "petrovic-90s",
++      "julius-70s",
++      "durant-20s",
++      "buck-80s"
++    ],
++    "notes": "Includes New York ABA and New Jersey history. Buck Williams uses his existing C eligibility; Brook Lopez is absent from the source pool.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-drazen-petrovic",
++      "https://www.nba.com/news/history-nba-legend-julius-erving"
++    ]
++  },
++  {
++    "id": "charlotte",
++    "city": "Charlotte",
++    "name": "Charlotte Hornets",
++    "lineage": "Hornets/Bobcats",
++    "playerIds": [
++      "kemba-10s",
++      "glen-90s",
++      "gwallace-00s",
++      "larry-j-90s",
++      "alonzo-90s"
++    ],
++    "notes": "Includes original Charlotte and Bobcats eras. Mourning played in Charlotte before Miami; the reused 1990s card is not a Charlotte-only statistical slice.",
++    "sources": [
++      "https://www.nba.com/hornets/glen-rice-and-charlotte-hornets-crossed-paths-perfect-time-0",
++      "https://www.nba.com/heat/history/hall-fame-alonzo-mourning"
++    ]
++  },
++  {
++    "id": "chicago",
++    "city": "Chicago",
++    "name": "Chicago Bulls",
++    "lineage": "Bulls",
++    "playerIds": [
++      "drose-10s",
++      "jordan-90s",
++      "pippen-90s",
++      "rodman-90s",
++      "artis-70s"
++    ],
++    "notes": "Gilmore supplies center eligibility alongside the 1990s championship core and Derrick Rose.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-michael-jordan"
++    ]
++  },
++  {
++    "id": "cleveland",
++    "city": "Cleveland",
++    "name": "Cleveland Cavaliers",
++    "lineage": "Cavaliers",
++    "playerIds": [
++      "mark-p-90s",
++      "dmitch-20s",
++      "lebron-00s",
++      "nance-90s",
++      "brad-80s"
++    ],
++    "notes": "Price, Nance and Daugherty anchor franchise continuity alongside James and Mitchell; mixes decades intentionally.",
++    "sources": [
++      "https://www.nba.com/news/archive-75-lebron-james"
++    ]
++  },
++  {
++    "id": "dallas",
++    "city": "Dallas",
++    "name": "Dallas Mavericks",
++    "lineage": "Mavericks",
++    "playerIds": [
++      "luka-20s",
++      "blackman-80s",
++      "mark-80s",
++      "dirk-00s",
++      "james-d-80s"
++    ],
++    "notes": "Blackman, Aguirre and Donaldson represent the early franchise; Nowitzki and Doncic represent later eras.",
++    "sources": [
++      "https://www.nba.com/news/archive-75-dirk-nowitzki"
++    ]
++  },
++  {
++    "id": "denver",
++    "city": "Denver",
++    "name": "Denver Nuggets",
++    "lineage": "Nuggets",
++    "playerIds": [
++      "murray-20s",
++      "david-t-70s",
++      "alex-80s",
++      "dan-70s",
++      "jokic-20s"
++    ],
++    "notes": "Includes the early Denver lineage. Issel uses existing PF eligibility beside Jokic.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-alex-english"
++    ]
++  },
++  {
++    "id": "detroit",
++    "city": "Detroit",
++    "name": "Detroit Pistons",
++    "lineage": "Pistons",
++    "playerIds": [
++      "isiah-80s",
++      "dumars-90s",
++      "grant-90s",
++      "sheed-2ks",
++      "ben-00s"
++    ],
++    "notes": "Combines the Thomas/Dumars, Hill and Wallace eras; not a single historical season.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-joe-dumars"
++    ]
++  },
++  {
++    "id": "golden-state",
++    "city": "San Francisco",
++    "name": "Golden State Warriors",
++    "lineage": "Warriors",
++    "playerIds": [
++      "curry-10s",
++      "klay-10s",
++      "rick-70s",
++      "draymond-10s",
++      "wilt-60s"
++    ],
++    "notes": "Includes Philadelphia/San Francisco/Oakland lineage. Chamberlain supplies the historical interior alongside modern perimeter play.",
++    "sources": [
++      "https://www.nba.com/team/1610612744/franchise-leaders"
++    ]
++  },
++  {
++    "id": "houston",
++    "city": "Houston",
++    "name": "Houston Rockets",
++    "lineage": "Rockets",
++    "playerIds": [
++      "murphy-70s",
++      "harden-10s",
++      "rudy-t-70s",
++      "moses-80s",
++      "hak-90s"
++    ],
++    "notes": "Malone uses existing PF eligibility alongside Olajuwon; the 1980s Malone card spans more than Houston.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-hakeem-olajuwon",
++      "https://www.nba.com/news/history-nba-legend-calvin-murphy"
++    ]
++  },
++  {
++    "id": "indiana",
++    "city": "Indianapolis",
++    "name": "Indiana Pacers",
++    "lineage": "Pacers",
++    "playerIds": [
++      "tyrese-20s",
++      "reggie-90s",
++      "pg-10s",
++      "jermaine-2ks",
++      "turner-20s"
++    ],
++    "notes": "Curated from the available cards across the Miller, ONeal and modern eras; ABA legends missing from the pool are not fabricated.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-reggie-miller"
++    ]
++  },
++  {
++    "id": "la-clippers",
++    "city": "Los Angeles",
++    "name": "LA Clippers",
++    "lineage": "Clippers/Braves",
++    "playerIds": [
++      "cp3-10s",
++      "pg-20s",
++      "kawhi-20s",
++      "blake-10s",
++      "bob-mc-70s"
++    ],
++    "notes": "Includes Buffalo Braves lineage through Bob McAdoo, rather than excluding the franchise original MVP center.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-bob-mcadoo",
++      "https://www.nba.com/clippers/city-edition"
++    ]
++  },
++  {
++    "id": "la-lakers",
++    "city": "Los Angeles",
++    "name": "Los Angeles Lakers",
++    "lineage": "Lakers",
++    "playerIds": [
++      "magic-80s",
++      "kobe-00s",
++      "elgin-60s",
++      "worthy-80s",
++      "kareem-80s"
++    ],
++    "notes": "Worthy uses existing PF eligibility to keep the perimeter and traditional center slots legal; Minneapolis lineage remains part of pool coverage.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-magic-johnson"
++    ]
++  },
++  {
++    "id": "memphis",
++    "city": "Memphis",
++    "name": "Memphis Grizzlies",
++    "lineage": "Grizzlies",
++    "playerIds": [
++      "conley-10s",
++      "ja-20s",
++      "bane-20s",
++      "melo-f-00s",
++      "marc-10s"
++    ],
++    "notes": "Morant uses existing SG and Bane existing SF eligibility beside Conley. Tony Allen, Rudy Gay and Memphis-era Zach Randolph cards are unavailable; no rookie is substituted for a historical icon.",
++    "sources": [
++      "https://www.nba.com/team/1610612763",
++      "https://www.nba.com/team/1610612763/franchise-leaders"
++    ]
++  },
++  {
++    "id": "miami",
++    "city": "Miami",
++    "name": "Miami Heat",
++    "lineage": "Heat",
++    "playerIds": [
++      "timH-90s",
++      "wade-00s",
++      "lebron-10s",
++      "bosh-10s",
++      "alonzo-90s"
++    ],
++    "notes": "Combines Hardaway/Mourning, Wade and Big Three eras; James and Mourning cards include other teams in the same decade.",
++    "sources": [
++      "https://www.nba.com/news/archive-75-dwyane-wade",
++      "https://www.nba.com/team/1610612748/franchise-leaders"
++    ]
++  },
++  {
++    "id": "milwaukee",
++    "city": "Milwaukee",
++    "name": "Milwaukee Bucks",
++    "lineage": "Bucks",
++    "playerIds": [
++      "oscar-70s",
++      "moncrief-80s",
++      "marques-70s",
++      "giannis-20s",
++      "kareem-70s"
++    ],
++    "notes": "Robertson and Abdul-Jabbar anchor the first title era alongside Johnson, Moncrief and Antetokounmpo.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-sidney-moncrief",
++      "https://www.nba.com/news/history-nba-legend-oscar-robertson"
++    ]
++  },
++  {
++    "id": "minnesota",
++    "city": "Minneapolis",
++    "name": "Minnesota Timberwolves",
++    "lineage": "Timberwolves/Wolves",
++    "playerIds": [
++      "cassell-2ks",
++      "ant-20s",
++      "butler-10s",
++      "kg-00s",
++      "kat-20s"
++    ],
++    "notes": "Cassell, Garnett, Towns and Edwards are core eras. Butler had a short 2017-18 tenure and uses an existing mixed Bulls/Wolves card; owner review should consider longevity.",
++    "sources": [
++      "https://www.nba.com/timberwolves/history/all-time-numbers",
++      "https://www.nba.com/news/archive-75-kevin-garnett"
++    ]
++  },
++  {
++    "id": "new-orleans",
++    "city": "New Orleans",
++    "name": "New Orleans Pelicans",
++    "lineage": "Pelicans/New Orleans Hornets",
++    "playerIds": [
++      "cp3-00s",
++      "dejounte-20s",
++      "ingram-20s",
++      "zion-20s",
++      "ad-10s"
++    ],
++    "notes": "Uses New Orleans history from 2002 onward, including its Hornets name. Murray at SG is an availability/position choice, not a claim of consensus all-time status; missing New Orleans-era Jrue Holiday/David West cards are not invented.",
++    "sources": [
++      "https://cdn.nba.com/teams/uploads/sites/1610612740/2025/10/2025-26-Pelicans-Media-Guide-v2.pdf",
++      "https://www.nba.com/news/2024-25-season-preview-nop"
++    ]
++  },
++  {
++    "id": "new-york",
++    "city": "New York",
++    "name": "New York Knicks",
++    "lineage": "Knicks",
++    "playerIds": [
++      "walt-70s",
++      "monroe-70s",
++      "king-80s",
++      "dave-d-60s",
++      "ewing-90s"
++    ],
++    "notes": "Frazier/Monroe/DeBusschere championship lineage pairs with King and Ewing; DeBusschere joined New York during the 1968-69 season.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-walt-frazier"
++    ]
++  },
++  {
++    "id": "oklahoma-city",
++    "city": "Oklahoma City",
++    "name": "Oklahoma City Thunder",
++    "lineage": "Thunder",
++    "playerIds": [
++      "russ-10s",
++      "shai-20s",
++      "durant-10s",
++      "ibaka-2010s",
++      "chet-20s"
++    ],
++    "notes": "Curated Oklahoma City era only, from 2008 onward. Seattle identities are not relabeled Oklahoma City; this is an explicit narrower content scope.",
++    "sources": [
++      "https://www.nba.com/news/oklahoma-city-acquires-chris-paul-houston-rockets-official-release"
++    ]
++  },
++  {
++    "id": "orlando",
++    "city": "Orlando",
++    "name": "Orlando Magic",
++    "lineage": "Magic",
++    "playerIds": [
++      "penny-90s",
++      "tmac-00s",
++      "franz-20s",
++      "paolo-20s",
++      "shaq-90s"
++    ],
++    "notes": "Uses Shaq/Penny, McGrady and contemporary forward eras. Wagner/Banchero are young and longevity remains an owner-review choice.",
++    "sources": [
++      "https://www.nba.com/team/1610612753/franchise-leaders"
++    ]
++  },
++  {
++    "id": "philadelphia",
++    "city": "Philadelphia",
++    "name": "Philadelphia 76ers",
++    "lineage": "76ers/Nationals",
++    "playerIds": [
++      "ai-00s",
++      "hal-60s",
++      "julius-80s",
++      "charles-80s",
++      "wilt-60s"
++    ],
++    "notes": "Syracuse/Philadelphia lineage; no player is added or moved based on an opening-night narrative.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-julius-erving"
++    ]
++  },
++  {
++    "id": "phoenix",
++    "city": "Phoenix",
++    "name": "Phoenix Suns",
++    "lineage": "Suns",
++    "playerIds": [
++      "nash-00s",
++      "booker-20s",
++      "marion-00s",
++      "barkley-90s",
++      "amare-00s"
++    ],
++    "notes": "Stoudemire uses existing C eligibility with Nash/Marion and the Barkley/Booker eras.",
++    "sources": [
++      "https://www.nba.com/news/archive-75-steve-nash"
++    ]
++  },
++  {
++    "id": "portland",
++    "city": "Portland",
++    "name": "Portland Trail Blazers",
++    "lineage": "Blazers",
++    "playerIds": [
++      "dame-10s",
++      "porter-80s",
++      "clyde-90s",
++      "lucas-m-70s",
++      "mychal-80s"
++    ],
++    "notes": "Porter uses existing SG and Drexler SF eligibility. Bill Walton has no 1970s card and the 1980s Celtics card would misrepresent Portland; Mychal Thompson is a documented available center.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-clyde-drexler",
++      "https://www.nba.com/news/archive-75-damian-lillard"
++    ]
++  },
++  {
++    "id": "sacramento",
++    "city": "Sacramento",
++    "name": "Sacramento Kings",
++    "lineage": "Kings/Royals",
++    "playerIds": [
++      "oscar-60s",
++      "mitch-90s",
++      "peja-00s",
++      "webb-90s",
++      "boogie-2010s"
++    ],
++    "notes": "Includes Rochester/Cincinnati/Kansas City/Sacramento lineage. Robertson is a Royals-era selection; Webber 1990s card includes Golden State/Washington/Sacramento.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-oscar-robertson"
++    ]
++  },
++  {
++    "id": "san-antonio",
++    "city": "San Antonio",
++    "name": "San Antonio Spurs",
++    "lineage": "Spurs",
++    "playerIds": [
++      "parker-00s",
++      "manu-00s",
++      "kawhi-10s",
++      "duncan-00s",
++      "rob-90s"
++    ],
++    "notes": "The Duncan/Parker/Ginobili core joins Robinson and Leonard; Leonard card includes more than San Antonio in the decade.",
++    "sources": [
++      "https://www.nba.com/news/archive-75-tim-duncan"
++    ]
++  },
++  {
++    "id": "toronto",
++    "city": "Toronto",
++    "name": "Toronto Raptors",
++    "lineage": "Raptors",
++    "playerIds": [
++      "lowry-2010s",
++      "vince-00s",
++      "kawhi-10s",
++      "siakam-20s",
++      "bosh-00s"
++    ],
++    "notes": "Leonard is a one-season championship selection; Bosh uses existing C eligibility. Longevity versus peak remains an explicit owner choice.",
++    "sources": [
++      "https://www.nba.com/raptors/kyle-lowry-rewriting-record-books-again"
++    ]
++  },
++  {
++    "id": "utah",
++    "city": "Salt Lake City",
++    "name": "Utah Jazz",
++    "lineage": "Jazz",
++    "playerIds": [
++      "stock-90s",
++      "hornacek-90s",
++      "dantley-80s",
++      "malone-90s",
++      "eaton-80s"
++    ],
++    "notes": "Stockton/Malone, Dantley, Hornacek and Eaton give legal guard/wing/interior roles; includes the New Orleans Jazz lineage only as Jazz, separate from Pelicans history.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-karl-malone"
++    ]
++  },
++  {
++    "id": "washington",
++    "city": "Washington",
++    "name": "Washington Wizards",
++    "lineage": "Wizards/Bullets",
++    "playerIds": [
++      "wall-2010s",
++      "beal-10s",
++      "jamison-00s",
++      "elvin-70s",
++      "wes-60s"
++    ],
++    "notes": "Includes Baltimore/Capital/Washington Bullets lineage. Jamison uses existing SF eligibility alongside Hayes and Unseld.",
++    "sources": [
++      "https://www.nba.com/news/history-nba-legend-wes-unseld"
++    ]
++  }
++];
++const aliasById = {
++  atlanta:["Hawks"], boston:["Celtics"], brooklyn:["Nets"],
++  charlotte:["Hornets","Bobcats"], chicago:["Bulls"], cleveland:["Cavaliers"],
++  dallas:["Mavericks"], denver:["Nuggets"], detroit:["Pistons"],
++  "golden-state":["Warriors"], houston:["Rockets"], indiana:["Pacers"],
++  "la-clippers":["Clippers","Braves"], "la-lakers":["Lakers"], memphis:["Grizzlies"],
++  miami:["Heat"], milwaukee:["Bucks"], minnesota:["Timberwolves","Wolves"],
++  "new-orleans":["Pelicans"], "new-york":["Knicks"], "oklahoma-city":["Thunder"],
++  orlando:["Magic"], philadelphia:["76ers","Nationals"], phoenix:["Suns"],
++  portland:["Blazers"], sacramento:["Kings","Royals"], "san-antonio":["Spurs"],
++  toronto:["Raptors"], utah:["Jazz"], washington:["Wizards","Bullets"],
++};
++
++export const FRANCHISES = Object.freeze(rows.map((row) => {
++  const matches = PLAYERS.filter((p) => (p.team || "").split("/")
++    .some((segment) => aliasById[row.id].includes(segment.trim())))
++    .filter((p) => !(row.id === "charlotte" && p.id === "cp3-00s"));
++  // Chris Paul belongs to New Orleans in this decade, despite the old Hornets label.
++  const poolIds = [...new Set([...matches.map((p) => p.id), ...row.playerIds])];
++  return Object.freeze({ ...row, era:"All-time", neutralName: `${row.city}${row.id === "la-lakers" ? " Gold" : row.id === "la-clippers" ? " Blue" : ""} · All-time`,
++    reviewStatus:"OWNER_REVIEW", coachId:AUTOMATIC_FRANCHISE_COACH_ID,
++    playerIds:Object.freeze(row.playerIds), poolIds:Object.freeze(poolIds),
++    slots:Object.freeze(row.playerIds.map((playerId, i) => Object.freeze({pos:POSITIONS[i], playerId}))),
++    sources:Object.freeze(row.sources),
++  });
++}));
++const byId = new Map(FRANCHISES.map((f) => [f.id, f]));
++export function getFranchise(id) { return typeof id === "string" ? byId.get(id) || null : null; }
++export function getFranchiseRoster(id) {
++  const franchise = getFranchise(typeof id === "string" ? id : id?.id);
++  if (!franchise) throw new Error("Unknown franchise");
++  const five = franchise.playerIds.map(findCard);
++  if (five.some((p) => !p) || !isLegalLineup(five)) throw new Error(`Unavailable franchise roster: ${franchise.id}`);
++  return five;
++}
++export function franchiseDisplayName(franchise, {neutralNaming = false} = {}) {
++  const found = getFranchise(typeof franchise === "string" ? franchise : franchise?.id);
++  return found ? (neutralNaming ? found.neutralName : `${found.name} · All-time`) : "Unknown franchise";
++}
++export const FRANCHISE_PAIRINGS = Object.freeze(FRANCHISES.flatMap((home, index) =>
++  FRANCHISES.slice(index + 1).map((away) => {
++    const [a, b] = [home.id, away.id].sort();
++    const slug = `${a}-vs-${b}`;
++    return Object.freeze({ id:slug, slug, homeId:a, awayId:b, goldId:a, blueId:b, path:`/clash/all-time/${slug}` });
++  })
++));
++const pairings = new Map(FRANCHISE_PAIRINGS.map((p) => [p.slug, p]));
++export function getFranchisePairing(slug) { return typeof slug === "string" ? pairings.get(slug) || null : null; }
++export function franchisePairingFor(a, b) {
++  if (!getFranchise(a) || !getFranchise(b) || a === b) return null;
++  return getFranchisePairing([a,b].sort().join("-vs-"));
++}
+--- a/src/loop/draft/model.js
++++ b/src/loop/draft/model.js
+@@ -2,7 +2,7 @@
+ // player capability, calibration value, score, or competitive rating.
+ import { PLAYERS, POSITIONS } from '../../players.js';
+ import { personIdForCard, personIdFromName } from '../../v3/data/persons.js';
+-import { FRANCHISES as FRANCHISE_CATALOG, getFranchise } from '../franchises.js';
++import { FRANCHISES as FRANCHISE_CATALOG, getFranchise } from '../franchiseCatalog.js';
+ 
+ export const LOOP_DRAFT_VERSION = '1.0.0';
+ export const BY_ID = new Map(PLAYERS.map(p => [p.id, p]));
+--- a/src/loop/components/franchiseLabel.js
++++ b/src/loop/components/franchiseLabel.js
+@@ -1,4 +1,4 @@
+-import { franchiseDisplayName, getFranchise } from '../franchises.js';
++import { franchiseDisplayName, getFranchise } from '../franchiseCatalog.js';
+ import { neutralTeamNaming, teamDisplayName } from '../rights.js';
+ export function franchiseLabel(id, era = 'All-time') {
+   if (getFranchise(id)) return `${franchiseDisplayName(id, { neutralNaming: neutralTeamNaming() }).replace(/ · All-time$/, '')} · ${era}`;
+--- a/src/loop/modes/TeamModes.jsx
++++ b/src/loop/modes/TeamModes.jsx
+@@ -7,7 +7,7 @@
+ import PublicRecapNotice from '../components/PublicRecapNotice.jsx';
+ import { leagueCopy } from '../rights.js';
+ import { franchiseLabel } from '../components/franchiseLabel.js';
+-import { FRANCHISES, getFranchise } from '../franchises.js';
++import { FRANCHISES, getFranchise } from '../franchiseCatalog.js';
+ import { assignFive, validateFive, MODE_TAGS, BY_ID, legalFive } from '../draft/model.js';
+ 
+ const emptyFive = () => Array(5).fill(null);
+--- a/src/loop/modes/LoopModes.jsx
++++ b/src/loop/modes/LoopModes.jsx
+@@ -1,13 +1,20 @@
+ import React, { useCallback, useEffect, useState } from 'react';
+ import { loopApi } from '../client.js';
+-import TeamModes from './TeamModes.jsx';
+-import SpinMode from './SpinMode.jsx';
+-import GauntletMode from './GauntletMode.jsx';
+ import DailyMode from '../daily/DailyMode.jsx';
+-import FranchiseMode from './FranchiseMode.jsx';
++const FranchiseMode = React.lazy(() => import('./FranchiseMode.jsx'));
+ import '../components/loop.css';
+ import { loopEvent } from '../events.js';
+-import { newYorkDay, nextNewYorkMidnight } from '../daily/calendar.js';
++import { newYorkDay, nextNewYorkMidnight } from '../daily/clock.js';
++
++function deferredMode(load, message) {
++  const Mode = React.lazy(load);
++  return function DeferredMode(props) {
++    return <React.Suspense fallback={<p role="status" aria-busy="true">{message}</p>}><Mode {...props} /></React.Suspense>;
++  };
++}
++const TeamModes = deferredMode(() => import("./TeamModes.jsx"), "Loading the team builder…");
++const SpinMode = deferredMode(() => import("./SpinMode.jsx"), "Loading Chaos Spin…");
++const GauntletMode = deferredMode(() => import("./GauntletMode.jsx"), "Loading the Gauntlet…");
+ 
+ export const LOOP_MODE_LINKS = Object.freeze([
+   { title: 'Chaos Clash', href: '/play/chaos', copy: 'Three player-and-coach rolls, an era reveal, and the game.', tag: 'CHAOS' },
+@@ -67,7 +74,7 @@
+   else if (mode === 'spin') content = <SpinMode api={trackedApi} config={config} onResult={onResult} />;
+   else if (mode === 'daily') content = <DailyMode api={trackedApi} config={config} user={user} onResult={onResult} />;
+   else if (mode === 'gauntlet') content = <GauntletMode api={trackedApi} user={user} onResult={onResult} />;
+-  else if (mode === 'franchise' || mode === 'all-time') content = <FranchiseMode api={trackedApi} route={route} onResult={onResult} />;
++  else if (mode === 'franchise' || mode === 'all-time') content = <React.Suspense fallback={<p role="status">Loading the franchise matchup…</p>}><FranchiseMode api={trackedApi} route={route} onResult={onResult} /></React.Suspense>;
+   else content = <><h1>That mode is not available here</h1><p>Choose a mode from the hub to continue.</p></>;
+   return <main className="loop-court" data-testid="loop-court"><div className="loop-top"><p className="loop-eyebrow">EraClash Basketball · Light Court</p><Link href="/clash/modes" onNavigate={onNavigate} className="loop-header-link">Modes hub</Link></div>{error && config && <div className="loop-error" role="alert"><p>{error}</p><button type="button" onClick={() => setRetry(value => value + 1)}>Retry configuration</button></div>}{content}</main>;
+ }
+--- a/src/loop/daily/calendar.js
++++ b/src/loop/daily/calendar.js
+@@ -3,14 +3,8 @@
+ import { startRun, revealEra } from '../../chaos/runState.js';
+ import { hash32 } from '../draft/model.js';
+ export const LOOP_DAILY_VERSION = '1.0.0';
+-const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
+-export function newYorkDay(now = new Date()) { const parts = Object.fromEntries(formatter.formatToParts(new Date(now)).map(p => [p.type, p.value])); return `${parts.year}-${parts.month}-${parts.day}`; }
+-export function nextNewYorkMidnight(now = new Date()) {
+-  const start = new Date(now).getTime(); if (!Number.isFinite(start)) throw new Error('Invalid Daily date.');
+-  const day = newYorkDay(start); let low = start, high = start + 36 * 3600000;
+-  while (high - low > 1) { const middle = Math.floor((high + low) / 2); if (newYorkDay(middle) === day) low = middle; else high = middle; }
+-  return new Date(high).toISOString();
+-}
++export { newYorkDay, nextNewYorkMidnight } from './clock.js';
++import { newYorkDay, nextNewYorkMidnight } from './clock.js';
+ export const dailySeed = day => hash32(`loop-daily|${LOOP_DAILY_VERSION}|${day}`);
+ export const dailySeedId = day => `loop-daily:${LOOP_DAILY_VERSION}:${day}`;
+ export function dailyConfig(now = new Date()) {
+--- /dev/null
++++ b/src/loop/daily/clock.js
+@@ -0,0 +1,8 @@
++const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
++export function newYorkDay(now = new Date()) { const parts = Object.fromEntries(formatter.formatToParts(new Date(now)).map(p => [p.type, p.value])); return `${parts.year}-${parts.month}-${parts.day}`; }
++export function nextNewYorkMidnight(now = new Date()) {
++  const start = new Date(now).getTime(); if (!Number.isFinite(start)) throw new Error('Invalid Daily date.');
++  const day = newYorkDay(start); let low = start, high = start + 36 * 3600000;
++  while (high - low > 1) { const middle = Math.floor((high + low) / 2); if (newYorkDay(middle) === day) low = middle; else high = middle; }
++  return new Date(high).toISOString();
++}
+--- a/src/loop/daily/DailyMode.jsx
++++ b/src/loop/daily/DailyMode.jsx
+@@ -4,7 +4,7 @@
+ import useLoopAction from '../components/useLoopAction.js';
+ import PublicRecapNotice from '../components/PublicRecapNotice.jsx';
+ import { BY_ID } from '../draft/model.js';
+-import { newYorkDay } from './calendar.js';
++import { newYorkDay } from './clock.js';
+ import { readHint, writeHint, userScope } from './storage.js';
+ import { loopEvent } from '../events.js';
+ import { teamDisplayName, leagueCopy } from '../rights.js';

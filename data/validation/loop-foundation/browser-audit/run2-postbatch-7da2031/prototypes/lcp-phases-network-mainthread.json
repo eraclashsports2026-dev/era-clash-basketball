@@ -1,0 +1,2753 @@
+{
+  "scope": "Derived directly from six valid raw actual Lighthouse13.5 JSON reports. Observed insight phase durations and dependency-tree timings must not be summed to infer numeric Lantern-simulated LCP. Audit main-thread durations are trace CPU timing adjusted per Lighthouse implementation, documented separately. No raw reports altered.",
+  "reports": [
+    {
+      "variant": "static-png-compressed",
+      "route": "home",
+      "simulatedLcpMs": 3372.61635,
+      "observedPhases": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 6.524
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 18.017
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 10.024
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 143.857
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,DIV,0,MAIN,0,HEADER,0,IMG",
+            "selector": "div.ec-arena-court > main.ec-lobby > header.ec-lobby-hero > img.ec-lobby-logo",
+            "boundingRect": {
+              "top": 69,
+              "bottom": 198,
+              "left": 45,
+              "right": 367,
+              "width": 321,
+              "height": 129
+            },
+            "snippet": "<img class=\"ec-lobby-logo\" src=\"http://localhost:4334/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"EraClash Basketball\" width=\"760\" height=\"304\" decoding=\"async\" loading=\"eager\" fetchpriority=\"high\">",
+            "nodeLabel": "EraClash Basketball"
+          }
+        ]
+      },
+      "networkDependencyTree": {
+        "type": "list",
+        "items": [
+          {
+            "type": "list-section",
+            "value": {
+              "type": "network-tree",
+              "chains": {
+                "15D36B9F8F6CD181E5F69058E2F120C6": {
+                  "url": "http://localhost:4334/",
+                  "navStartToEndTime": 32,
+                  "transferSize": 1652,
+                  "isLongest": true,
+                  "children": {
+                    "77931.3": {
+                      "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+                      "navStartToEndTime": 59,
+                      "transferSize": 189615,
+                      "isLongest": true,
+                      "children": {
+                        "77931.19": {
+                          "url": "http://localhost:4334/api/v3meta",
+                          "navStartToEndTime": 155,
+                          "transferSize": 19262,
+                          "isLongest": true,
+                          "children": {}
+                        },
+                        "77931.15": {
+                          "url": "http://localhost:4334/?buildcheck=1790940632296",
+                          "navStartToEndTime": 152,
+                          "transferSize": 1652,
+                          "children": {}
+                        },
+                        "77931.14": {
+                          "url": "http://localhost:4334/api/health",
+                          "navStartToEndTime": 151,
+                          "transferSize": 1093,
+                          "children": {}
+                        }
+                      }
+                    },
+                    "77931.8": {
+                      "url": "http://localhost:4334/manifest.json",
+                      "navStartToEndTime": 55,
+                      "transferSize": 1194,
+                      "children": {}
+                    },
+                    "77931.4": {
+                      "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+                      "navStartToEndTime": 53,
+                      "transferSize": 29309,
+                      "children": {}
+                    }
+                  }
+                }
+              },
+              "longestChain": {
+                "duration": 155
+              }
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnected origins",
+            "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+            "value": {
+              "type": "text",
+              "value": "no origins were preconnected"
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnect candidates",
+            "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+            "value": {
+              "type": "text",
+              "value": "No additional origins are good candidates for preconnecting"
+            }
+          }
+        ]
+      },
+      "mainthreadTotalMs": 573.0359999999994,
+      "mainthreadGroups": [
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 201.20399999999955
+        },
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 199.0079999999998
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 123.60000000000002
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 24.903999999999996
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 14.636
+        },
+        {
+          "group": "garbageCollection",
+          "groupLabel": "Garbage Collection",
+          "duration": 6.691999999999994
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 2.992
+        }
+      ],
+      "bootupMs": 200.33999999999963,
+      "bootupItems": [
+        {
+          "url": "Unattributable",
+          "total": 216.33999999999986,
+          "scripting": 13.688,
+          "scriptParseCompile": 0
+        },
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "total": 190.1079999999996,
+          "scripting": 177.78399999999962,
+          "scriptParseCompile": 2.024
+        },
+        {
+          "url": "http://localhost:4334/",
+          "total": 155.45999999999998,
+          "scripting": 5.875999999999998,
+          "scriptParseCompile": 0.9680000000000001
+        }
+      ],
+      "longTasks": [
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "duration": 122,
+          "startTime": 3067.4109
+        },
+        {
+          "url": "Unattributable",
+          "duration": 57,
+          "startTime": 605.20545
+        }
+      ],
+      "requests": [
+        {
+          "url": "http://localhost:4334/",
+          "transferSize": 1652,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Document",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4334/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          "transferSize": 197934,
+          "resourceSize": 197189,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Image",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "transferSize": 189615,
+          "resourceSize": 657872,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Script",
+          "mimeType": "text/javascript"
+        },
+        {
+          "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+          "transferSize": 29309,
+          "resourceSize": 155064,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Stylesheet",
+          "mimeType": "text/css"
+        },
+        {
+          "url": "http://localhost:4334/manifest.json",
+          "transferSize": 1194,
+          "resourceSize": 445,
+          "startTime": null,
+          "endTime": null,
+          "priority": "Medium",
+          "resourceType": "Manifest",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4334/api/health",
+          "transferSize": 1093,
+          "resourceSize": 319,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4334/?buildcheck=1790940632296",
+          "transferSize": 1652,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4334/favicon.svg",
+          "transferSize": 1031,
+          "resourceSize": 285,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/svg+xml"
+        },
+        {
+          "url": "http://localhost:4334/icon-192.png",
+          "transferSize": 3798,
+          "resourceSize": 3055,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4334/api/v3meta",
+          "transferSize": 19262,
+          "resourceSize": 18474,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        }
+      ],
+      "settings": {
+        "output": [
+          "html",
+          "json"
+        ],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance",
+          "accessibility",
+          "best-practices",
+          "seo"
+        ],
+        "skipAudits": null
+      },
+      "cpuSlowdownMultiplier": 4,
+      "observedMainthreadTotalMs": 143.25899999999984,
+      "observedBootupMs": 50.08499999999991,
+      "requestChains": [
+        [
+          {
+            "url": "http://localhost:4334/",
+            "observedNavStartToEndMs": 32,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 59,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/api/v3meta",
+            "observedNavStartToEndMs": 155,
+            "transferSize": 19262
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/",
+            "observedNavStartToEndMs": 32,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 59,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/?buildcheck=1790940632296",
+            "observedNavStartToEndMs": 152,
+            "transferSize": 1652
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/",
+            "observedNavStartToEndMs": 32,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 59,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/api/health",
+            "observedNavStartToEndMs": 151,
+            "transferSize": 1093
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/",
+            "observedNavStartToEndMs": 32,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/manifest.json",
+            "observedNavStartToEndMs": 55,
+            "transferSize": 1194
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/",
+            "observedNavStartToEndMs": 32,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+            "observedNavStartToEndMs": 53,
+            "transferSize": 29309
+          }
+        ]
+      ]
+    },
+    {
+      "variant": "static-png-compressed",
+      "route": "daily",
+      "simulatedLcpMs": 3377.8040499999997,
+      "observedPhases": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 6.007
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 186.588
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-P",
+            "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,MAIN,2,P",
+            "selector": "div#root > div.arena > main.loop-court > p",
+            "boundingRect": {
+              "top": 180,
+              "bottom": 257,
+              "left": 12,
+              "right": 400,
+              "width": 388,
+              "height": 77
+            },
+            "snippet": "<p>",
+            "nodeLabel": "One shared challenge. Three synchronized player-and-coach rolls, then the era r\u2026"
+          }
+        ]
+      },
+      "networkDependencyTree": {
+        "type": "list",
+        "items": [
+          {
+            "type": "list-section",
+            "value": {
+              "type": "network-tree",
+              "chains": {
+                "7E09D2AC10154428EC64BD6091746721": {
+                  "url": "http://localhost:4334/clash/daily",
+                  "navStartToEndTime": 18,
+                  "transferSize": 1652,
+                  "isLongest": true,
+                  "children": {
+                    "77953.3": {
+                      "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+                      "navStartToEndTime": 47,
+                      "transferSize": 189615,
+                      "isLongest": true,
+                      "children": {
+                        "77953.18": {
+                          "url": "http://localhost:4334/api/v3meta",
+                          "navStartToEndTime": 202,
+                          "transferSize": 19262,
+                          "isLongest": true,
+                          "children": {}
+                        },
+                        "77953.13": {
+                          "url": "http://localhost:4334/?buildcheck=1790940639583",
+                          "navStartToEndTime": 197,
+                          "transferSize": 1652,
+                          "children": {}
+                        },
+                        "77953.12": {
+                          "url": "http://localhost:4334/api/health",
+                          "navStartToEndTime": 197,
+                          "transferSize": 1093,
+                          "children": {}
+                        },
+                        "77953.11": {
+                          "url": "http://localhost:4334/api/game",
+                          "navStartToEndTime": 181,
+                          "transferSize": 5925,
+                          "children": {}
+                        }
+                      }
+                    },
+                    "77953.8": {
+                      "url": "http://localhost:4334/manifest.json",
+                      "navStartToEndTime": 43,
+                      "transferSize": 1194,
+                      "children": {}
+                    },
+                    "77953.4": {
+                      "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+                      "navStartToEndTime": 41,
+                      "transferSize": 29309,
+                      "children": {}
+                    }
+                  }
+                }
+              },
+              "longestChain": {
+                "duration": 202
+              }
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnected origins",
+            "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+            "value": {
+              "type": "text",
+              "value": "no origins were preconnected"
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnect candidates",
+            "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+            "value": {
+              "type": "text",
+              "value": "No additional origins are good candidates for preconnecting"
+            }
+          }
+        ]
+      },
+      "mainthreadTotalMs": 486.5560000000001,
+      "mainthreadGroups": [
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 215.9319999999997
+        },
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 147.03200000000035
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 72.47200000000002
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 34.352000000000004
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 8.059999999999999
+        },
+        {
+          "group": "garbageCollection",
+          "groupLabel": "Garbage Collection",
+          "duration": 5.987999999999994
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 2.7199999999999998
+        }
+      ],
+      "bootupMs": 215.44399999999968,
+      "bootupItems": [
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "total": 209.1439999999997,
+          "scripting": 195.32399999999967,
+          "scriptParseCompile": 1.972
+        },
+        {
+          "url": "http://localhost:4334/clash/daily",
+          "total": 136.752,
+          "scripting": 4.5360000000000005,
+          "scriptParseCompile": 0.748
+        },
+        {
+          "url": "Unattributable",
+          "total": 130.0200000000003,
+          "scripting": 12.864,
+          "scriptParseCompile": 0
+        }
+      ],
+      "longTasks": [
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "duration": 120,
+          "startTime": 3187.2027
+        }
+      ],
+      "requests": [
+        {
+          "url": "http://localhost:4334/clash/daily",
+          "transferSize": 1652,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Document",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4334/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          "transferSize": 197934,
+          "resourceSize": 197189,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Image",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "transferSize": 189615,
+          "resourceSize": 657872,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Script",
+          "mimeType": "text/javascript"
+        },
+        {
+          "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+          "transferSize": 29309,
+          "resourceSize": 155064,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Stylesheet",
+          "mimeType": "text/css"
+        },
+        {
+          "url": "http://localhost:4334/manifest.json",
+          "transferSize": 1194,
+          "resourceSize": 445,
+          "startTime": null,
+          "endTime": null,
+          "priority": "Medium",
+          "resourceType": "Manifest",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4334/api/game",
+          "transferSize": 5925,
+          "resourceSize": 5044,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4334/api/health",
+          "transferSize": 1093,
+          "resourceSize": 319,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4334/?buildcheck=1790940639583",
+          "transferSize": 1652,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4334/favicon.svg",
+          "transferSize": 1031,
+          "resourceSize": 285,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/svg+xml"
+        },
+        {
+          "url": "http://localhost:4334/icon-192.png",
+          "transferSize": 3798,
+          "resourceSize": 3055,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4334/api/v3meta",
+          "transferSize": 19262,
+          "resourceSize": 18474,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        }
+      ],
+      "settings": {
+        "output": [
+          "html",
+          "json"
+        ],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance",
+          "accessibility",
+          "best-practices",
+          "seo"
+        ],
+        "skipAudits": null
+      },
+      "cpuSlowdownMultiplier": 4,
+      "observedMainthreadTotalMs": 121.63900000000002,
+      "observedBootupMs": 53.86099999999992,
+      "requestChains": [
+        [
+          {
+            "url": "http://localhost:4334/clash/daily",
+            "observedNavStartToEndMs": 18,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 47,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/api/v3meta",
+            "observedNavStartToEndMs": 202,
+            "transferSize": 19262
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/daily",
+            "observedNavStartToEndMs": 18,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 47,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/?buildcheck=1790940639583",
+            "observedNavStartToEndMs": 197,
+            "transferSize": 1652
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/daily",
+            "observedNavStartToEndMs": 18,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 47,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/api/health",
+            "observedNavStartToEndMs": 197,
+            "transferSize": 1093
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/daily",
+            "observedNavStartToEndMs": 18,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 47,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/api/game",
+            "observedNavStartToEndMs": 181,
+            "transferSize": 5925
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/daily",
+            "observedNavStartToEndMs": 18,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/manifest.json",
+            "observedNavStartToEndMs": 43,
+            "transferSize": 1194
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/daily",
+            "observedNavStartToEndMs": 18,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+            "observedNavStartToEndMs": 41,
+            "transferSize": 29309
+          }
+        ]
+      ]
+    },
+    {
+      "variant": "static-png-compressed",
+      "route": "modes-hub",
+      "simulatedLcpMs": 3459.0946500000005,
+      "observedPhases": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 5.132999755859375
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 109.95300024414063
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-P",
+            "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,MAIN,2,P",
+            "selector": "div#root > div.arena > main.loop-court > p.loop-intro",
+            "boundingRect": {
+              "top": 180,
+              "bottom": 257,
+              "left": 12,
+              "right": 400,
+              "width": 388,
+              "height": 77
+            },
+            "snippet": "<p class=\"loop-intro\">",
+            "nodeLabel": "Pick a five, roll a constraint, or come back for the Daily. They tell you the r\u2026"
+          }
+        ]
+      },
+      "networkDependencyTree": {
+        "type": "list",
+        "items": [
+          {
+            "type": "list-section",
+            "value": {
+              "type": "network-tree",
+              "chains": {
+                "CF1657429D494AF936D16AA57B819FF2": {
+                  "url": "http://localhost:4334/clash/modes",
+                  "navStartToEndTime": 17,
+                  "transferSize": 1652,
+                  "isLongest": true,
+                  "children": {
+                    "77971.3": {
+                      "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+                      "navStartToEndTime": 42,
+                      "transferSize": 189615,
+                      "isLongest": true,
+                      "children": {
+                        "77971.18": {
+                          "url": "http://localhost:4334/api/v3meta",
+                          "navStartToEndTime": 100,
+                          "transferSize": 19262,
+                          "isLongest": true,
+                          "children": {}
+                        },
+                        "77971.14": {
+                          "url": "http://localhost:4334/?buildcheck=1790940646512",
+                          "navStartToEndTime": 96,
+                          "transferSize": 1652,
+                          "children": {}
+                        },
+                        "77971.13": {
+                          "url": "http://localhost:4334/api/health",
+                          "navStartToEndTime": 95,
+                          "transferSize": 1093,
+                          "children": {}
+                        }
+                      }
+                    },
+                    "77971.4": {
+                      "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+                      "navStartToEndTime": 36,
+                      "transferSize": 29309,
+                      "children": {}
+                    },
+                    "77971.8": {
+                      "url": "http://localhost:4334/manifest.json",
+                      "navStartToEndTime": 35,
+                      "transferSize": 1194,
+                      "children": {}
+                    }
+                  }
+                }
+              },
+              "longestChain": {
+                "duration": 100
+              }
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnected origins",
+            "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+            "value": {
+              "type": "text",
+              "value": "no origins were preconnected"
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnect candidates",
+            "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+            "value": {
+              "type": "text",
+              "value": "No additional origins are good candidates for preconnecting"
+            }
+          }
+        ]
+      },
+      "mainthreadTotalMs": 326.2480000000006,
+      "mainthreadGroups": [
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 130.75600000000028
+        },
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 108.26000000000032
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 48.30799999999999
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 23.192
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 8.564
+        },
+        {
+          "group": "garbageCollection",
+          "groupLabel": "Garbage Collection",
+          "duration": 3.708000000000001
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 3.46
+        }
+      ],
+      "bootupMs": 110.25600000000033,
+      "bootupItems": [
+        {
+          "url": "Unattributable",
+          "total": 134.42400000000032,
+          "scripting": 4.767999999999999,
+          "scriptParseCompile": 0
+        },
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "total": 101.29600000000032,
+          "scripting": 93.98800000000033,
+          "scriptParseCompile": 1.988
+        },
+        {
+          "url": "http://localhost:4334/clash/modes",
+          "total": 85.16,
+          "scripting": 8.039999999999997,
+          "scriptParseCompile": 1.472
+        }
+      ],
+      "longTasks": [
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "duration": 57,
+          "startTime": 3156.0631000000003
+        }
+      ],
+      "requests": [
+        {
+          "url": "http://localhost:4334/clash/modes",
+          "transferSize": 1652,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Document",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4334/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          "transferSize": 197934,
+          "resourceSize": 197189,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Image",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+          "transferSize": 189615,
+          "resourceSize": 657872,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Script",
+          "mimeType": "text/javascript"
+        },
+        {
+          "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+          "transferSize": 29309,
+          "resourceSize": 155064,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Stylesheet",
+          "mimeType": "text/css"
+        },
+        {
+          "url": "http://localhost:4334/manifest.json",
+          "transferSize": 1194,
+          "resourceSize": 445,
+          "startTime": null,
+          "endTime": null,
+          "priority": "Medium",
+          "resourceType": "Manifest",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4334/api/health",
+          "transferSize": 1093,
+          "resourceSize": 319,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4334/?buildcheck=1790940646512",
+          "transferSize": 1652,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4334/favicon.svg",
+          "transferSize": 1031,
+          "resourceSize": 285,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/svg+xml"
+        },
+        {
+          "url": "http://localhost:4334/icon-192.png",
+          "transferSize": 0,
+          "resourceSize": 3055,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4334/api/v3meta",
+          "transferSize": 19262,
+          "resourceSize": 18474,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        }
+      ],
+      "settings": {
+        "output": [
+          "html",
+          "json"
+        ],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance",
+          "accessibility",
+          "best-practices",
+          "seo"
+        ],
+        "skipAudits": null
+      },
+      "cpuSlowdownMultiplier": 4,
+      "observedMainthreadTotalMs": 81.56200000000015,
+      "observedBootupMs": 27.56400000000008,
+      "requestChains": [
+        [
+          {
+            "url": "http://localhost:4334/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 42,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/api/v3meta",
+            "observedNavStartToEndMs": 100,
+            "transferSize": 19262
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 42,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/?buildcheck=1790940646512",
+            "observedNavStartToEndMs": 96,
+            "transferSize": 1652
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-LFYcpKiL.js",
+            "observedNavStartToEndMs": 42,
+            "transferSize": 189615
+          },
+          {
+            "url": "http://localhost:4334/api/health",
+            "observedNavStartToEndMs": 95,
+            "transferSize": 1093
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/assets/index-eSBgaXU3.css",
+            "observedNavStartToEndMs": 36,
+            "transferSize": 29309
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4334/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1652
+          },
+          {
+            "url": "http://localhost:4334/manifest.json",
+            "observedNavStartToEndMs": 35,
+            "transferSize": 1194
+          }
+        ]
+      ]
+    },
+    {
+      "variant": "combined-png-compressed",
+      "route": "home",
+      "simulatedLcpMs": 3303.9188,
+      "observedPhases": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 9.306999755859374
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 18.590000244140626
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 9.072
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 138.556
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,DIV,0,MAIN,0,HEADER,0,IMG",
+            "selector": "div.ec-arena-court > main.ec-lobby > header.ec-lobby-hero > img.ec-lobby-logo",
+            "boundingRect": {
+              "top": 69,
+              "bottom": 198,
+              "left": 45,
+              "right": 367,
+              "width": 321,
+              "height": 129
+            },
+            "snippet": "<img class=\"ec-lobby-logo\" src=\"http://localhost:4335/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"EraClash Basketball\" width=\"760\" height=\"304\" decoding=\"async\" loading=\"eager\" fetchpriority=\"high\">",
+            "nodeLabel": "EraClash Basketball"
+          }
+        ]
+      },
+      "networkDependencyTree": {
+        "type": "list",
+        "items": [
+          {
+            "type": "list-section",
+            "value": {
+              "type": "network-tree",
+              "chains": {
+                "C51CAC08932DFFEBE10CA5751457CA33": {
+                  "url": "http://localhost:4335/",
+                  "navStartToEndTime": 40,
+                  "transferSize": 1651,
+                  "isLongest": true,
+                  "children": {
+                    "77996.3": {
+                      "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+                      "navStartToEndTime": 60,
+                      "transferSize": 170162,
+                      "isLongest": true,
+                      "children": {
+                        "77996.18": {
+                          "url": "http://localhost:4335/api/v3meta",
+                          "navStartToEndTime": 158,
+                          "transferSize": 19262,
+                          "isLongest": true,
+                          "children": {}
+                        },
+                        "77996.15": {
+                          "url": "http://localhost:4335/?buildcheck=1790940667861",
+                          "navStartToEndTime": 147,
+                          "transferSize": 1651,
+                          "children": {}
+                        },
+                        "77996.14": {
+                          "url": "http://localhost:4335/api/health",
+                          "navStartToEndTime": 147,
+                          "transferSize": 1093,
+                          "children": {}
+                        }
+                      }
+                    },
+                    "77996.8": {
+                      "url": "http://localhost:4335/manifest.json",
+                      "navStartToEndTime": 105,
+                      "transferSize": 1194,
+                      "children": {}
+                    },
+                    "77996.4": {
+                      "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+                      "navStartToEndTime": 55,
+                      "transferSize": 29309,
+                      "children": {}
+                    }
+                  }
+                }
+              },
+              "longestChain": {
+                "duration": 158
+              }
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnected origins",
+            "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+            "value": {
+              "type": "text",
+              "value": "no origins were preconnected"
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnect candidates",
+            "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+            "value": {
+              "type": "text",
+              "value": "No additional origins are good candidates for preconnecting"
+            }
+          }
+        ]
+      },
+      "mainthreadTotalMs": 561.3839999999993,
+      "mainthreadGroups": [
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 198.4599999999994
+        },
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 197.51999999999995
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 109.27600000000001
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 30.407999999999998
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 16.296
+        },
+        {
+          "group": "garbageCollection",
+          "groupLabel": "Garbage Collection",
+          "duration": 6.687999999999997
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 2.736
+        }
+      ],
+      "bootupMs": 198.28399999999942,
+      "bootupItems": [
+        {
+          "url": "Unattributable",
+          "total": 206.77200000000002,
+          "scripting": 13.191999999999998,
+          "scriptParseCompile": 0
+        },
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "total": 188.93199999999942,
+          "scripting": 176.33199999999943,
+          "scriptParseCompile": 1.804
+        },
+        {
+          "url": "http://localhost:4335/",
+          "total": 155.84,
+          "scripting": 6.023999999999998,
+          "scriptParseCompile": 0.932
+        }
+      ],
+      "longTasks": [
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "duration": 128,
+          "startTime": 2914.9188
+        },
+        {
+          "url": "Unattributable",
+          "duration": 61,
+          "startTime": 601.9594
+        }
+      ],
+      "requests": [
+        {
+          "url": "http://localhost:4335/",
+          "transferSize": 1651,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Document",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4335/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          "transferSize": 197934,
+          "resourceSize": 197189,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Image",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "transferSize": 170162,
+          "resourceSize": 582586,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Script",
+          "mimeType": "text/javascript"
+        },
+        {
+          "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+          "transferSize": 29309,
+          "resourceSize": 155064,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Stylesheet",
+          "mimeType": "text/css"
+        },
+        {
+          "url": "http://localhost:4335/manifest.json",
+          "transferSize": 1194,
+          "resourceSize": 445,
+          "startTime": null,
+          "endTime": null,
+          "priority": "Medium",
+          "resourceType": "Manifest",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/api/health",
+          "transferSize": 1093,
+          "resourceSize": 319,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/?buildcheck=1790940667861",
+          "transferSize": 1651,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4335/favicon.svg",
+          "transferSize": 1031,
+          "resourceSize": 285,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/svg+xml"
+        },
+        {
+          "url": "http://localhost:4335/api/v3meta",
+          "transferSize": 19262,
+          "resourceSize": 18474,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/icon-192.png",
+          "transferSize": 3798,
+          "resourceSize": 3055,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/png"
+        }
+      ],
+      "settings": {
+        "output": [
+          "html",
+          "json"
+        ],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance",
+          "accessibility",
+          "best-practices",
+          "seo"
+        ],
+        "skipAudits": null
+      },
+      "cpuSlowdownMultiplier": 4,
+      "observedMainthreadTotalMs": 140.34599999999983,
+      "observedBootupMs": 49.570999999999856,
+      "requestChains": [
+        [
+          {
+            "url": "http://localhost:4335/",
+            "observedNavStartToEndMs": 40,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 60,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/api/v3meta",
+            "observedNavStartToEndMs": 158,
+            "transferSize": 19262
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/",
+            "observedNavStartToEndMs": 40,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 60,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/?buildcheck=1790940667861",
+            "observedNavStartToEndMs": 147,
+            "transferSize": 1651
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/",
+            "observedNavStartToEndMs": 40,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 60,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/api/health",
+            "observedNavStartToEndMs": 147,
+            "transferSize": 1093
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/",
+            "observedNavStartToEndMs": 40,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/manifest.json",
+            "observedNavStartToEndMs": 105,
+            "transferSize": 1194
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/",
+            "observedNavStartToEndMs": 40,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+            "observedNavStartToEndMs": 55,
+            "transferSize": 29309
+          }
+        ]
+      ]
+    },
+    {
+      "variant": "combined-png-compressed",
+      "route": "daily",
+      "simulatedLcpMs": 3356.08495,
+      "observedPhases": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 2.118999755859375
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 152.18000024414061
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-P",
+            "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,MAIN,2,P",
+            "selector": "div#root > div.arena > main.loop-court > p",
+            "boundingRect": {
+              "top": 180,
+              "bottom": 257,
+              "left": 12,
+              "right": 400,
+              "width": 388,
+              "height": 77
+            },
+            "snippet": "<p>",
+            "nodeLabel": "One shared challenge. Three synchronized player-and-coach rolls, then the era r\u2026"
+          }
+        ]
+      },
+      "networkDependencyTree": {
+        "type": "list",
+        "items": [
+          {
+            "type": "list-section",
+            "value": {
+              "type": "network-tree",
+              "chains": {
+                "2BBB39989B378A83768F33816EBD64FF": {
+                  "url": "http://localhost:4335/clash/daily",
+                  "navStartToEndTime": 12,
+                  "transferSize": 1651,
+                  "isLongest": true,
+                  "children": {
+                    "78021.3": {
+                      "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+                      "navStartToEndTime": 35,
+                      "transferSize": 170162,
+                      "isLongest": true,
+                      "children": {
+                        "78021.18": {
+                          "url": "http://localhost:4335/api/v3meta",
+                          "navStartToEndTime": 149,
+                          "transferSize": 19262,
+                          "isLongest": true,
+                          "children": {}
+                        },
+                        "78021.13": {
+                          "url": "http://localhost:4335/?buildcheck=1790940674434",
+                          "navStartToEndTime": 147,
+                          "transferSize": 1651,
+                          "children": {}
+                        },
+                        "78021.12": {
+                          "url": "http://localhost:4335/api/health",
+                          "navStartToEndTime": 140,
+                          "transferSize": 1093,
+                          "children": {}
+                        },
+                        "78021.11": {
+                          "url": "http://localhost:4335/api/game",
+                          "navStartToEndTime": 137,
+                          "transferSize": 5925,
+                          "children": {}
+                        }
+                      }
+                    },
+                    "78021.8": {
+                      "url": "http://localhost:4335/manifest.json",
+                      "navStartToEndTime": 30,
+                      "transferSize": 1194,
+                      "children": {}
+                    },
+                    "78021.4": {
+                      "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+                      "navStartToEndTime": 30,
+                      "transferSize": 29309,
+                      "children": {}
+                    }
+                  }
+                }
+              },
+              "longestChain": {
+                "duration": 149
+              }
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnected origins",
+            "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+            "value": {
+              "type": "text",
+              "value": "no origins were preconnected"
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnect candidates",
+            "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+            "value": {
+              "type": "text",
+              "value": "No additional origins are good candidates for preconnecting"
+            }
+          }
+        ]
+      },
+      "mainthreadTotalMs": 321.77200000000056,
+      "mainthreadGroups": [
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 136.51600000000025
+        },
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 109.72800000000028
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 50.524
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 14.356000000000002
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 4.372
+        },
+        {
+          "group": "garbageCollection",
+          "groupLabel": "Garbage Collection",
+          "duration": 4.107999999999999
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 2.168
+        }
+      ],
+      "bootupMs": 134.96400000000025,
+      "bootupItems": [
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "total": 126.41600000000025,
+          "scripting": 117.76400000000025,
+          "scriptParseCompile": 1.756
+        },
+        {
+          "url": "Unattributable",
+          "total": 103.48400000000024,
+          "scripting": 11.075999999999999,
+          "scriptParseCompile": 0
+        },
+        {
+          "url": "http://localhost:4335/clash/daily",
+          "total": 83.94800000000001,
+          "scripting": 3.9560000000000004,
+          "scriptParseCompile": 0.41200000000000003
+        }
+      ],
+      "longTasks": [
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "duration": 58,
+          "startTime": 3028.7233
+        }
+      ],
+      "requests": [
+        {
+          "url": "http://localhost:4335/clash/daily",
+          "transferSize": 1651,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Document",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4335/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          "transferSize": 197934,
+          "resourceSize": 197189,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Image",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "transferSize": 170162,
+          "resourceSize": 582586,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Script",
+          "mimeType": "text/javascript"
+        },
+        {
+          "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+          "transferSize": 29309,
+          "resourceSize": 155064,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Stylesheet",
+          "mimeType": "text/css"
+        },
+        {
+          "url": "http://localhost:4335/manifest.json",
+          "transferSize": 1194,
+          "resourceSize": 445,
+          "startTime": null,
+          "endTime": null,
+          "priority": "Medium",
+          "resourceType": "Manifest",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/api/game",
+          "transferSize": 5925,
+          "resourceSize": 5044,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/api/health",
+          "transferSize": 1093,
+          "resourceSize": 319,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/?buildcheck=1790940674434",
+          "transferSize": 1651,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4335/favicon.svg",
+          "transferSize": 1031,
+          "resourceSize": 285,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/svg+xml"
+        },
+        {
+          "url": "http://localhost:4335/icon-192.png",
+          "transferSize": 3798,
+          "resourceSize": 3055,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4335/api/v3meta",
+          "transferSize": 19262,
+          "resourceSize": 18474,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        }
+      ],
+      "settings": {
+        "output": [
+          "html",
+          "json"
+        ],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance",
+          "accessibility",
+          "best-practices",
+          "seo"
+        ],
+        "skipAudits": null
+      },
+      "cpuSlowdownMultiplier": 4,
+      "observedMainthreadTotalMs": 80.44300000000014,
+      "observedBootupMs": 33.741000000000064,
+      "requestChains": [
+        [
+          {
+            "url": "http://localhost:4335/clash/daily",
+            "observedNavStartToEndMs": 12,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 35,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/api/v3meta",
+            "observedNavStartToEndMs": 149,
+            "transferSize": 19262
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/daily",
+            "observedNavStartToEndMs": 12,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 35,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/?buildcheck=1790940674434",
+            "observedNavStartToEndMs": 147,
+            "transferSize": 1651
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/daily",
+            "observedNavStartToEndMs": 12,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 35,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/api/health",
+            "observedNavStartToEndMs": 140,
+            "transferSize": 1093
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/daily",
+            "observedNavStartToEndMs": 12,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 35,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/api/game",
+            "observedNavStartToEndMs": 137,
+            "transferSize": 5925
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/daily",
+            "observedNavStartToEndMs": 12,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/manifest.json",
+            "observedNavStartToEndMs": 30,
+            "transferSize": 1194
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/daily",
+            "observedNavStartToEndMs": 12,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+            "observedNavStartToEndMs": 30,
+            "transferSize": 29309
+          }
+        ]
+      ]
+    },
+    {
+      "variant": "combined-png-compressed",
+      "route": "modes-hub",
+      "simulatedLcpMs": 3306.9012000000002,
+      "observedPhases": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 5.163
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 116.573
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-P",
+            "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,MAIN,2,P",
+            "selector": "div#root > div.arena > main.loop-court > p.loop-intro",
+            "boundingRect": {
+              "top": 180,
+              "bottom": 257,
+              "left": 12,
+              "right": 400,
+              "width": 388,
+              "height": 77
+            },
+            "snippet": "<p class=\"loop-intro\">",
+            "nodeLabel": "Pick a five, roll a constraint, or come back for the Daily. They tell you the r\u2026"
+          }
+        ]
+      },
+      "networkDependencyTree": {
+        "type": "list",
+        "items": [
+          {
+            "type": "list-section",
+            "value": {
+              "type": "network-tree",
+              "chains": {
+                "26793D0B7427DCBC4B1A379E019DF6A1": {
+                  "url": "http://localhost:4335/clash/modes",
+                  "navStartToEndTime": 17,
+                  "transferSize": 1651,
+                  "isLongest": true,
+                  "children": {
+                    "78039.3": {
+                      "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+                      "navStartToEndTime": 44,
+                      "transferSize": 170162,
+                      "isLongest": true,
+                      "children": {
+                        "78039.17": {
+                          "url": "http://localhost:4335/api/v3meta",
+                          "navStartToEndTime": 105,
+                          "transferSize": 19262,
+                          "isLongest": true,
+                          "children": {}
+                        },
+                        "78039.14": {
+                          "url": "http://localhost:4335/?buildcheck=1790940680749",
+                          "navStartToEndTime": 100,
+                          "transferSize": 1651,
+                          "children": {}
+                        },
+                        "78039.13": {
+                          "url": "http://localhost:4335/api/health",
+                          "navStartToEndTime": 100,
+                          "transferSize": 1093,
+                          "children": {}
+                        }
+                      }
+                    },
+                    "78039.4": {
+                      "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+                      "navStartToEndTime": 44,
+                      "transferSize": 29309,
+                      "children": {}
+                    },
+                    "78039.8": {
+                      "url": "http://localhost:4335/manifest.json",
+                      "navStartToEndTime": 42,
+                      "transferSize": 1194,
+                      "children": {}
+                    }
+                  }
+                }
+              },
+              "longestChain": {
+                "duration": 105
+              }
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnected origins",
+            "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+            "value": {
+              "type": "text",
+              "value": "no origins were preconnected"
+            }
+          },
+          {
+            "type": "list-section",
+            "title": "Preconnect candidates",
+            "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+            "value": {
+              "type": "text",
+              "value": "No additional origins are good candidates for preconnecting"
+            }
+          }
+        ]
+      },
+      "mainthreadTotalMs": 324.1640000000005,
+      "mainthreadGroups": [
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 123.5760000000003
+        },
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 114.06800000000021
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 48.971999999999994
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 23.664
+        },
+        {
+          "group": "garbageCollection",
+          "groupLabel": "Garbage Collection",
+          "duration": 5.867999999999996
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 4.928
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 3.088
+        }
+      ],
+      "bootupMs": 123.21600000000026,
+      "bootupItems": [
+        {
+          "url": "Unattributable",
+          "total": 121.73600000000023,
+          "scripting": 9.148,
+          "scriptParseCompile": 0
+        },
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "total": 113.77200000000026,
+          "scripting": 104.44000000000027,
+          "scriptParseCompile": 2.008
+        },
+        {
+          "url": "http://localhost:4335/clash/modes",
+          "total": 80.288,
+          "scripting": 6.539999999999998,
+          "scriptParseCompile": 1.08
+        }
+      ],
+      "longTasks": [
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "duration": 68,
+          "startTime": 3004.6008
+        }
+      ],
+      "requests": [
+        {
+          "url": "http://localhost:4335/clash/modes",
+          "transferSize": 1651,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Document",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4335/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          "transferSize": 197934,
+          "resourceSize": 197189,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Image",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+          "transferSize": 170162,
+          "resourceSize": 582586,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Script",
+          "mimeType": "text/javascript"
+        },
+        {
+          "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+          "transferSize": 29309,
+          "resourceSize": 155064,
+          "startTime": null,
+          "endTime": null,
+          "priority": "VeryHigh",
+          "resourceType": "Stylesheet",
+          "mimeType": "text/css"
+        },
+        {
+          "url": "http://localhost:4335/manifest.json",
+          "transferSize": 1194,
+          "resourceSize": 445,
+          "startTime": null,
+          "endTime": null,
+          "priority": "Medium",
+          "resourceType": "Manifest",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/api/health",
+          "transferSize": 1093,
+          "resourceSize": 319,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        },
+        {
+          "url": "http://localhost:4335/?buildcheck=1790940680749",
+          "transferSize": 1651,
+          "resourceSize": 2499,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "text/html"
+        },
+        {
+          "url": "http://localhost:4335/favicon.svg",
+          "transferSize": 1031,
+          "resourceSize": 285,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/svg+xml"
+        },
+        {
+          "url": "http://localhost:4335/icon-192.png",
+          "transferSize": 0,
+          "resourceSize": 3055,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Other",
+          "mimeType": "image/png"
+        },
+        {
+          "url": "http://localhost:4335/api/v3meta",
+          "transferSize": 19262,
+          "resourceSize": 18474,
+          "startTime": null,
+          "endTime": null,
+          "priority": "High",
+          "resourceType": "Fetch",
+          "mimeType": "application/json"
+        }
+      ],
+      "settings": {
+        "output": [
+          "html",
+          "json"
+        ],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance",
+          "accessibility",
+          "best-practices",
+          "seo"
+        ],
+        "skipAudits": null
+      },
+      "cpuSlowdownMultiplier": 4,
+      "observedMainthreadTotalMs": 81.04100000000012,
+      "observedBootupMs": 30.804000000000066,
+      "requestChains": [
+        [
+          {
+            "url": "http://localhost:4335/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 44,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/api/v3meta",
+            "observedNavStartToEndMs": 105,
+            "transferSize": 19262
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 44,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/?buildcheck=1790940680749",
+            "observedNavStartToEndMs": 100,
+            "transferSize": 1651
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-CjyTcllM.js",
+            "observedNavStartToEndMs": 44,
+            "transferSize": 170162
+          },
+          {
+            "url": "http://localhost:4335/api/health",
+            "observedNavStartToEndMs": 100,
+            "transferSize": 1093
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/assets/index-eSBgaXU3.css",
+            "observedNavStartToEndMs": 44,
+            "transferSize": 29309
+          }
+        ],
+        [
+          {
+            "url": "http://localhost:4335/clash/modes",
+            "observedNavStartToEndMs": 17,
+            "transferSize": 1651
+          },
+          {
+            "url": "http://localhost:4335/manifest.json",
+            "observedNavStartToEndMs": 42,
+            "transferSize": 1194
+          }
+        ]
+      ]
+    }
+  ],
+  "implementationNotes": {
+    "lcpInsight": "Observed unthrottled trace timings. Numeric LCP metric is Lantern simulation, so insight phases do not sum to simulated metric.",
+    "mainthreadAudit": "Lighthouse mainthread-work-breakdown and bootup-time multiply observed CPU category durations by config cpuSlowdownMultiplier (4 here). These are scaled trace totals, not the actual complete Lantern critical-path decomposition.",
+    "longTaskAudit": "long-tasks uses simulated node start/duration when throttlingMethod=simulate. Raw item values retained.",
+    "networkDependencyTree": "Observed network tree timings, separate from Lantern simulated network path."
+  }
+}

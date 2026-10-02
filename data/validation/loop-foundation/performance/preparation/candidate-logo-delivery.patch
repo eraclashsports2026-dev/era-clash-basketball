@@ -1,0 +1,21 @@
+--- a/index.html
++++ b/index.html
+@@ -2,6 +2,7 @@
+ <html lang="en">
+   <head>
+     <meta charset="UTF-8" />
++    <link rel="preload" as="image" href="/brand/eraclash-logo-mk1.png" fetchpriority="high" />
+     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+     <link rel="manifest" href="/manifest.json" />
+     <meta name="theme-color" content="#0b0e17" />
+--- a/src/components/lobby/PlayLobby.jsx
++++ b/src/components/lobby/PlayLobby.jsx
+@@ -177,7 +177,7 @@
+           Phase 9A.3P: the band is full for a first-time state and compact for a
+           returning one — same mark, same band, less height, grid moved up. */}
+       <header className={`ec-lobby-hero${compact ? " ec-lobby-hero--compact" : ""}`}>
+-        <img className="ec-lobby-logo" src="/brand/eraclash-logo-mk1.png" alt="EraClash Basketball" width="760" height="304" decoding="async" />
++        <img className="ec-lobby-logo" src="/brand/eraclash-logo-mk1.png" alt="EraClash Basketball" width="760" height="304" decoding="async" loading="eager" fetchpriority="high" />
+         <h1 id="ec-lobby-title" className="sr-only">Play EraClash Basketball</h1>
+         <p className="ec-lobby-line">{line}</p>
+       </header>

@@ -1,0 +1,1015 @@
+{
+  "sourceSha": "6545f8caf281d484d242826fa640823b2a15687c",
+  "closedAt": "2026-10-02T12:41:59.109088+00:00",
+  "unit": {
+    "sourceSha": "6545f8caf281d484d242826fa640823b2a15687c",
+    "files": 100,
+    "passedFiles": 97,
+    "failedFiles": 3,
+    "tests": 2963,
+    "passed": 2961,
+    "failed": 2,
+    "pending": 0,
+    "todo": 0,
+    "runtimeBudgetMs": 15000,
+    "declaredSkippedNames": [],
+    "failedOrBlocked": [
+      {
+        "file": "v6c2c4-scoped-calibration.test.js",
+        "message": "run `npm run calibration:identifiability` first \u2014 readiness is derived from measured identifiability, not asserted",
+        "failedTests": []
+      },
+      {
+        "file": "v6c2c6-orientation-and-sidebias.test.js",
+        "message": "",
+        "failedTests": [
+          {
+            "name": "prior failing cell was read from the artifact, not inferred",
+            "failureMessages": [
+              "Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'\n    at readFileSync (node:fs:440:20)\n    at /private/tmp/eraclash-loop-verification-20261002/tests/v6c2c6-orientation-and-sidebias.test.js:19:27\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "v6c2c6-side-bias-policy.test.js",
+        "message": "",
+        "failedTests": [
+          {
+            "name": "side-bias policy v2 is frozen keeps the v1 policy unedited",
+            "failureMessages": [
+              "Error: ENOENT: no such file or directory, open '.cache/calibration/probability-validation-v3.json'\n    at readFileSync (node:fs:440:20)\n    at /private/tmp/eraclash-loop-verification-20261002/tests/v6c2c6-side-bias-policy.test.js:48:27\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///private/tmp/eraclash-loop-verification-20261002/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+            ]
+          }
+        ]
+      }
+    ],
+    "rawSHA256": "0f1801b6338a54f59d496a109fc04ddcbfffa8f6c6d30d6c793fbc963de9806f"
+  },
+  "browser": {
+    "passed": 98,
+    "failed": 0,
+    "workers": 1,
+    "initial": {
+      "passed": 95,
+      "failed": 3,
+      "workers": 2
+    },
+    "assertions": "unchanged",
+    "quotas": "unchanged",
+    "note": "Full serial rerun respects existing workers1/sharedmemory repo config; all3 prior failed names PASS unchanged."
+  },
+  "gates": {
+    "artifact": "loop-run2-final-6545f8c",
+    "commit": "6545f8ca",
+    "generatedAt": "2026-10-02T12:36:14.258Z",
+    "gates": 88,
+    "passed": 85,
+    "failed": 3,
+    "allPassed": false,
+    "rows": [
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs preflight",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "10/10 checks passed \u2192 data/validation/9b1/phase9b1-preflight.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs migrations",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "11/11 checks passed \u2192 data/validation/9b1/account-schema-contract.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs rls",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed \u2192 data/validation/9b1/account-rls-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs auth",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "14/14 checks passed \u2192 data/validation/9b1/auth-flow-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs guest-claim",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "23/23 checks passed \u2192 data/validation/9b1/guest-claim-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs cloud-save",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "23/23 checks passed \u2192 data/validation/9b1/cloud-save-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs security",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "14/14 checks passed \u2192 data/validation/9b1/account-security-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs my-eraclash http://localhost:4178",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 1,
+        "summary": "9/9 checks passed \u2192 data/validation/9b1/my-eraclash-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "accounts",
+        "command": "node scripts/accounts/accountQa.mjs responsive http://localhost:4178",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "8/8 checks passed \u2192 data/validation/9b1/account-responsive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs saved-rosters",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "10/10 passed \u2192 data/validation/9b2/saved-roster-contract.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs run-it-back",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 passed \u2192 data/validation/9b2/run-it-back-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs export",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "6/6 passed \u2192 data/validation/9b2/account-export-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs deletion",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "8/8 passed \u2192 data/validation/9b2/account-deletion-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs reauthentication",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "8/8 passed \u2192 data/validation/9b2/reauthentication-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs device-reconciliation",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "7/7 passed \u2192 data/validation/9b2/device-reconciliation-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs responsive",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "6/6 passed \u2192 data/validation/9b2/account-responsive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs accessibility",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "8/8 passed \u2192 data/validation/9b2/account-accessibility-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "career",
+        "command": "node scripts/accounts/careerV2Qa.mjs performance",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "5/5 passed \u2192 data/validation/9b2/account-performance-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs contract",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "10/10 passed \u2192 data/validation/9c/challenge-contract.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs seed",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "7/7 passed \u2192 data/validation/9c/challenge-seed-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs rls",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "12/12 passed \u2192 data/validation/9c/challenge-rls-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs security",
+        "harnessReady": true,
+        "exit": 1,
+        "seconds": 3,
+        "summary": "15/16 passed \u2192 data/validation/9c/challenge-security-qa.json",
+        "fails": [
+          "FAIL  the account provider is configured on this origin \u2026 {\"enabled\":true,\"ready\":true} (operator diagnostics via X-Preview-Key)"
+        ],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs history",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 5,
+        "summary": "10/10 passed \u2192 data/validation/9c/challenge-history-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs responsive",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 3,
+        "summary": "12/12 passed \u2192 data/validation/9c/challenge-responsive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs accessibility",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 3,
+        "summary": "23/23 passed \u2192 data/validation/9c/challenge-accessibility-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs performance",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 4,
+        "summary": "5/5 passed \u2192 data/validation/9c/challenge-performance-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs contract",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "15/15 passed \u2192 data/validation/9e/competitive-rating-contract.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs rating",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "2/2 passed \u2192 data/validation/9e/self-challenge-rating-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs backfill",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "8/8 passed \u2192 data/validation/9e/rating-backfill-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs concurrency",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 4,
+        "summary": "5/5 passed \u2192 data/validation/9e/rating-concurrency-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs privacy",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "2/2 passed \u2192 data/validation/9e/rating-deletion-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs leaderboard",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "3/3 passed \u2192 data/validation/9e/my-eraclash-competitive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs rls",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "12/12 passed \u2192 data/validation/9e/rating-rls-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs security",
+        "harnessReady": true,
+        "exit": 1,
+        "seconds": 5,
+        "summary": "2/2 passed \u2192 data/validation/9e/rating-cross-account-qa.json",
+        "fails": [
+          "FAIL  the account provider is configured on this origin"
+        ],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs responsive",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "32/32 passed \u2192 data/validation/9e/rating-responsive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs accessibility",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 1,
+        "summary": "47/47 passed \u2192 data/validation/9e/rating-accessibility-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs performance",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 1,
+        "summary": "9/9 passed \u2192 data/validation/9e/rating-performance-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs contract",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "11/11 passed \u2192 data/validation/9d/progression-contract.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs xp",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "15/15 passed \u2192 data/validation/9d/xp-idempotency-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs achievement",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "5/5 passed \u2192 data/validation/9d/achievement-unlock-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs backfill",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 passed \u2192 data/validation/9d/progression-backfill-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs reconcile",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "2/2 passed \u2192 data/validation/9d/guest-claim-progression-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs result",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 3,
+        "summary": "11/11 passed \u2192 data/validation/9d/result-progression-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs challenge",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 4,
+        "summary": "10/10 passed \u2192 data/validation/9d/challenge-progression-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs rls",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "19/19 passed \u2192 data/validation/9d/progression-rls-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs security",
+        "harnessReady": true,
+        "exit": 1,
+        "seconds": 3,
+        "summary": "2/2 passed \u2192 data/validation/9d/progression-cross-account-qa.json",
+        "fails": [
+          "FAIL  the account provider is configured on this origin"
+        ],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs concurrency",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "5/5 passed \u2192 data/validation/9d/progression-concurrency-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs responsive",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "32/32 passed \u2192 data/validation/9d/progression-responsive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs accessibility",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 1,
+        "summary": "47/47 passed \u2192 data/validation/9d/progression-accessibility-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs performance",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 3,
+        "summary": "8/8 passed \u2192 data/validation/9d/progression-performance-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs contract",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": null,
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs identifier",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 passed \u2192 data/validation/9f/profile-identifier-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs visibility",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "5/5 passed \u2192 data/validation/9f/profile-visibility-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs projection",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "5/5 passed \u2192 data/validation/9f/public-profile-projection-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs featured",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "11/11 passed \u2192 data/validation/9f/featured-achievements-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs provisional",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "7/7 passed \u2192 data/validation/9f/profile-provisional-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs display-name",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "6/6 passed \u2192 data/validation/9f/profile-display-name-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs deletion",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "7/7 passed \u2192 data/validation/9f/profile-deletion-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs enumeration",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "7/7 passed \u2192 data/validation/9f/profile-enumeration-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs rls",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "10/10 passed \u2192 data/validation/9f/profile-rls-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs cross-account",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "8/8 passed \u2192 data/validation/9f/profile-cross-account-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs leaderboard",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "7/7 passed \u2192 data/validation/9f/profile-leaderboard-integration-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs sharing",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "8/8 passed \u2192 data/validation/9f/profile-sharing-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs responsive",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "51/51 passed \u2192 data/validation/9f/profile-responsive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs accessibility",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "169/169 passed \u2192 data/validation/9f/profile-accessibility-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "profiles",
+        "command": "node scripts/profiles/profileQa.mjs performance",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "22/22 passed \u2192 data/validation/9f/profile-performance-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "social",
+        "command": "node scripts/social/socialQa.mjs contract",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "12/12 passed \u2192 data/validation/social-v1/social-contract.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "social",
+        "command": "node scripts/social/socialQa.mjs rls",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "10/10 passed \u2192 data/validation/social-v1/rivalry-rls-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "social",
+        "command": "node scripts/social/socialQa.mjs lifecycle",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "47/47 passed \u2192 data/validation/social-v1/rivalry-lifecycle-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "social",
+        "command": "node scripts/social/socialQa.mjs cards",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "12/12 passed \u2192 data/validation/social-v1/card-authority-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "social",
+        "command": "node scripts/social/socialQa.mjs harness",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 10,
+        "summary": "33/33 passed \u2192 data/validation/social-v1/social-harness-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "social",
+        "command": "node scripts/social/socialQa.mjs fixture",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 6,
+        "summary": "23/23 passed \u2192 data/validation/social-v1/social-fixture-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "breakdown",
+        "command": "node scripts/breakdown/breakdownQa.mjs capability",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 2,
+        "summary": "7/7 passed \u2192 data/validation/breakdown-v1/capability-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "breakdown",
+        "command": "node scripts/breakdown/breakdownQa.mjs journey",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 7,
+        "summary": "18/18 passed \u2192 data/validation/breakdown-v1/journey-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "breakdown",
+        "command": "node scripts/breakdown/breakdownQa.mjs responsive",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 10,
+        "summary": "11/11 passed \u2192 data/validation/breakdown-v1/responsive-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "breakdown",
+        "command": "node scripts/breakdown/breakdownQa.mjs screens",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 10,
+        "summary": "4/4 passed \u2192 data/validation/breakdown-v1/screens-qa.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "foundation",
+        "command": "node scripts/foundation/goldenFixtureQa.mjs",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "21/21 passed \u2192 data/validation/foundation/golden-fixture-comparison.json",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs any-five",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs daily",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "11/11 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs franchise",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs tonight",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs spin",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs one-franchise",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs one-per-era",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs no-mvps",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs gauntlet",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "10/10 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs lab",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "9/9 checks passed",
+        "fails": [],
+        "error": null
+      },
+      {
+        "group": "loop",
+        "command": "node scripts/loop/loopQa.mjs rooms",
+        "harnessReady": true,
+        "exit": 0,
+        "seconds": 0,
+        "summary": "11/11 checks passed",
+        "fails": [],
+        "error": null
+      }
+    ]
+  },
+  "logo": {
+    "status": "PASS",
+    "checks": 20
+  },
+  "copies": [
+    {
+      "file": "data/validation/loop-foundation/suites/run2-final-6545f8c-unit-raw.json",
+      "bytes": 963720,
+      "sha256": "0f1801b6338a54f59d496a109fc04ddcbfffa8f6c6d30d6c793fbc963de9806f"
+    },
+    {
+      "file": "data/validation/loop-foundation/suites/run2-final-6545f8c-unit.log",
+      "bytes": 92967,
+      "sha256": "ce156994b3d2cde98e546748d6b74c977d1a0f43c15f4788bdeedcaf59a86161"
+    },
+    {
+      "file": "data/validation/loop-foundation/suites/run2-final-6545f8c-gates.json",
+      "bytes": 25941,
+      "sha256": "fe1564b25e81035ad76f170a5954afb305e00980b5ad1958b5ae8a193b754c99"
+    },
+    {
+      "file": "data/validation/loop-foundation/suites/run2-final-6545f8c-gates.log",
+      "bytes": 9961,
+      "sha256": "321b3ab9b1dcb707f670ec93d337b9cbc468fd6e35dc2846259a628d63a7cc8b"
+    },
+    {
+      "file": "data/validation/loop-foundation/suites/run2-final-6545f8c-playwright-initial.log",
+      "bytes": 21343,
+      "sha256": "a40fe16b3cc304d2b75914dad01fb43c6d74c9968864f4c10d9d2f7e927878a1"
+    },
+    {
+      "file": "data/validation/loop-foundation/suites/run2-final-6545f8c-playwright-serial-reverify.log",
+      "bytes": 16594,
+      "sha256": "27cfd9f7e7bb24da89bd2e5d00bea1ed2481de2f8346afc0ed6e76a1dce1fe40"
+    },
+    {
+      "file": "data/validation/loop-foundation/security/run2-final-6545f8c.json",
+      "bytes": 27880,
+      "sha256": "e579b4032f1366f2538265deb1c4cc957d67e3752a7232a3c89f22b1d96ceb93"
+    },
+    {
+      "file": "data/validation/loop-foundation/metrics/run2-final-6545f8c.json",
+      "bytes": 3895,
+      "sha256": "9f6d52f51d8ee57a8d260cb7ae8e40d4eccdb822185328039715bb91abc13e10"
+    },
+    {
+      "file": "data/validation/loop-foundation/performance/logo-browser-final-6545f8c.json",
+      "bytes": 15983,
+      "sha256": "a8f765f535f879e6ffa76164943473ce694bfe98520ea9267893f24f0e7651eb"
+    },
+    {
+      "file": "data/validation/loop-foundation/preparation/build-final-6545f8c.json",
+      "bytes": 914,
+      "sha256": "f8e0b37d61d6ecd767d907bed4a600d2250869c639d4d675330d16bd8649efd6"
+    }
+  ]
+}

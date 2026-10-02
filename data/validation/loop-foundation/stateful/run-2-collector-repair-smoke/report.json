@@ -1,0 +1,338 @@
+{
+  "run": "run-2-collector-repair-smoke",
+  "target": "http://localhost:4321",
+  "startedAt": "2026-10-02T10:02:53.530Z",
+  "identityNamespace": "run-2-temp",
+  "executionPath": "/private/tmp/eraclash-loop-verification-20261002",
+  "sourceSHA": "b0ef7ae430f818d1d3b98bbf15a8ed3e19b30d44",
+  "runtimeSourceSHA": "b0ef7ae430f818d1d3b98bbf15a8ed3e19b30d44",
+  "productionBuildStamp": "eraclash-assets:2.7.2:c3234f7053ad",
+  "testFileHashes": {
+    "tests/loop-stateful-browser.mjs": "d5bf646ef19a12501e7a781737437407cf09e8d62e9111e54c1ebc52d31bad3e",
+    "tests/loop-stateful-browser-provider.js": "5c3db74c93a34d6ca6364b48e363980d7a24dfae6db497d2bfa03c093cf10515",
+    "tests/loop-stateful-harness.mjs": "584e486d83547e2761c2349e9e03d6d4b0b3a2616fbe98a4133c8f7c13fdf8f8",
+    "tests/loop-stateful-identities.mjs": "eee7966e2388a13ff79ab6067b90845d47bad4ddef72b964ae5afdb0810844b7"
+  },
+  "companionMethod": "Vite source modules + test-only main import/provider transform; source client has no production build stamp. File watching/HMR disabled; test-only runner corrections can be uncommitted and are bound by per-file hashes. Actual API handler process with in-memory fake cloud writes rows; read-only bridge scopes rows by fake token. Not production-dist/auth/RLS evidence.",
+  "scope": "PARTIAL EMULATED: localhost actual handlers + Candidate4 + existing fakeCloud/test provider. No real Preview OAuth, SMTP, RLS, provider durability, physical device or deployment proof.",
+  "localBudgetOverrides": {
+    "RL_SIM_PER_MIN_SESSION": 500,
+    "RL_SIM_PER_MIN_IP": 500,
+    "purpose": "Local verification only; shared 120 actions/min and public 20 recaps/min remain enforced"
+  },
+  "checks": [
+    {
+      "name": "any-five account save → History → full report → Breakdown → fresh casual rematch",
+      "status": "PASS",
+      "details": {
+        "savedResultId": "pv_du2392vkt6",
+        "savedMode": "loop_any_five",
+        "rematchResultId": "pv_mql4xsy0ua",
+        "coaches": {
+          "gold": "red-auerbach",
+          "blue": "neutral"
+        },
+        "eraId": "2020s",
+        "candidateId": "Candidate 4",
+        "calibration": "1.4.0",
+        "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "snapshotIdentityVerified": true,
+        "freshRematchIdentityVerified": true,
+        "identity": "All ten IDs preserved across original result, actual saved row, History report and fresh casual rematch"
+      }
+    },
+    {
+      "name": "Actual first-party event batches have HTTP receipts and the closed Loop vocabulary",
+      "status": "PASS",
+      "details": {
+        "closedNamesCaptured": [
+          "mode_started",
+          "game_completed",
+          "card_created"
+        ],
+        "closedEvents": 8,
+        "batches": 2,
+        "receivedStatuses": [
+          204
+        ],
+        "beaconsObserved": 2,
+        "limits": "Captured actual native beacon Blob payloads and separate wire HTTP receipts. The harness settles each actual publication response/card and flushes the real event queue through native payload callbacks and per-context HTTP receipt counts before its hard-reload goto actions; dev StrictMode may duplicate mount events. No real cohort retention or production unload-delivery claim."
+      }
+    }
+  ],
+  "failures": [],
+  "consoleErrors": [],
+  "results": [
+    {
+      "resultId": "pv_du2392vkt6",
+      "mode": "any-five",
+      "score": {
+        "gold": 106,
+        "blue": 121
+      },
+      "goldIds": [
+        "gail-70s",
+        "arizin-50s",
+        "george-70s",
+        "al-10s",
+        "ad-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      },
+      "candidate": "Candidate 4",
+      "calibration": "1.4.0",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff"
+    },
+    {
+      "resultId": "pv_mql4xsy0ua",
+      "mode": "any-five",
+      "freshCasualFrom": "any-five",
+      "originalResultId": "pv_du2392vkt6",
+      "score": {
+        "gold": 114,
+        "blue": 124
+      },
+      "goldIds": [
+        "gail-70s",
+        "arizin-50s",
+        "george-70s",
+        "al-10s",
+        "ad-20s"
+      ],
+      "blueIds": [
+        "hornacek-90s",
+        "monroe-70s",
+        "luka-20s",
+        "leroy-60s",
+        "buck-80s"
+      ],
+      "eraId": "2020s",
+      "coachIds": {
+        "gold": "red-auerbach",
+        "blue": "neutral"
+      }
+    }
+  ],
+  "eventBatches": [
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    },
+    {
+      "label": "Joseph",
+      "status": 204,
+      "events": []
+    }
+  ],
+  "beacons": [
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "mode_started",
+          "ts": 1790935378533,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790935378539,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790935378540,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "returning_session",
+          "ts": 1790935378541,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790935379637,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790935379658,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        },
+        {
+          "event": "cloud_result_save_started",
+          "ts": 1790935379703,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        },
+        {
+          "event": "cloud_result_save_completed",
+          "ts": 1790935379737,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "single"
+        }
+      ]
+    },
+    {
+      "label": "Joseph",
+      "url": "/api/events",
+      "accepted": true,
+      "events": [
+        {
+          "event": "my_eraclash_viewed",
+          "ts": 1790935380111,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "recent_clash_expanded",
+          "ts": 1790935380717,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_any_five"
+        },
+        {
+          "event": "saved_report_opened",
+          "ts": 1790935380750,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_any_five"
+        },
+        {
+          "event": "clash_breakdown_opened",
+          "ts": 1790935381833,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "clash_breakdown_comparison_opened",
+          "ts": 1790935381884,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev"
+        },
+        {
+          "event": "run_it_back_started",
+          "ts": 1790935383085,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "loop_any_five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790935383089,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "mode_started",
+          "ts": 1790935383090,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "game_completed",
+          "ts": 1790935383310,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "mode": "any-five"
+        },
+        {
+          "event": "card_created",
+          "ts": 1790935383414,
+          "uid": "6362962b-54c2-4f35-a2a8-917c51f389ac",
+          "session_id": "3c033991-b7b9-48e0-b7f3-654be8c69cea",
+          "app_version": "2.7.2",
+          "build": "dev",
+          "source": "direct"
+        }
+      ]
+    }
+  ],
+  "governedChallenges": [],
+  "publicationReceipts": [
+    {
+      "label": "Joseph",
+      "resultId": "pv_du2392vkt6",
+      "status": 200,
+      "created": true,
+      "path": "/card/1c4cec08c5b8a418"
+    },
+    {
+      "label": "Joseph",
+      "resultId": "pv_mql4xsy0ua",
+      "status": 200,
+      "created": true,
+      "path": "/card/c3ca4430bffdacb9"
+    }
+  ],
+  "publicationRequestFailures": [],
+  "endedAt": "2026-10-02T10:03:04.917Z",
+  "summary": {
+    "passed": 2,
+    "failed": 0,
+    "consoleErrors": 0,
+    "actualLoopGames": 2,
+    "governedChaosGames": 0,
+    "eventBatches": 2
+  }
+}
