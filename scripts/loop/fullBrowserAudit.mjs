@@ -19,7 +19,7 @@ import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { PLAY_MODES, KNOWN_ROUTES } from '../../src/navigation.js';
-import { FRANCHISE_PAIRINGS, FRANCHISE_DATA_VERSION } from '../../src/loop/franchises.js';
+import { FRANCHISE_PAIRINGS, FRANCHISE_DATA_VERSION, getFranchiseRoster } from '../../src/loop/franchises.js';
 
 export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 export const PROFILE_DEFINITIONS = Object.freeze([
@@ -138,6 +138,13 @@ function requestHeaders(origin) {
   // Only same-origin requests receive protection headers; they are never recorded.
   return {origin,headers};
 }
+export function scopeAuditHeaders(url,origin,headers) {
+  return new URL(url).origin===origin?headers:{};
+}
+function browserRequestOptions(request,options) {
+  const scoped=scopeAuditHeaders(request.url(),options.origin,requestHeaders(options.origin).headers);
+  return Object.keys(scoped).length?{headers:{...request.headers(),...scoped}}:{};
+}
 async function fetchBounded(url,options,method='GET') {
   const destination=new URL(url),same=destination.origin===options.origin;
   const response=await fetch(destination,{method,signal:AbortSignal.timeout(options.timeout),redirect:'manual',headers:same?requestHeaders(options.origin).headers:{'user-agent':'EraClash-ReadOnly-Audit/1.0'}});
@@ -195,7 +202,7 @@ async function probeControl(browser,profile,route,control,options,axePath,device
     let readOnlyConfig=false;
     if(u.pathname==='/api/game'&&request.method()==='POST')try {const body=request.postDataJSON();readOnlyConfig=body?.action==='loop'&&body?.op==='config';}catch{}
     if(!['GET','HEAD','OPTIONS'].includes(request.method())&&!u.pathname.endsWith('/api/events')&&!readOnlyConfig){mutations.push({method:request.method(),path:u.pathname});return intercepted.abort('blockedbyclient');}
-    return intercepted.continue();
+    return intercepted.continue(browserRequestOptions(request,options));
   });
   try {
     await settledPage(page,options.origin+route.path,options);await documentControls(page);
@@ -224,11 +231,12 @@ async function probeControl(browser,profile,route,control,options,axePath,device
 }
 function contextOptions(profile,devices,options) {
   const device=profile.device?devices[profile.device]:null;
-  return {...(device||{}),viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile,extraHTTPHeaders:requestHeaders(options.origin).headers,serviceWorkers:'block',locale:'en-US',timezoneId:'America/New_York',bypassCSP:false};
+  return {...(device||{}),viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile,serviceWorkers:'block',locale:'en-US',timezoneId:'America/New_York',bypassCSP:false};
 }
 
 async function auditRoute(browser,devices,axePath,profile,route,options,links) {
   const context=await browser.newContext(contextOptions(profile,devices,options)),page=await context.newPage();
+  await context.route('**/*',intercepted=>intercepted.continue(browserRequestOptions(intercepted.request(),options)));
   const errors=[],badResponses=[],failedRequests=[],consoleErrors=[];
   page.on('pageerror',error=>errors.push(error.message));
   page.on('console',message=>{if(message.type()==='error')consoleErrors.push(message.text());});
@@ -246,6 +254,22 @@ async function auditRoute(browser,devices,axePath,profile,route,options,links) {
       return {viewport:{width:innerWidth,height:innerHeight},scrollWidth:document.documentElement.scrollWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,theme:document.documentElement.getAttribute('data-theme'),loopBackground:background,loopTokenBackground:expected,lightCourt:light,metaViewport:document.querySelector('meta[name=viewport]')?.content};
     });
     row.controls=await documentControls(page);
+    if(['programmatic','result'].includes(route.kind)||route.path==='/'){
+      row.pageMetadata=parseHtmlMetadata(await page.content());
+      const required=['description','og:title','og:description','og:image','og:url','twitter:card'];
+      const metadataIssues=required.filter(key=>!row.pageMetadata.metas[key]).map(key=>`Missing ${key}`);
+      if(!row.pageMetadata.title||row.pageMetadata.canonical!==options.origin+route.path||row.pageMetadata.metas['og:url']!==options.origin+route.path)metadataIssues.push('Title/canonical/og:url does not match the inspected page');
+      if(row.pageMetadata.metas['twitter:card']!=='summary_large_image')metadataIssues.push('Expected summary_large_image');
+      if(metadataIssues.length)row.issues.push({status:'FAIL',name:'page social/canonical metadata',detail:metadataIssues});
+    }
+    if(route.kind==='programmatic'){
+      const pairing=FRANCHISE_PAIRINGS.find(p=>p.id===route.pairingId);
+      const expectedRelated=FRANCHISE_PAIRINGS.filter(p=>p.id!==pairing.id&&[p.goldId,p.blueId].some(id=>[pairing.goldId,pairing.blueId].includes(id))).map(p=>p.path);
+      const actualRelated=[...new Set(row.pageMetadata.links.map(href=>new URL(href,options.origin)).filter(u=>u.origin===options.origin&&u.pathname.startsWith('/clash/all-time/')).map(u=>u.pathname))];
+      const missingPlayers=[...getFranchiseRoster(pairing.goldId),...getFranchiseRoster(pairing.blueId)].filter(player=>!text.includes(player.name)).map(player=>player.name);
+      row.programmaticContent={relatedExpected:expectedRelated.length,relatedFound:actualRelated.length,relatedMatches:actualRelated.length===expectedRelated.length&&actualRelated.every(p=>expectedRelated.includes(p)),expectedPlayers:10,missingPlayers};
+      if(!row.programmaticContent.relatedMatches||missingPlayers.length)row.issues.push({status:'FAIL',name:'programmatic roster/related-link graph',detail:row.programmaticContent});
+    }
     row.smallTargets=row.controls.filter(c=>!c.disabled&&(c.width<43.5||c.height<43.5));
     for(const control of row.controls)if(control.href)links.set(new URL(control.href,page.url()).href,{href:new URL(control.href,page.url()).href,source:route.path});
     row.authGate=route.kind==='auth-callback'||(/sign in|sign up|create (?:a free |an )?account|account features.*unavailable/i.test(text)&&route.kind==='account')||(route.path==='/clash/rooms'&&/sign in|guest|account/i.test(text));
@@ -319,6 +343,9 @@ async function runLighthouse(options,routes) {
   const resultRoute=routes.find(r=>r.kind==='result'),pairing=routes.find(r=>r.kind==='programmatic');
   const targets=[{name:'home',path:'/'},{name:'daily',path:'/clash/daily'},{name:'result',path:resultRoute?.path},{name:'programmatic',path:pairing?.path},{name:'modes-hub',path:'/clash/modes'}];
   if(!options.lighthouse)return targets.map(t=>({...t,status:'UNVERIFIED',reason:'Lighthouse disabled by command option.'}));
+  // Lighthouse's extraHeaders apply globally through CDP. Do not forward a
+  // Preview protection credential to cross-origin fonts/analytics/resources.
+  if(Object.keys(requestHeaders(options.origin).headers).length)return targets.map(t=>({...t,status:'UNVERIFIED',reason:'Protected Lighthouse needs independently provisioned domain-scoped browser access. Global CDP request headers are intentionally disabled.'}));
   let lighthouse,launcher;
   try {lighthouse=(await import(pathToFileURL(await toolLocation(options,'lighthouse','core/index.js')).href)).default;launcher=await import(pathToFileURL(await toolLocation(options,'chrome-launcher','dist/index.js')).href);}catch(error){return targets.map(t=>({...t,status:'UNVERIFIED',reason:error.message}));}
   const results=[];
@@ -327,7 +354,7 @@ async function runLighthouse(options,routes) {
     let chrome;
     try {
       chrome=await launcher.launch({chromePath:process.env.ECLASH_BROWSER_EXECUTABLE||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',chromeFlags:['--headless','--disable-dev-shm-usage']});
-      const result=await lighthouse(options.origin+target.path,{port:chrome.port,logLevel:'error',output:['html','json'],onlyCategories:['performance','accessibility','best-practices','seo'],formFactor:'mobile',extraHeaders:requestHeaders(options.origin).headers});
+      const result=await lighthouse(options.origin+target.path,{port:chrome.port,logLevel:'error',output:['html','json'],onlyCategories:['performance','accessibility','best-practices','seo'],formFactor:'mobile'});
       const lhr=result.lhr,base=`lighthouse/${target.name}`;
       await fs.writeFile(path.join(options.output,base+'.html'),result.report[0]);await fs.writeFile(path.join(options.output,base+'.json'),result.report[1]);
       const scores=Object.fromEntries(Object.entries(lhr.categories).map(([key,value])=>[key,Math.round((value.score??0)*100)])),lcp=lhr.audits['largest-contentful-paint']?.numericValue;
@@ -346,6 +373,7 @@ export async function runAudit(options) {
   report.fileHashes={};
   for(const file of ['scripts/loop/fullBrowserAudit.mjs','scripts/loop/sitemap.mjs','vite.config.js','index.html','src/App.jsx','src/navigation.js','src/loop/franchises.js','src/loop/modes/LoopModes.jsx','src/loop/components/loop.css','api/share-page.js','dist/index.html','dist/sitemap.xml'])try{report.fileHashes[file]=hash(await fs.readFile(path.join(REPO,file)));}catch{}
   report.codeFingerprint=hash(JSON.stringify(report.fileHashes));
+  if(options.resultsFile){const fixture=await fs.readFile(path.resolve(options.resultsFile));report.resultFixture={path:path.relative(REPO,path.resolve(options.resultsFile)),sha256:hash(fixture),bytes:fixture.length};}
   await fs.writeFile(path.join(options.output,'inventory.json'),JSON.stringify(inventory,null,2)+'\n');
   if(options.inventoryOnly){report.status='PREPARATION_ONLY';report.endedAt=new Date().toISOString();await fs.writeFile(path.join(options.output,'report.json'),JSON.stringify(report,null,2)+'\n');return report;}
   for(const dir of ['routes','screenshots','lighthouse'])await fs.mkdir(path.join(options.output,dir));
@@ -384,10 +412,20 @@ export async function runAudit(options) {
     if(inventory.suppliedResults.length<10)report.social.push({status:'UNVERIFIED',reason:`Only ${inventory.suppliedResults.length} real result URLs supplied; ten are required for the full sharing matrix.`});
     report.lighthouse=await runLighthouse(options,inventory.routes);
     const interactions=report.routes.flatMap(r=>r.interactions||[]);
-    report.summary={routes:report.routes.length,routeFailures:report.routes.filter(r=>r.status==='FAIL').length,criticalAxe:report.routes.reduce((n,r)=>n+(r.axe?.critical||0),0),seriousAxe:report.routes.reduce((n,r)=>n+(r.axe?.serious||0),0),links:report.links.length,failedLinks:report.links.filter(r=>r.status==='FAIL').length,unverifiedLinks:report.links.filter(r=>r.status==='UNVERIFIED').length,controls:interactions.length,observedControls:interactions.filter(r=>r.status==='PASS').length,unverifiedControls:interactions.filter(r=>r.status==='UNVERIFIED').length,disabledControls:interactions.filter(r=>r.status==='N/A').length,socialFailures:report.social.filter(r=>r.status==='FAIL').length,lighthouseReports:report.lighthouse.filter(r=>r.artifact).length};
-    report.status=report.summary.routeFailures||report.summary.failedLinks||report.summary.socialFailures||report.notFound.some(r=>r.status==='FAIL')||inventory.sitemap.status==='FAIL'||report.servedSitemap.status==='FAIL'?'FAIL':options.scope!=='full'||report.summary.unverifiedControls||report.summary.unverifiedLinks||report.social.some(r=>r.status!=='PASS')||report.lighthouse.some(r=>r.status!=='PASS')?'PARTIAL':'PASS';
+    report.summary={routes:report.routes.length,routeFailures:report.routes.filter(r=>r.status==='FAIL').length,partialRoutes:report.routes.filter(r=>r.status==='PARTIAL').length,criticalAxe:report.routes.reduce((n,r)=>n+(r.axe?.critical||0),0),seriousAxe:report.routes.reduce((n,r)=>n+(r.axe?.serious||0),0),criticalAxeAfterInteraction:interactions.reduce((n,r)=>n+(r.axe?.critical||0),0),seriousAxeAfterInteraction:interactions.reduce((n,r)=>n+(r.axe?.serious||0),0),links:report.links.length,failedLinks:report.links.filter(r=>r.status==='FAIL').length,unverifiedLinks:report.links.filter(r=>r.status==='UNVERIFIED').length,controls:interactions.length,observedControls:interactions.filter(r=>r.status==='PASS').length,unverifiedControls:interactions.filter(r=>r.status==='UNVERIFIED').length,disabledControls:interactions.filter(r=>r.status==='N/A').length,socialFailures:report.social.filter(r=>r.status==='FAIL').length,lighthouseReports:report.lighthouse.filter(r=>r.artifact).length};
+    report.status=report.summary.routeFailures||report.summary.failedLinks||report.summary.socialFailures||report.notFound.some(r=>r.status==='FAIL')||inventory.sitemap.status==='FAIL'||report.servedSitemap.status==='FAIL'?'FAIL':options.scope!=='full'||report.summary.partialRoutes||report.summary.unverifiedControls||report.summary.unverifiedLinks||report.social.some(r=>r.status!=='PASS')||report.lighthouse.some(r=>r.status!=='PASS')?'PARTIAL':'PASS';
   }catch(error){report.status='UNVERIFIED';report.error=error.message;}
-  finally{await browser?.close();report.endedAt=new Date().toISOString();await fs.writeFile(path.join(options.output,'report.json'),JSON.stringify(report,null,2)+'\n');}
+  finally{
+    await browser?.close();
+    const changedFiles=[];
+    for(const [file,originalHash] of Object.entries(report.fileHashes))try{if(hash(await fs.readFile(path.join(REPO,file)))!==originalHash)changedFiles.push(file);}catch{changedFiles.push(file);}
+    let fixtureUnchanged=null;
+    if(report.resultFixture)try{fixtureUnchanged=hash(await fs.readFile(path.resolve(options.resultsFile)))===report.resultFixture.sha256;}catch{fixtureUnchanged=false;}
+    const checkoutShaEnd=git(['rev-parse','HEAD']);
+    report.sourceStability={checkoutShaEnd,changedFiles,resultFixtureUnchanged:fixtureUnchanged,status:changedFiles.length||checkoutShaEnd!==report.checkoutSha||fixtureUnchanged===false?'UNVERIFIED':'PASS'};
+    if(report.sourceStability.status!=='PASS'){report.limitations.push('Source/build or fixture identity changed during the audit; evidence cannot be assigned to one unchanged checkout.');if(report.status!=='FAIL')report.status='UNVERIFIED';}
+    report.endedAt=new Date().toISOString();await fs.writeFile(path.join(options.output,'report.json'),JSON.stringify(report,null,2)+'\n');
+  }
   return report;
 }
 

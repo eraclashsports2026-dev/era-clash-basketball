@@ -1,9 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { buildRouteInventory, classifyInteraction, parseArguments, parseHtmlMetadata, PROFILE_DEFINITIONS } from '../scripts/loop/fullBrowserAudit.mjs';
+import { buildRouteInventory, classifyInteraction, parseArguments, parseHtmlMetadata, PROFILE_DEFINITIONS, scopeAuditHeaders } from '../scripts/loop/fullBrowserAudit.mjs';
 import { FRANCHISE_PAIRINGS } from '../src/loop/franchises.js';
 import { resolveSitemapOrigin, buildPublicFranchiseSitemap, transformHomeMetadata } from '../scripts/loop/sitemap.mjs';
 
 describe('Full browser audit evidence boundaries',()=>{
+  it('keeps protection headers on the exact audited origin',()=>{
+    const headers={'x-vercel-protection-bypass':'test-only-placeholder'};
+    expect(scopeAuditHeaders('https://preview.test/api/health','https://preview.test',headers)).toEqual(headers);
+    for(const url of ['https://fonts.example.test/style.css','https://preview.test.attacker.test/','http://preview.test/','https://preview.test:444/'])expect(scopeAuditHeaders(url,'https://preview.test',headers)).toEqual({});
+  });
   it('covers all 435 pairing identities and actual public navigation paths',async()=>{
     const inventory=await buildRouteInventory(),paths=new Set(inventory.routes.map(row=>row.path));
     expect(inventory.routes.filter(row=>row.kind==='programmatic')).toHaveLength(435);
