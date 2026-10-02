@@ -14,6 +14,7 @@ import { cloudAccountsStatus, safeReturnPath } from "../../accounts/config.js";
 import { redeem } from "../../accounts/linkProof.js";
 import { adopt } from "../../accounts/accountState.js";
 import { track } from "../../analytics.js";
+import { loopEvent } from '../../loop/events.js';
 
 const MESSAGE = {
   RATE_LIMITED: "Sign-in emails are limited right now. Try again in a little while.",
@@ -102,6 +103,7 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
       if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
       await adopt(session);
       track("account_signin_completed", { authMethod: "email", entryPoint });
+      if (intent === 'signup') loopEvent('signup_completed');
       onSignedIn?.(session);
     } catch (e) { fail(e); }
   };
@@ -184,7 +186,7 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
 
         <button onClick={onClose} style={quiet}>NOT NOW</button>
         <p style={{ fontSize: 11.5, color: T.textMuted, marginTop: 12, lineHeight: 1.5 }}>
-          Your email is only used to sign you in. It is never shown to other players.
+          Your email is used to sign you in and is never shown to other players. <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a>
         </p>
       </div>
     </div>
