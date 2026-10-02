@@ -19,7 +19,7 @@ export const THEME_RESOLVER_VERSION = "1.1.0";
 export { THEME_IDS, CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, PRODUCTION_THEME_NAME, CONTROL_THEME_ID };
 
 export const getTheme = (id) => BASKETBALL_THEMES[id] || null;
-export const isThemeId = (id) => THEME_IDS.includes(String(id));
+export { isThemeId, applyTheme } from "./applyTheme.js";
 
 /** Every key present, no extras: a theme that forgets a token is a build error. */
 export const validateTheme = (theme) => {
@@ -106,21 +106,6 @@ export const themeCss = () => [
   ...THEME_IDS.map(themeCssFor),
   "",
 ].join("\n");
-
-/**
- * Apply a theme to the document. Phase 9A.2: the product applies the PRODUCTION
- * theme at startup (src/main.jsx); the lab applies a candidate for comparison
- * and restores the production theme on unmount. `null` restores the default
- * product theme; `false` removes the attribute (the pre-9A.2 render).
- */
-export const applyTheme = (id, root = typeof document !== "undefined" ? document.documentElement : null) => {
-  if (!root) return false;
-  if (id === false) { delete root.dataset.theme; return true; }
-  if (id == null) { root.dataset.theme = PRODUCTION_THEME_ID; return true; }
-  if (!isThemeId(id)) return false;
-  root.dataset.theme = id;
-  return true;
-};
 
 /** A flat, auditable token table for a theme — what the artifacts record. */
 export const themeTokenTable = (id) => {

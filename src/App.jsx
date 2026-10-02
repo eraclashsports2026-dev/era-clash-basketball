@@ -14,15 +14,7 @@ import {
 } from "./career.js";
 import { createChallenge, loadChallengeFromUrl } from "./challengeClient.js";
 import { publishResult, shareText } from "./share.js";
-import DailyPanel from "./components/DailyPanel.jsx";
-import DailyCoachEra from "./components/DailyCoachEra.jsx";
-import Profile from "./components/Profile.jsx";
-import Credits from "./components/Credits.jsx";
-import RosterBalance from "./components/RosterBalance.jsx";
-import MatchupPreview, { VsDivider } from "./components/MatchupPreview.jsx";
-import SimulationLoading from "./components/SimulationLoading.jsx";
 import ManualPicker from "./components/ManualPicker.jsx";
-import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
@@ -44,22 +36,17 @@ import { rememberResult } from "./accounts/deviceResults.js";
 import { runItBackSetup } from "./accounts/careerV2.js";
 import { placementPlan, place as placePlayer, describeSelection, describePlacement, PLACEMENT_MODE } from "./lineupPlacement.js";
 import { markEntry } from "./activation.js";
-import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
 import { simulateChaos, chooseChaosEra } from "./chaos/client.js";
 // Phase 9C: a finished Chaos Clash becomes a governed challenge; a link opens an
 // invitation; an accepted challenge is an ordinary Chaos run the arena resumes.
 import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
-import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
 import { loadSavedReport } from "./accounts/savedReport.js";
-import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
 import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
 // Phase 9D: what a saved result earned (server-decided), shown after the score.
 import { rememberProgression, progressionFor, mergeProgression } from "./progression/client.js";
-import CareerProgress from "./components/progression/CareerProgress.jsx";
 // Phase 9E: the Challenge Rating leaderboard and the rating movement after a comparison.
 import { slugFromPath, PUBLIC_PROFILE_ROUTE } from "./profiles/contract.js";
-import RatingChange from "./components/competitive/RatingChange.jsx";
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
@@ -74,6 +61,7 @@ import { shortBuild, watchForNewBuild } from "./buildStamp.js";
 import { PolicyPage, SupportPage } from './loop/PolicyPages.jsx';
 import { loopEvent } from './loop/events.js';
 import { loopApi } from './loop/client.js';
+import LoopModes from './loop/modes/LoopModes.jsx';
 
 // Defer conditional screens while keeping the arena header and active mode visible.
 // Declared at module scope so navigating or rerendering preserves component identity.
@@ -92,11 +80,24 @@ const TimeArena = deferredScreen(() => import("./components/arena/TimeArena.jsx"
 const MyEraClash = deferredScreen(() => import("./components/accounts/MyEraClash.jsx"), "Loading My EraClash…");
 const Postgame = deferredScreen(() => import("./components/Postgame.jsx"), "Loading the full report…");
 const ClashBreakdown = deferredScreen(() => import("./components/breakdown/ClashBreakdown.jsx"), "Loading the breakdown…");
-const LoopModes = deferredScreen(() => import("./loop/modes/LoopModes.jsx"), "Loading this mode…");
 const LeaderboardPage = deferredScreen(() => import("./components/competitive/LeaderboardPage.jsx"), "Loading the leaderboard…");
 const PublicProfilePage = deferredScreen(() => import("./components/profiles/PublicProfilePage.jsx"), "Loading this profile…");
 const PrivateRooms = deferredScreen(() => import("./loop/PrivateRooms.jsx"), "Loading private rooms…");
 const LoopResult = deferredScreen(() => import("./loop/LoopResult.jsx"), "Loading the result…");
+const DailyPanel = deferredScreen(() => import("./components/DailyPanel.jsx"), "Loading the Daily board…");
+const DailyCoachEra = deferredScreen(() => import("./components/DailyCoachEra.jsx"), "Loading Daily coaching…");
+const Profile = deferredScreen(() => import("./components/Profile.jsx"), "Loading your basketball profile…");
+const Credits = deferredScreen(() => import("./components/Credits.jsx"), "Loading image credits…");
+const RosterBalance = deferredScreen(() => import("./components/RosterBalance.jsx"), "Loading roster balance…");
+const SimulationLoading = deferredScreen(() => import("./components/SimulationLoading.jsx"), "Preparing the game…");
+const CoachPick = deferredScreen(() => import("./components/CoachPick.jsx"), "Loading coaching choices…");
+const AccountGate = deferredScreen(() => import("./components/chaos/AccountGate.jsx"), "Loading account options…");
+const ChallengeShare = deferredScreen(() => import("./components/challenges/ChallengeShare.jsx"), "Loading challenge sharing…");
+const ChallengeComparison = deferredScreen(() => import("./components/challenges/ChallengeComparison.jsx"), "Loading the comparison…");
+const CareerProgress = deferredScreen(() => import("./components/progression/CareerProgress.jsx"), "Loading career progress…");
+const RatingChange = deferredScreen(() => import("./components/competitive/RatingChange.jsx"), "Loading rating movement…");
+const MatchupPreview = deferredScreen(() => import("./components/MatchupPreview.jsx"), "Loading the matchup preview…");
+const VsDivider = deferredScreen(() => import("./components/MatchupPreview.jsx").then(module => ({ default: module.VsDivider })), "Loading the matchup…");
 
 // The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
 // server's edges; placeholder until both fives exist. No numbers, no winner.

@@ -595,14 +595,12 @@ describe("preservation", () => {
       const current = readFileSync(file, "utf8");
       let preserved = current;
       if (file === "src/components/lobby/PlayLobby.jsx") {
-        // Only this exact lossless delivery wrapper is reversible here. Every
-        // existing PNG attribute and every other accepted parent byte is pinned.
-        const originalLogo = '        <img className="ec-lobby-logo" src="/brand/eraclash-logo-mk1.png" alt="EraClash Basketball" width="760" height="304" decoding="async" loading="eager" fetchpriority="high" />';
-        const deliveryLogo = "        <picture style={{ display: \"contents\" }}>\n          <source type=\"image/webp\" srcSet=\"/brand/eraclash-logo-mk1-lossless-3f75f78c.webp\" />\n        <img className=\"ec-lobby-logo\" src=\"/brand/eraclash-logo-mk1.png\" alt=\"EraClash Basketball\" width=\"760\" height=\"304\" decoding=\"async\" loading=\"eager\" fetchpriority=\"high\" />\n        </picture>";
-        if (current.includes("<picture")) {
-          expect(current.split(deliveryLogo).length - 1, "one exact delivery wrapper").toBe(1);
-          preserved = current.replace(deliveryLogo, originalLogo);
-        }
+        // Only this exact single-source PNG delivery hint is reversible.
+        // The original fallback src, labels, hierarchy and every other accepted
+        // parent byte remain pinned; no wrapper or arbitrary srcSet is allowed.
+        const deliverySrcSet = ' srcSet="/brand/eraclash-logo-mk1-lossless-bf9d137b.png"';
+        expect(current.split(deliverySrcSet).length - 1, "one exact delivery srcSet").toBe(1);
+        preserved = current.replace(deliverySrcSet, "");
         preserved = preserved.replace(' loading="eager" fetchpriority="high"', "");
       }
       expect(preserved.trim(), file).toBe(git(`git show ${PARENT}:${file}`));
