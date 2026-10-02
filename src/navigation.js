@@ -166,7 +166,7 @@ export const FANTASY_DESTINATIONS = Object.freeze([
     id: "eraclash-live", label: "EraClash Live", icon: "📡",
     route: "/fantasy/live", status: "PLANNED",
     tagline: "Traditional fantasy powered by real-world games.",
-    description: "Season-long and weekly fantasy using real players and real NBA results, sharing an account with the rest of EraClash.",
+    description: "Season-long and weekly fantasy using real players and real pro basketball results, sharing an account with the rest of EraClash.",
     differentiator: "Real games. Real players. Real-world scoring.",
   },
 ]);
@@ -355,8 +355,8 @@ export const isLobbyRoute = (pathname) => { const p = trim(pathname); return p =
 export const isPlayRoute = (pathname) => { const p = trim(pathname); return p === PLAY_LOBBY_ROUTE || p.startsWith(`${PLAY_LOBBY_ROUTE}/`); };
 /** Address families the app renders outside the lobby and the modes: a section
  *  root that is itself a page, and families that need a child segment. */
-export const KNOWN_ROUTES = Object.freeze(["/leaderboard", "/my-eraclash", "/membership"]);
-export const KNOWN_ROUTE_PREFIXES = Object.freeze(["/membership/", "/fantasy/", "/modes/", "/auth/", "/result/", "/challenge/", "/player/", "/dev/", "/__fixtures"]);
+export const KNOWN_ROUTES = Object.freeze(["/leaderboard", "/my-eraclash", "/membership", "/privacy", "/terms", "/support", "/challenges"]);
+export const KNOWN_ROUTE_PREFIXES = Object.freeze(["/clash/", "/card/", "/membership/", "/fantasy/", "/modes/", "/auth/", "/result/", "/challenge/", "/player/", "/dev/", "/__fixtures"]);
 /**
  * Does this address open something? A mistyped or stale URL used to render
  * the Chaos board silently under the wrong address; now it lands on the lobby

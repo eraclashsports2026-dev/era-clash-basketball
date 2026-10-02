@@ -40,6 +40,7 @@ import {
   guestRunsUsed, consumeGuestRun, guestLimitReached,
 } from "./_lib/chaosRun.js";
 import { can, CAPABILITIES, gateReason, GUEST_CHAOS_RUNS } from "../src/entitlements.js";
+import { loopHandler } from './_lib/loopFoundation.js';
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
@@ -83,6 +84,7 @@ export default async function handler(req, res) {
 
   try {
     const b = req.body || {};
+    if (b.action === 'loop') return await loopHandler(req, res, { session, f });
 
     // ── Chaos Clash actions ─────────────────────────────────────────────────
     // These ride /api/game because the deployment sits at its 13-function

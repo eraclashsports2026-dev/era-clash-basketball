@@ -82,6 +82,12 @@ import { teamFit } from "./chemistryView.js";
 import { v3meta } from "./v3meta.js";
 import { runNarrative, toViewStatus } from "./narrativeMachine.js";
 import { shortBuild, watchForNewBuild } from "./buildStamp.js";
+import LoopModes from './loop/modes/LoopModes.jsx';
+import LoopResult from './loop/LoopResult.jsx';
+import PrivateRooms from './loop/PrivateRooms.jsx';
+import { PolicyPage, SupportPage } from './loop/PolicyPages.jsx';
+import { loopEvent } from './loop/events.js';
+import { loopApi } from './loop/client.js';
 
 // The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
 // server's edges; placeholder until both fives exist. No numbers, no winner.
@@ -210,6 +216,7 @@ const writePriorResult = (p) => {
 };
 
 export default function App() {
+  const [loopResult, setLoopResult] = useState(null);
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
   const [gameMode, setGameMode] = useState("Chaos");  // Chaos | Single (Dream Matchup) | Best7 | Win82 | Tournament
@@ -366,6 +373,21 @@ export default function App() {
   // server reads the authoritative record. A failure leaves the result on
   // screen and offers a retry.
   const token = acct.session?.accessToken || null;
+  useEffect(() => {
+    if (loading && !token) loopEvent('guest_play_started');
+  }, [loading]);
+  useEffect(() => {
+    const mode = modeForRoute(route);
+    if (mode) loopEvent('mode_started', { mode: ({ bo7: 'best7', win82: '82' })[mode.id] || mode.id });
+  }, [route]);
+  const loopCompletedIds = useRef(new Set());
+  useEffect(() => {
+    const id = result?.resultId;
+    if (!id || loopCompletedIds.current.has(id)) return;
+    loopCompletedIds.current.add(id);
+    const mode = result.tag === 'chaos' ? 'chaos' : result.tag === 'daily' ? 'daily' : result.type === 'single' ? 'dream' : result.type;
+    loopEvent('game_completed', { mode });
+  }, [result?.resultId]);
   const runCloudSave = useCallback(async (resultId, mode, kind = "cloud-save") => {
     if (!resultId || !token) return null;
     setCloudSave({ resultId, state: "saving" });
@@ -525,6 +547,7 @@ export default function App() {
   // the same way. It never starts a game — the mode's own surface does that,
   // on an explicit action.
   useEffect(() => {
+    if (route === '/challenges') { setNav('Challenges'); return; }
     const m = modeForRoute(route);
     if (!m) return;
     if (m.nav) { if (nav !== m.nav) setNav(m.nav); return; }
@@ -1431,7 +1454,7 @@ export default function App() {
     // instead of the Chaos flow. Dream/Best7/Win82/Tournament/Daily keep it.
     const legacyChallenge = result?.tag !== "chaos";
     const [resultUrl, ch] = await Promise.all([
-      result && result.type !== "tournament" ? publishResult(buildSnapshot()) : Promise.resolve(null),
+      result ? publishResult({ resultId: result.resultId }) : Promise.resolve(null),
       legacyChallenge ? createChallenge(team, rec) : Promise.resolve(null),
     ]);
     if (resultUrl) track("result_created", { kind: result?.type || "single" });
@@ -1440,6 +1463,7 @@ export default function App() {
     const text = `🏀 My EraClash squad went ${rec}\n\n${roster}\n\nTeam Rating: ${teamRating(team)}\n\nThink you can beat my five? Play them here:\n${resultUrl && ch ? `${resultUrl}\n(or take the direct challenge: ${ch.url})` : url}`;
     if (result?.tag === "daily") track("daily_result_shared", {});
     const outcome = await shareText(text, result?.tag === "daily" ? "daily_result" : result?.type || "result");
+    if (outcome === 'shared') loopEvent('card_shared', { channel: 'native' });
     if (outcome !== "shared") setShare({ text, url });
   };
 
@@ -2027,7 +2051,32 @@ export default function App() {
       )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
 
-      {route === "/auth/callback" ? (
+      {route === '/privacy' || route === '/terms' ? <PolicyPage kind={route.slice(1)} />
+      : route === '/support' ? <SupportPage />
+      : route === '/clash/rooms' ? <PrivateRooms signedIn={!!token} />
+      : route.startsWith('/clash/') ? <>
+        <LoopModes route={route} user={acct} onNavigate={navigate} onResult={async (payload, context = {}) => {
+          const record = payload.result || payload;
+          const mode = context.mode || record.loop?.mode || 'any-five';
+          loopEvent('game_completed', { mode });
+          setLoopResult({ record, mode, route, url: null });
+          const url = await publishResult({ resultId: record.id });
+          setLoopResult(current => current?.record.id === record.id ? { ...current, url } : current);
+          const room = new URLSearchParams(location.search).get('room');
+          if (room) {
+            let roomStatus;
+            try { await loopApi({ op: 'room-challenge', roomId: room, resultId: record.id }); roomStatus = 'Your result was added to the private room.'; }
+            catch { roomStatus = 'The room could not save this result. Return to the room and retry after the other update finishes.'; }
+            setLoopResult(current => current?.record.id === record.id ? { ...current, roomStatus } : current);
+          }
+          return url;
+        }} />
+        {loopResult?.route === route ? <LoopResult {...loopResult} signedIn={!!token} onSave={rid => runCloudSave(rid, 'single', 'save')} onPublish={async record => {
+          const url = await publishResult({ resultId: record.id });
+          setLoopResult(current => current?.record.id === record.id ? { ...current, url } : current);
+          return url;
+        }} /> : null}
+      </> : route === "/auth/callback" ? (
         <AuthCallback onDone={({ next }) => {
           setTier(currentTier());
           const rid = authDialog?.claimResultId || null;
@@ -2159,9 +2208,9 @@ export default function App() {
             <SharedResultView snap={sharedResult} onPlay={() => {
               const t = sharedResult.teamIds.map((id) => findCard(id));
               if (!t.some((x) => !x)) {
-                setChallenge({ id: sharedResult.challengeId || null, team: t, record: sharedResult.scoreline, challengerName: sharedResult.name, games: [], rivalry: null });
-                setSharedResult(null); setNav("Challenges");
-                track("challenge_started", { from: "shared_result" });
+                loopEvent('rematch_started_from_card', { source: 'card' });
+                const shareId = new URLSearchParams(location.search).get('r');
+                setSharedResult(null); navigate('/clash/any-five' + (shareId ? '?rematch=' + encodeURIComponent(shareId) : ''));
               }
             }} />
           </div>
@@ -2255,8 +2304,9 @@ export default function App() {
       )}
       {share && <ShareModal share={share} onClose={() => setShare(null)} />}
 
+      <nav aria-label="More basketball modes" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center', padding: 12 }}><a className="ec-footer-link" href="/clash/modes">All modes</a><a className="ec-footer-link" href="/clash/rooms">Private rooms</a><a className="ec-footer-link" href="/privacy">Privacy</a><a className="ec-footer-link" href="/terms">Terms</a><a className="ec-footer-link" href="/support">Founding Player</a></nav>
       <footer style={{ textAlign: "center", padding: 20, fontSize: 10.5, color: T.textDim, borderTop: `1px solid ${T.border}` }}>
-        EraClash is an independent fan-made game. Not affiliated with or endorsed by the NBA.
+        EraClash is not affiliated with, endorsed by, or sponsored by any professional basketball league or team.
         {" · "}
         {/* .ec-footer-link carries the 44px touch target; the inline padding:0
             it used to set is gone so the class can apply. Copy unchanged. */}
@@ -2412,7 +2462,7 @@ function SharedResultView({ snap, onPlay }) {
       )}
       {snap.insight && <p style={{ fontSize: 13, color: T.textDim, textAlign: "center", margin: "0 0 14px" }}>"{snap.insight}"</p>}
       <button onClick={onPlay} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: T.onGold, cursor: "pointer", minHeight: 48 }}>
-        ⚔️ CAN YOUR TEAM BEAT THIS LINEUP? PLAY THE CHALLENGE
+        Run it back with your five
       </button>
     </div>
   );
