@@ -21,6 +21,7 @@ export const LOOP_MODE_LINKS = Object.freeze([
   { title: 'Clash Any Five', href: '/clash/any-five', copy: 'Choose five people whose cards cover the five positions.', tag: 'ANY_FIVE' },
   { title: 'Daily Clash', href: '/clash/daily', copy: 'One shared draft each New York day. One completed attempt.', tag: 'DAILY' },
   { title: 'Franchise Clash', href: '/clash/franchise', copy: 'Play curated all-time franchise fives or Tonight’s Clash.', tag: 'FRANCHISE' },
+  { title: 'Tonight’s Clash', href: '/clash/tonight', copy: 'Load a pairing from the sourced schedule and play the all-time fives.', tag: 'TONIGHT' },
   { title: 'Chaos Spin', href: '/clash/spin', copy: 'Random franchise-and-era picks, with one skip of each kind.', tag: 'SPIN' },
   { title: 'Constraint filters', href: '/clash/filters', copy: 'One Franchise, One Per Era, or No MVPs.', tag: 'FILTERS' },
   { title: 'Era Gauntlet', href: '/clash/gauntlet', copy: 'Keep one team and survive seven era opponents.', tag: 'GAUNTLET' },
@@ -74,7 +75,7 @@ export function LoopModes({ route, user, onResult, onNavigate, api = loopApi }) 
   else if (mode === 'spin') content = <SpinMode api={trackedApi} config={config} onResult={onResult} />;
   else if (mode === 'daily') content = <DailyMode api={trackedApi} config={config} user={user} onResult={onResult} />;
   else if (mode === 'gauntlet') content = <GauntletMode api={trackedApi} user={user} onResult={onResult} />;
-  else if (mode === 'franchise' || mode === 'all-time') content = <React.Suspense fallback={<p role="status">Loading the franchise matchup…</p>}><FranchiseMode api={trackedApi} route={route} onResult={onResult} /></React.Suspense>;
+  else if (['franchise', 'all-time', 'tonight'].includes(mode)) content = <React.Suspense fallback={<p role="status">Loading the franchise matchup…</p>}><FranchiseMode key={mode} api={trackedApi} route={route} onResult={onResult} /></React.Suspense>;
   else content = <><h1>That mode is not available here</h1><p>Choose a mode from the hub to continue.</p></>;
   return <main className="loop-court" data-testid="loop-court"><div className="loop-top"><p className="loop-eyebrow">EraClash Basketball · Light Court</p><Link href="/clash/modes" onNavigate={onNavigate} className="loop-header-link">Modes hub</Link></div>{error && config && <div className="loop-error" role="alert"><p>{error}</p><button type="button" onClick={() => setRetry(value => value + 1)}>Retry configuration</button></div>}{content}</main>;
 }

@@ -1,6 +1,8 @@
 # Tonight’s Clash contract
 
-Version: `tonight-content-1.0.0` · roster dependency `loop-franchises-1.0.0` · Basketball only · 2026-10-02.
+Version: `tonight-content-1.0.1` · roster dependency `loop-franchises-1.0.0` · Basketball only · 2026-10-02.
+
+Route: `/clash/tonight`, reached directly from the modes hub. The existing `/clash/franchise` schedule section remains available. The direct Tonight route requires a listed schedule pairing before play; dates without games display an honest empty state and cannot silently start an unrelated franchise matchup.
 
 Tonight’s Clash loads actual published 2026–27 schedule pairings and simulates the curated all-time franchise proposals. It does not predict the real game, use real current-season lineups, or present a synthetic result as an official score. Gold is the listed home franchise and Blue the listed away franchise; current content uses the existing engine’s neutral-court model without estimating a real venue effect.
 
