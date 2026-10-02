@@ -20,6 +20,7 @@ import { PREVIEW_SUPABASE_URL, PREVIEW_SUPABASE_PUBLISHABLE_KEY, onVercelPreview
 import { getJSON } from "./store.js";
 // One reader of the stored record for every consumer (saved career rows, Challenges).
 import { finalScoreOf, mvpOf, savedRosterOf, savedCoachOf, engineIdentity } from "./resultContract.js";
+import { loopCareerMode } from '../../src/loop/careerMode.js';
 
 export const CLOUD_ACCOUNTS_SERVER_VERSION = "1.0.0";
 
@@ -165,7 +166,7 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
     // that way), but the career must tell a Chaos Clash apart from a hand-built
     // Dream Matchup — the presence of a revealed chaos draft is the honest
     // signal, set here so no game-logic path has to change.
-    mode: (record?.chaosDraft ? "chaos" : String(record.mode || "single")).slice(0, 20),
+    mode: (loopCareerMode(record) || (record?.chaosDraft ? "chaos" : String(record.mode || "single"))).slice(0, 20),
     user_side: "gold",
     outcome: OUTCOME(record),
     gold_score: Number.isFinite(scoreOf(record)?.gold) ? scoreOf(record).gold : null,

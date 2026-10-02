@@ -1311,6 +1311,30 @@ export default function App() {
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
 
+  // Reopening a completed card is presentation, so its game-completed event
+  // is emitted once per authoritative result in this app session.
+  const presentLoopResult = async (payload, context = {}, resultRoute = route) => {
+    const record = payload.result || payload;
+    const mode = context.mode || record.loop?.mode || 'any-five';
+    if (!loopCompletedIds.current.has(record.id)) {
+      loopCompletedIds.current.add(record.id);
+      loopEvent('game_completed', { mode });
+    }
+    setLoopResult(current => ({ record, mode, route: resultRoute,
+      url: current?.record?.id === record.id ? current.url : null,
+      notice: context.notice || null }));
+    const url = await publishResult({ resultId: record.id });
+    setLoopResult(current => current?.record?.id === record.id ? { ...current, url } : current);
+    const room = new URLSearchParams(location.search).get('room');
+    if (room) {
+      let roomStatus;
+      try { await loopApi({ op: 'room-challenge', roomId: room, resultId: record.id }); roomStatus = 'Your result was added to the private room.'; }
+      catch { roomStatus = 'The room could not save this result. Return to the room and retry after the other update finishes.'; }
+      setLoopResult(current => current?.record?.id === record.id ? { ...current, roomStatus } : current);
+    }
+    return url;
+  };
+
   // Run It Back from a saved Clash: the same five, coaches and era, a NEW seed.
   // The five and the opponent are reconstructed from the stored identity refs;
   // the server decides everything else. Exact replay is deliberately NOT this —
@@ -1319,6 +1343,19 @@ export default function App() {
   const runItBackFromSaved = (clash) => {
     const setup = runItBackSetup(clash);
     if (!setup) return;
+    if (setup.freshCasual) {
+      const target = '/clash/any-five';
+      const notice = 'Fresh casual rematch · Any Five. These teams, coaches and rules environment play with a new game seed. The original mode’s governed attempt and constraints stay with its saved report.';
+      setSavedReport(null); setErr('');
+      setLoopResult({ record: null, mode: 'any-five', route: target, url: null, notice: 'Running your fresh casual rematch…' });
+      navigate(target);
+      loopApi({ op: 'play', mode: 'any-five', goldIds: setup.goldIds,
+        blueIds: setup.blueIds, coachGoldId: setup.coachGoldId || 'neutral',
+        coachBlueId: setup.coachBlueId || 'neutral', eraId: setup.eraStyleId || '2020s' })
+        .then(payload => presentLoopResult(payload, { mode: 'any-five', notice }, target))
+        .catch(error => { setLoopResult(null); setErr(error.message || 'The fresh casual rematch could not be completed. Your saved report is preserved.'); });
+      return;
+    }
     const five = setup.goldIds.map((id) => findCard(id)).filter(Boolean);
     if (five.length !== 5) return;
     const opp = setup.blueIds.map((id) => findCard(id)).filter(Boolean);
@@ -2055,25 +2092,11 @@ export default function App() {
       : route === '/support' ? <SupportPage />
       : route === '/clash/rooms' ? <PrivateRooms signedIn={!!token} />
       : route.startsWith('/clash/') ? <>
-        <LoopModes route={route} user={acct} onNavigate={navigate} onResult={async (payload, context = {}) => {
-          const record = payload.result || payload;
-          const mode = context.mode || record.loop?.mode || 'any-five';
-          loopEvent('game_completed', { mode });
-          setLoopResult({ record, mode, route, url: null });
-          const url = await publishResult({ resultId: record.id });
-          setLoopResult(current => current?.record.id === record.id ? { ...current, url } : current);
-          const room = new URLSearchParams(location.search).get('room');
-          if (room) {
-            let roomStatus;
-            try { await loopApi({ op: 'room-challenge', roomId: room, resultId: record.id }); roomStatus = 'Your result was added to the private room.'; }
-            catch { roomStatus = 'The room could not save this result. Return to the room and retry after the other update finishes.'; }
-            setLoopResult(current => current?.record.id === record.id ? { ...current, roomStatus } : current);
-          }
-          return url;
-        }} />
+        <LoopModes route={route} user={acct} onNavigate={navigate} onResult={presentLoopResult} />
+        {loopResult?.route === route && loopResult.notice ? <p role="status" style={{ ...card, maxWidth: 1100, margin: '16px auto', padding: 16 }}>{loopResult.notice}</p> : null}
         {loopResult?.route === route ? <LoopResult {...loopResult} signedIn={!!token} onSave={rid => runCloudSave(rid, 'single', 'save')} onPublish={async record => {
           const url = await publishResult({ resultId: record.id });
-          setLoopResult(current => current?.record.id === record.id ? { ...current, url } : current);
+          setLoopResult(current => current?.record?.id === record.id ? { ...current, url } : current);
           return url;
         }} /> : null}
       </> : route === "/auth/callback" ? (

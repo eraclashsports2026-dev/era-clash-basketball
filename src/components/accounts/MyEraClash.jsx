@@ -361,11 +361,11 @@ function History({ data, loading, onOpenReport, onRunItBack, flash, setData, tok
                 <Row k="Simulated by" v={[c.candidate_id, c.calibration_version].filter(Boolean).join(" · ") || "production engine"} />
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
                   <button onClick={() => { track("saved_report_opened", { mode: c.mode }); onOpenReport?.(c); }} style={secondaryBtn}>VIEW FULL REPORT</button>
-                  {cap.runItBack && onRunItBack && <button onClick={() => { track("run_it_back_started", { mode: c.mode }); onRunItBack(c); }} style={quietBtn}>RUN IT BACK</button>}
+                  {cap.runItBack && onRunItBack && <button onClick={() => { track("run_it_back_started", { mode: c.mode }); onRunItBack(c); }} style={quietBtn}>{cap.freshCasual ? 'FRESH CASUAL REMATCH' : 'RUN IT BACK'}</button>}
                   <button onClick={() => saveRoster(c)} style={quietBtn}>SAVE ROSTER</button>
                 </div>
                 <p style={{ margin: "8px 0 0", fontSize: 11, color: T.textMuted }} title={cap.exact.message}>
-                  Run It Back plays the same five, coaches and era with a new game seed.
+                  {cap.freshCasual ? 'Fresh casual rematch uses Any Five with the same teams, coaches and era, and a new game seed. The original mode’s governed attempt and constraints stay with its saved report.' : 'Run It Back plays the same five, coaches and era with a new game seed.'}
                 </p>
               </div>
             )}

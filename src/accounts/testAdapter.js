@@ -14,6 +14,7 @@
 import { cleanDisplayName } from "./config.js";
 import { getCoach } from "../v3/coaches.js";
 import { listProjection } from "./savedReport.js";
+import { loopCareerMode } from '../loop/careerMode.js';
 import {
   rosterSnapshotFrom, coachSnapshotFrom, cleanRosterName, cleanPrefs,
   SAVED_ROSTER_LIMIT_FREE,
@@ -232,7 +233,7 @@ export const createTestProvider = ({ users = [] } = {}) => {
       const coachOf = (id) => (id && id !== "neutral" ? { id, name: getCoach(id)?.name ?? null } : null);
       db.savedClashes.push({
         id: `sc-${db.savedClashes.length + 1}`, user_id: who.userId, result_id: String(resultId),
-        mode: record.mode || "single", user_side: "gold",
+        mode: loopCareerMode(record) || (record.chaosDraft ? 'chaos' : record.mode || "single"), user_side: "gold",
         outcome: g === b ? "tie" : g > b ? "win" : "loss",
         gold_score: g ?? null, blue_score: b ?? null, era_id: record.eraId || null,
         gold_roster: (record.goldIds || []).map((id) => ({ id })), blue_roster: (record.blueIds || []).map((id) => ({ id })),
