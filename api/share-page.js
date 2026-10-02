@@ -1,119 +1,74 @@
-// ── /api/share-page — public share pages (result + challenge) ─────────────────
-// One function serves both share surfaces, dispatched by ?kind=. The paths the
-// world sees are unchanged: vercel.json rewrites /result/{id} and
-// /challenge/{id} here. Consolidated because the deployment's serverless
-// function budget is full (13) and the preview access middleware needs a slot.
+// Existing function serves actual initial-HTML recaps and full-size OG PNGs.
 import { getJSON } from "./_lib/store.js";
+import { trustedOrigin } from "./_lib/cards.js";
+import { validShareId, shareModel } from "./_lib/loopShare.js";
+import { renderSharePng, OG_RENDER_VERSION, escapeXml as esc } from "./_lib/loopShareImage.js";
 import { PLAYERS } from "../src/players.js";
+import { FRANCHISE_PAIRINGS, getFranchise, getFranchisePairing, getFranchiseRoster, franchiseDisplayName } from "../src/loop/franchises.js";
+import { neutralTeamNaming } from "../src/loop/rights.js";
 
-const esc = (s) => String(s || "").replace(/[&<>"']/g, (c) =>
-  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-
+const catalog = new Map(PLAYERS.map((p) => [p.id, p]));
+export function shareHtml({ model, origin, path, image, play, disclosure = "", legacy = false, cta = "Run it back with your five", extraHtml = "", actions = [] }) {
+  const title = model.title;
+  const desc = [model.subtitle, ...(model.performers || []).map((p) => `${p.name}: ${p.line}`), `${cta}.`].join(" — ");
+  const rows = (side) => (model.players?.[side] || []).map((p) => `<li><span>${esc(p.pos || "")}</span> ${esc(p.name)}</li>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | EraClash Basketball</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${esc(origin + path)}"><meta property="og:type" content="website"><meta property="og:site_name" content="EraClash Basketball"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${esc(origin + path)}"><meta property="og:image" content="${esc(origin + image)}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${esc(desc)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${esc(origin + image)}"><style>body{margin:0;background:#F6F1E7;color:#0F1C2E;font:18px/1.5 system-ui,sans-serif}main{max-width:960px;margin:auto;padding:32px 20px}h1{line-height:1.15;font-size:clamp(28px,5vw,48px)}.kicker{color:#2457C5;font-weight:750}.sides{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}.side{min-width:0;border-radius:18px;padding:20px;background:#F3E3B5}.side:last-child{background:#DCE6FA}.score{font-size:58px;font-weight:800}ul{padding:0;list-style:none}h2,li{overflow-wrap:anywhere}li span{color:#6B7382;font-size:14px}a.button{display:inline-block;background:#0F1C2E;color:white;padding:16px 22px;border-radius:12px;text-decoration:none;font-weight:700}a{color:#2457C5}a:focus-visible{outline:3px solid #2457C5;outline-offset:4px}.note{color:#6B7382;font-size:14px}.performers{display:flex;gap:32px;flex-wrap:wrap}footer{margin-top:32px;font-size:14px}@media(max-width:500px){.sides{grid-template-columns:1fr;gap:10px}.side{padding:14px}.score{font-size:46px}li{font-size:15px}}</style></head><body><main data-public-recap><p class="kicker">ERACLASH / BASKETBALL</p><h1>${esc(title)}</h1><p>${esc(model.subtitle)}</p>${legacy ? '<p class="note">Archived browser-published recap. It was not verified against a server result.</p>' : ""}<div class="sides">${["gold", "blue"].map((s) => `<section class="side"><h2>${esc(s === "gold" ? model.goldName : model.blueName)}</h2>${model.score ? `<div class="score">${esc(model.score[s])}</div>` : ""}<ul>${rows(s)}</ul></section>`).join("")}</div><div class="performers">${(model.performers || []).map((p) => `<p><strong>${esc(p.name)}</strong><br>${esc(p.line)}</p>`).join("")}</div><p><a class="button" href="${esc(play)}">${esc(cta)}</a> ${(actions || []).map(a=>`<a class="button" href="${esc(a.href)}">${esc(a.label)}</a>`).join(" ")}</p>${extraHtml}<p class="note">${esc(disclosure || "A simulated basketball matchup. Play as a guest; sign up to save your results.")}</p><footer><a href="/">EraClash Basketball</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a><p>Not affiliated with, endorsed by, or sponsored by any professional basketball league or team.</p></footer></main><script src="/share-entry.js" defer></script></body></html>`;
+}
+function legacyModel(r) {
+  return { title: `${r.won ? "Gold wins" : "Result"} ${r.scoreline || ""}`, subtitle: "Archived public recap", goldName: "GOLD FIVE", blueName: "BLUE FIVE", players: Object.fromEntries([["gold", r.teamIds], ["blue", r.oppIds]].map(([s, ids]) => [s, (ids || []).map((id) => ({ name: catalog.get(id)?.name || "Player", pos: catalog.get(id)?.pos || "" }))])), performers: r.mvp ? [{ name: r.mvp, line: r.mvpLine || "" }] : [], footer: "Run it back with your five · EraClash Basketball" };
+}
 export default async function handler(req, res) {
-  if (String(req.query?.kind || "") === "challenge") return renderChallengePage(req, res);
-  return renderResultPage(req, res);
-}
-
-async function renderResultPage(req, res) {
+  if (!["GET", "HEAD"].includes(req.method)) { res.setHeader("Allow", "GET, HEAD"); return res.status(405).end(); }
+  const origin = trustedOrigin(req);
+  if (!origin) { res.setHeader("Cache-Control", "no-store"); return res.status(400).end(); }
+  const kind = String(req.query?.kind || "result");
   const id = String(req.query?.id || "");
-  const ok = /^[a-z0-9]{6,16}$/.test(id);
-  const r = ok ? await getJSON(`re:${id}`) : null;
-
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-
+  if (kind === "franchise") return renderFranchise(req, res, origin, id);
+  const r = validShareId(id) ? await getJSON(`${kind === "challenge" ? "ch" : "re"}:${id}`) : null;
   if (!r) {
-    // NOT-FOUND MUST NOT BE PUBLICLY CACHED. This path returns 200 with a
-    // redirect-to-home body, and it previously inherited the same
-    // `public, max-age=300` as a real result — so a result shared moments after
-    // someone hit its URL would serve the "nothing here" page from CDN to
-    // everyone for the next five minutes. A miss is a transient state, not a
-    // cacheable document.
-    res.setHeader("Cache-Control", "no-store");
-    return res.status(200).send(`<!doctype html><html><head>
-<meta charset="utf-8"><title>EraClash Basketball</title>
-<meta http-equiv="refresh" content="0;url=/"></head>
-<body><a href="/">EraClash Basketball</a></body></html>`);
+    res.setHeader("Content-Type", "text/html; charset=utf-8"); res.setHeader("Cache-Control", "no-store");
+    return res.status(404).send('<!doctype html><html lang="en"><meta charset="utf-8"><title>Recap unavailable | EraClash Basketball</title><body><h1>This recap has expired or is unavailable.</h1><a href="/clash/any-five">Build your five and play</a></body></html>');
   }
-
-  const names = r.teamIds.map((pid) => PLAYERS.find((p) => p.id === pid)?.name.split(" ").slice(-1)[0]).filter(Boolean);
-  const title = `${r.won ? "W" : "L"} ${r.scoreline} — ${names.join(" · ")}`;
-  const desc = [
-    r.headline,
-    r.mvp ? `MVP: ${r.mvp}${r.mvpLine ? ` (${r.mvpLine})` : ""}` : "",
-    r.insight,
-    "Can your five beat this lineup? Play the challenge.",
-  ].filter(Boolean).join(" — ");
-  const url = `https://${req.headers.host}/result/${id}`;
-
-  // A share record is immutable once written: the game it describes cannot
-  // change. Cached for a day at the edge with a long stale-while-revalidate,
-  // rather than `immutable`, because the URL carries no render version — when
-  // the share renderer is versioned (see cache-key-registry.md) this can become
-  // a year-long immutable cache safely.
-  res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
-
-  return res.status(200).send(`<!doctype html><html lang="en"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(title)} | EraClash Basketball</title>
-<meta name="description" content="${esc(desc)}">
-<meta property="og:type" content="website">
-<meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${esc(url)}">
-<meta property="og:site_name" content="EraClash Basketball">
-<meta property="og:image" content="https://${esc(req.headers.host)}/icon-512.png">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="${esc(title)}">
-<meta name="twitter:description" content="${esc(desc)}">
-<meta http-equiv="refresh" content="0;url=/?r=${esc(id)}">
-</head><body style="background:#0b0e17;color:#e8eaf2;font-family:system-ui">
-<p style="padding:24px">Loading the result… <a href="/?r=${esc(id)}" style="color:#fdb927">Open EraClash</a></p>
-</body></html>`);
+  const challenge = kind === "challenge";
+  const model = challenge ? { title: "You have been challenged", subtitle: "Build your five and play the matchup", goldName: "YOUR FIVE", blueName: "A RIVAL", players: { gold: [], blue: [] }, performers: [], footer: "Accept the challenge · EraClash Basketball" } : r.v === 2 ? shareModel(r) : legacyModel(r);
+  const path = challenge ? `/challenge/${id}` : `/card/${id}`;
+  const play = challenge ? `/?ch=${encodeURIComponent(id)}` : `/clash/any-five?rematch=${encodeURIComponent(id)}`;
+  const image = `/api/share-page?kind=${challenge ? "challenge" : "result"}&id=${id}&format=png&v=${OG_RENDER_VERSION}`;
+  if (req.query?.format === "png") {
+    res.setHeader("Content-Type", "image/png"); res.setHeader("Cache-Control", "public, max-age=86400");
+    const png = renderSharePng(model); res.setHeader("Content-Length", String(png.length));
+    return req.method === "HEAD" ? res.status(200).end() : res.status(200).send(png);
+  }
+  res.setHeader("Content-Type", "text/html; charset=utf-8"); res.setHeader("Cache-Control", challenge ? "public, max-age=120" : "public, max-age=86400, stale-while-revalidate=604800");
+  return req.method === "HEAD" ? res.status(200).end() : res.status(200).send(shareHtml({ model, origin, path, image, play, legacy: !challenge && r.v !== 2, disclosure: challenge ? "An invitation reveals no hidden draft choices. Play as a guest." : undefined }));
 }
 
-async function renderChallengePage(req, res) {
-  const id = String(req.query?.id || "");
-  const ok = /^[a-z0-9]{6,16}$/.test(id);
-  const ch = ok ? await getJSON(`ch:${id}`) : null;
-
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-
-  if (!ch) {
-    // A miss must NOT be cached for two minutes: a challenge that is still
-    // being written, or a store blip, would pin "nothing here" for everyone who
-    // follows the link — including the recipient it was sent to.
-    res.setHeader("Cache-Control", "no-store");
-    return res.status(200).send(`<!doctype html><html><head>
-<meta charset="utf-8"><title>EraClash Basketball</title>
-<meta http-equiv="refresh" content="0;url=/"></head>
-<body><a href="/">EraClash Basketball</a></body></html>`);
+export function franchiseShareModel(pairing, { neutralNaming = false } = {}) {
+  const gold = getFranchise(pairing.goldId), blue = getFranchise(pairing.blueId);
+  const goldName = franchiseDisplayName(gold, { neutralNaming }).replace(' · All-time', '');
+  const blueName = franchiseDisplayName(blue, { neutralNaming }).replace(' · All-time', '');
+  return { title: `${goldName} vs ${blueName}`, subtitle: 'Curated all-time fives · A simulation preview, not a played result', goldName, blueName,
+    players: { gold: getFranchiseRoster(gold).map((p,i)=>({name:p.name,pos:['PG','SG','SF','PF','C'][i]})), blue: getFranchiseRoster(blue).map((p,i)=>({name:p.name,pos:['PG','SG','SF','PF','C'][i]})) },
+    performers: [], footer: 'Watch the matchup or control your five · EraClash Basketball' };
+}
+async function renderFranchise(req, res, origin, slug) {
+  const pairing = getFranchisePairing(slug);
+  if (!pairing) { res.setHeader('Cache-Control','no-store'); return res.status(404).send('Unknown franchise matchup.'); }
+  const model = franchiseShareModel(pairing, { neutralNaming: neutralTeamNaming(process.env) });
+  if (req.query?.format === 'png') {
+    const png = renderSharePng(model); res.setHeader('Content-Type','image/png'); res.setHeader('Cache-Control','public, max-age=86400'); res.setHeader('Content-Length',String(png.length));
+    return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(png);
   }
+  const image = `/api/share-page?kind=franchise&id=${pairing.slug}&format=png&v=${OG_RENDER_VERSION}`;
+  res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Cache-Control','public, max-age=86400');
+  return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(franchiseSharePage(pairing,{origin,image,neutralNaming:neutralTeamNaming(process.env)}));
+}
 
-  res.setHeader("Cache-Control", "public, max-age=120");
-  const who = ch.challenger?.name || "A rival";
-  const names = (ch.challenger?.teamIds || [])
-    .map((pid) => PLAYERS.find((p) => p.id === pid)?.name.split(" ").slice(-1)[0]).filter(Boolean);
-  const title = `⚔️ YOU'VE BEEN CHALLENGED by ${who}`;
-  const desc = `${who} thinks ${names.join(" · ")} can beat anything you build. Draft your five and prove them wrong.`;
-  const url = `https://${req.headers.host}/challenge/${id}`;
-
-  return res.status(200).send(`<!doctype html><html lang="en"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(title)} | EraClash Basketball</title>
-<meta name="description" content="${esc(desc)}">
-<meta property="og:type" content="website">
-<meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${esc(url)}">
-<meta property="og:site_name" content="EraClash Basketball">
-<meta property="og:image" content="https://${esc(req.headers.host)}/icon-512.png">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="${esc(title)}">
-<meta name="twitter:description" content="${esc(desc)}">
-<meta http-equiv="refresh" content="0;url=/?ch=${esc(id)}">
-</head><body style="background:#0b0e17;color:#e8eaf2;font-family:system-ui">
-<p style="padding:24px">Loading the challenge… <a href="/?ch=${esc(id)}" style="color:#fdb927">Open EraClash</a></p>
-</body></html>`);
+export function franchiseSharePage(pairing, {origin,image,neutralNaming=false}) {
+  const model = franchiseShareModel(pairing,{neutralNaming});
+  const play = `/clash/franchise?gold=${pairing.goldId}&blue=${pairing.blueId}&entry=control`;
+  const franchises = [getFranchise(pairing.goldId), getFranchise(pairing.blueId)];
+  const related = FRANCHISE_PAIRINGS.filter(p=>p.slug!==pairing.slug && [p.goldId,p.blueId].some(id=>[pairing.goldId,pairing.blueId].includes(id)));
+  const extraHtml = `<section><h2>About these fives</h2><p>Curated proposals from existing era cards. Statistical slices may include other teams in the same decade. Selections await owner review.</p>${franchises.map(f=>`<h3>${esc(franchiseDisplayName(f,{neutralNaming}))}</h3><p>${esc(f.notes)}</p><ul>${f.sources.map((url,i)=>`<li><a href="${esc(url)}">Historical source ${i+1}</a></li>`).join('')}</ul>`).join('')}<h2>More matchups</h2><ul>${related.map(p=>`<li><a href="${esc(p.path)}">${esc(franchiseDisplayName(p.goldId,{neutralNaming}))} vs ${esc(franchiseDisplayName(p.blueId,{neutralNaming}))}</a></li>`).join('')}</ul></section>`;
+  return shareHtml({model,origin,path:pairing.path,image,play,cta:'Take control',extraHtml,actions:[{label:'Watch this Clash',href:`/clash/franchise?gold=${pairing.goldId}&blue=${pairing.blueId}&entry=watch`}],disclosure:'Curated all-time lineups drawn from the available player catalog. Not an official ranking or a live-game forecast. Neutral staff; no home-court modifier. Play as a guest.'});
 }

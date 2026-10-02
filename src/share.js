@@ -2,20 +2,25 @@
 // Every meaningful result can become a public /result/{id} page (OG preview →
 // straight back into gameplay). If the result service is unavailable we share
 // a challenge link instead — sharing never dead-ends.
-import { getDisplayName } from "./identity.js";
 import { track } from "./analytics.js";
+import { loopEvent } from "./loop/events.js";
 
-// Publish a result snapshot; returns a public URL or null.
-export const publishResult = async (snapshot) => {
+// Explicitly publish the server-owned score, lineups and performers. The
+// caller's publish/copy action is the consent; never call during page load.
+export const publishResult = async ({ resultId, chaosRunId } = {}) => {
+  if (!resultId && !chaosRunId) return null;
   try {
     const res = await fetch("/api/result", {
       method: "POST",
+      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ result: { ...snapshot, name: getDisplayName() || null } }),
+      body: JSON.stringify({ resultId, chaosRunId, publicRecap: true }),
     });
     if (!res.ok) return null;
-    const { id } = await res.json();
-    return `${window.location.origin}/result/${id}`;
+    const { id, created } = await res.json();
+    if (!/^[a-z0-9]{6,16}$/.test(String(id || ""))) return null;
+    if (created) loopEvent("card_created", { source: "direct" });
+    return `${window.location.origin}/card/${id}`;
   } catch { return null; }
 };
 
@@ -26,6 +31,7 @@ export const shareText = async (text, shareType) => {
     try {
       await navigator.share({ title: "EraClash Basketball", text });
       track("share_completed", { share_type: shareType, destination: "web_share" });
+      loopEvent("card_shared", { channel: "native" });
       return "shared";
     } catch (e) {
       if (e?.name === "AbortError") { track("share_failed", { share_type: shareType, reason: "cancelled" }); return "failed"; }
@@ -35,6 +41,7 @@ export const shareText = async (text, shareType) => {
   try {
     await navigator.clipboard.writeText(text);
     track("share_completed", { share_type: shareType, destination: "clipboard" });
+    loopEvent("card_shared", { channel: "copy" });
     return "copied";
   } catch {
     track("share_failed", { share_type: shareType, reason: "clipboard" });
