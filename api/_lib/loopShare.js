@@ -38,7 +38,8 @@ export function publicRecapOf(record) {
     && progress.victories <= progress.stagesPlayed && typeof progress.finished === "boolean"
     && (progress.finished ? progress.stagesPlayed === 7 || progress.victories < progress.stagesPlayed : progress.stagesPlayed < 7 && progress.victories === progress.stagesPlayed)
     ? { victories: progress.victories, totalEras: 7, stagesPlayed: progress.stagesPlayed, finished: progress.finished } : null;
-  const scope = gauntlet ? `Era Gauntlet · ${gauntlet.victories} of 7 eras won · ${gauntlet.finished ? "Completed run" : "Run in progress"} · Latest stage points` : MODE_LABELS[displayMode] ? `${MODE_LABELS[displayMode]}${day ? ` ${day}` : ""}${stage ? ` · stage ${stage} of 7` : ""} · ${baseScope}${displayMode === "lab" ? " · Imagined scenario" : ""}` : baseScope;
+  const displayDay = day ? `${day.slice(5,7)}-${day.slice(8,10)}-${day.slice(0,4)}` : null;
+  const scope = gauntlet ? `Era Gauntlet · ${gauntlet.victories} of 7 eras won · ${gauntlet.finished ? "Completed run" : "Run in progress"} · Latest stage points` : MODE_LABELS[displayMode] ? `${MODE_LABELS[displayMode]}${displayDay ? ` ${displayDay}` : ""}${stage ? ` · stage ${stage} of 7` : ""} · ${baseScope}${displayMode === "lab" ? " · Imagined scenario" : ""}` : baseScope;
   const loop = MODE_LABELS[record.loop?.mode] ? { mode: displayMode, tag: displayMode.replaceAll("-", "_").toUpperCase(), ...(day ? { day } : {}), ...(stage ? { stage } : {}), ...(gauntlet ? { gauntlet } : {}) } : null;
   const gold = savedRosterOf(record.goldIds, view, "gold");
   const blue = savedRosterOf(view.blueIds, view, "blue");

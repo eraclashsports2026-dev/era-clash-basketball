@@ -60,6 +60,14 @@ describe("public recap ownership, privacy and immutable authority",()=>{
 });
 
 describe("real engine modes have honest score and stat scopes",()=>{
+  it("displays a validated Daily date as MM-DD-YYYY while preserving the ISO machine day",async()=>{
+    const record=await play();
+    const recap=publicRecapOf({...record,loop:{mode:'daily',day:'2026-10-02'}});
+    expect(recap.loop.day).toBe('2026-10-02');expect(recap.scope).toContain('Daily Clash 10-02-2026');expect(recap.scope).not.toContain('2026-10-02');
+    expect(shareModel(recap).subtitle).toContain('10-02-2026');
+    const invalid=publicRecapOf({...record,loop:{mode:'daily',day:'2026-02-30'}});
+    expect(invalid.loop).not.toHaveProperty('day');expect(invalid.scope).not.toContain('02-30-2026');
+  });
   it("projects only valid server Gauntlet counts with an honest stage-score scope",async()=>{
     const record=await play();
     for(const progress of [{victories:1,totalEras:7,stagesPlayed:1,finished:false},{victories:3,totalEras:7,stagesPlayed:4,finished:true},{victories:7,totalEras:7,stagesPlayed:7,finished:true}]){

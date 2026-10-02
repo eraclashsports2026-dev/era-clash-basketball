@@ -3,6 +3,7 @@
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { getJSON, setJSON, setNX, cmd, newId, hasStore, rateLimit, clientIp } from './store.js';
 import { validateTeamIds, validEraId, validSimId } from './validate.js';
+import { limits } from './flags.js';
 import { computeResultPreview } from './previewEngine.js';
 import { computeResultV3 } from './game-core-v3.js';
 import { finalScoreOf, engineIdentity } from './resultContract.js';
@@ -97,6 +98,15 @@ export async function loopHandler(req, res, { session, f }) {
     const idemKey = key('idempotency', `${identityHash(owner)}:${op}:${requestId}`);
     const replay = await getJSON(idemKey);
     if (replay) return res.status(200).json(replay);
+    // Every compute adapter shares the existing simulation budget. Completed
+    // retries return above and do not consume another simulation allowance.
+    const budget = limits();
+    const allowed = await Promise.all([
+      rateLimit(`sim:s:${session.slice(0, 16)}`, budget.simPerMinSession, 60),
+      rateLimit(`sim:ip:${clientIp(req)}`, budget.simPerMinIp, 60),
+      rateLimit('sim:global', budget.maxCoreSimsPerMinute, 60),
+    ]);
+    if (allowed.some(value => !value)) return fail(res, 'RATE_LIMITED', 'Please wait before running another game. Your draft is preserved.', 429);
     const lockKey = `${idemKey}:busy`;
     if (!await setNX(lockKey, true, 120)) return fail(res, 'REQUEST_IN_PROGRESS', 'This request is already running; retry with the same request id.', 409);
     const target = res;

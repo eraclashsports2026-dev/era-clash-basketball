@@ -42,6 +42,18 @@ describe('Loop adapters preserve authoritative results and retry semantics',()=>
   it('returns the same immutable result for a successful retry, even if inputs change',async()=>{
     const body={op:'play',mode:'any-five',goldIds:five(),simulationId:randomUUID()};const a=await action(body),b=await action({...body,goldIds:[]});expect(a.code).toBe(200);expect(b.body).toEqual(a.body);
   });
+  it('shares the existing simulation budget while a completed retry costs no allowance',async()=>{
+    const prior = process.env.RL_SIM_PER_MIN_SESSION;
+    process.env.RL_SIM_PER_MIN_SESSION = '1';
+    try {
+      const body = {op:'play',mode:'any-five',goldIds:five(),simulationId:randomUUID()};
+      const first = await action(body); expect(first.code).toBe(200);
+      expect((await action(body)).body).toEqual(JSON.parse(JSON.stringify(first.body)));
+      const second = await action({...body,simulationId:randomUUID()});
+      expect(second.code).toBe(429); expect(second.body.code).toBe('RATE_LIMITED');
+      expect(second.body.message).toMatch(/draft is preserved/);
+    } finally { if(prior===undefined)delete process.env.RL_SIM_PER_MIN_SESSION;else process.env.RL_SIM_PER_MIN_SESSION=prior; }
+  });
   it('explains unsupported out-of-position fives before reaching the protected engine',async()=>{
     const r=await action({op:'play',mode:'any-five',goldIds:['wilt-60s','bill-60s','shaq-00s','kareem-70s','jokic-20s']});expect(r.code).toBe(400);expect(r.body.code).toBe('INVALID_FIVE');expect(r.body.message).toMatch(/position/);
   });

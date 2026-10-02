@@ -4,6 +4,8 @@ import { chromium, request } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { legalFive } from "../src/loop/draft/model.js";
 import { getFranchiseRoster } from "../src/loop/franchises.js";
 const origin = new URL(process.argv[2] || "http://localhost:4175").origin;
@@ -14,6 +16,7 @@ const checks=[], samples=[], browsers=[], events=[];
 const check=(name,ok,detail={})=>{checks.push({name,pass:!!ok,...detail});if(!ok)throw new Error(name)};
 const api=await request.newContext({baseURL:origin,extraHTTPHeaders:{Origin:origin}});
 const publicApi=await request.newContext({baseURL:origin});
+const identity={checkoutSha:execFileSync("git",["rev-parse","HEAD"],{encoding:"utf8"}).trim(),requestedSha:process.env.ECLASH_AUDIT_SHA||null};
 const goldIds=['magic-80s','jordan-90s','bird-80s','duncan-00s','hak-90s'];
 const blueIds=['curry-10s','ray-00s','durant-10s','dirk-00s','jokic-20s'];
 const uas=['Twitterbot/1.0','facebookexternalhit/1.1','Slackbot-LinkExpanding 1.0'];
@@ -29,13 +32,17 @@ async function playLoop(mode){
   if(mode==='gauntlet'){const started=await callLoop({op:'gauntlet-start',goldIds});return callLoop({op:'gauntlet-play',gauntletToken:started.gauntletToken,stage:0})}
   let body={op:'play',mode,goldIds,blueIds,eraId:'1990s'};
   if(['franchise','tonight'].includes(mode)){body.goldIds=getFranchiseRoster('boston').map(p=>p.id);body.blueIds=getFranchiseRoster('la-lakers').map(p=>p.id)}
-  if(['one-franchise','one-per-era','no-mvps'].includes(mode)){body.franchise=mode==='one-franchise'?'Celtics':'';body.goldIds=legalFive({seed:'sharing-audit',kind:mode,franchise:body.franchise})}
+  if(['one-franchise','one-per-era','no-mvps'].includes(mode)){body.franchise=mode==='one-franchise'?'boston':'';body.goldIds=legalFive({seed:'sharing-audit',kind:mode,franchise:body.franchise})}
   if(mode==='lab')body.scenario={playerId:goldIds[0],teamLabel:'Private sharing audit scenario'};
   if(mode==='spin'){const start=await callLoop({op:'spin-start'});body.spinReceipt=start.spinReceipt;body.goldIds=legalFive({seed:'sharing-spin',kind:'spin',slots:start.slots});body.hiddenStats=true}
   return callLoop(body);
 }
 let browser;
 try {
+  const servedHtml=await (await publicApi.get('/')).text();
+  identity.clientBuildStamp=servedHtml.match(/name="eraclash-build" content="([^"]+)"/)?.[1]||null;
+  identity.clientHtmlSha256=createHash('sha256').update(servedHtml).digest('hex');
+  const health=await publicApi.get('/api/health');identity.serverHealth=health.ok()?await health.json():{status:health.status()};
   for(let i=0;i<10;i++){
     const loopSet=process.env.ECLASH_SHARE_MODE_SET==='loop',mode=loopSet?loopModes[i]:i===7?'best7':i===8?'82':i===9?'tournament':'single';
     let played;
@@ -44,6 +51,9 @@ try {
     const publish=await api.post('/api/result',{data:{resultId:played.resultId,publicRecap:true}});check(`sample-${i}: owned publication`,publish.ok(),{status:publish.status()});const shared=await publish.json();
     const recap=await (await api.get(`/api/result?id=${shared.id}`)).json();
     check(`sample-${i}: private fields excluded`,!['session','seed','candidate','fingerprint','chaosDraft','resultId','rating','xp','name'].some(k=>k in recap));
+    if(mode==='gauntlet'){
+      check('Gauntlet public count matches actual server progress',recap.loop?.gauntlet?.victories===played.gauntlet.victories&&recap.loop.gauntlet.stagesPlayed===played.gauntlet.stage&&recap.loop.gauntlet.finished===played.gauntlet.done&&recap.headline.includes(`${played.gauntlet.victories} of 7 eras`)&&recap.scope.includes('Latest stage points'));
+    }
     const html=[];
     for(const ua of uas){
       const response=await publicApi.get(`/card/${shared.id}`,{headers:{'User-Agent':ua}});const body=await response.text();
@@ -57,7 +67,7 @@ try {
     check(`sample-${i}: 1200x630 PNG below 1MB`,cold.ok()&&png.readUInt32BE(16)===1200&&png.readUInt32BE(20)===630&&png.length<1_000_000,{bytes:png.length});
     check(`sample-${i}: byte-identical warm response below 1s`,png.equals(warmPng)&&warmMs<1000,{coldMs,warmMs});
     await writeFile(path.join(dir,`sample-${i}.png`),png);
-    samples.push({index:i,mode,sourceResultId:played.resultId,path:`/card/${shared.id}`,score:recap.score,scope:recap.scope,performers:recap.performers,pngBytes:png.length,coldMs,warmMs,crawlers:html});
+    samples.push({index:i,mode,sourceResultId:played.resultId,path:`/card/${shared.id}`,score:recap.score,scope:recap.scope,loop:recap.loop,performers:recap.performers,pngBytes:png.length,coldMs,warmMs,crawlers:html});
   }
   const executablePath=process.env.ECLASH_BROWSER_EXECUTABLE || (existsSync('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')?'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome':undefined);
   browser=await chromium.launch({headless:true,executablePath});
@@ -81,6 +91,6 @@ try {
 } catch(e) { checks.push({name:'audit completion',pass:false,error:e.message});process.exitCode=1; }
 finally {
   await browser?.close();await api.dispose();await publicApi.dispose();
-  await writeFile(path.join(dir,'report.json'),JSON.stringify({generatedAt:new Date().toISOString(),origin,scope:'Basketball local real-handler memory store; no public Preview or physical-device claim',checks,samples,browsers,events,pass:checks.every(c=>c.pass)},null,2)+'\n');
+  await writeFile(path.join(dir,'report.json'),JSON.stringify({generatedAt:new Date().toISOString(),origin,identity,scope:'Basketball local real-handler memory store; no public Preview or physical-device claim',checks,samples,browsers,events,pass:checks.every(c=>c.pass)},null,2)+'\n');
   console.log(JSON.stringify({dir,checks:checks.length,pass:checks.every(c=>c.pass),samples:samples.length}));
 }
