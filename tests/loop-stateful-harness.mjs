@@ -39,6 +39,6 @@ const fixturePlugin = {
     });
   },
 };
-const vite = await createViteServer({ root: fileURLToPath(new URL('../', import.meta.url)), plugins: [fixturePlugin], define: { __LOOP_QA_USERS__: JSON.stringify(statefulUsers) }, optimizeDeps: { entries: ['index.html'] }, server: { watch: { ignored: ['**/data/validation/**', '**/dist/**', '**/dist-fixtures/**', '**/artifacts/**'] }, host: '127.0.0.1', port: clientPort, strictPort: true, proxy: { '/api': { target: `http://127.0.0.1:${apiPort}`, changeOrigin: false }, '/card': { target: `http://127.0.0.1:${apiPort}`, changeOrigin: false } } } });
+const vite = await createViteServer({ root: fileURLToPath(new URL('../', import.meta.url)), plugins: [fixturePlugin], define: { __LOOP_QA_USERS__: JSON.stringify(statefulUsers) }, optimizeDeps: { entries: ['index.html'] }, server: { watch: null, hmr: false, host: '127.0.0.1', port: clientPort, strictPort: true, proxy: { '/api': { target: `http://127.0.0.1:${apiPort}`, changeOrigin: false }, '/card': { target: `http://127.0.0.1:${apiPort}`, changeOrigin: false } } } });
 await vite.listen();
 console.log(`PARTIAL EMULATED account QA source client http://localhost:${clientPort}; actual API/fake cloud :${apiPort}; identity namespace ${identitySalt}`);

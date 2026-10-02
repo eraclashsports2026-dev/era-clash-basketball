@@ -25,6 +25,30 @@ async function publish(record, more={}) {
 beforeEach(()=>{process.env.ECLASH_TEST_MEMORY_STORE="1";process.env.ENABLE_CHAOS_TESTS="true";process.env.SIM_ENGINE_V3_ENABLED="true";_memReset()});
 
 describe("public recap ownership, privacy and immutable authority",()=>{
+  it("keeps the new Loop GET projection as private as its POST response without changing its stored record",async()=>{
+    process.env.PREVIEW_SIM_ENGINE_ENABLED='true';
+    const created=res();await game(req({action:'loop',op:'play',mode:'any-five',goldIds:GOLD,blueIds:BLUE,simulationId:`projection-${crypto.randomUUID()}`}),created);
+    expect(created.statusCode).toBe(200);
+    const id=created.body.resultId,stored=await getJSON(`preview-result:${id}`),before=JSON.stringify(stored);
+    expect(stored).toHaveProperty('seed');expect(stored).toHaveProperty('session');
+    const fetched=res();await game(req({}, {method:'GET',query:{id}}),fetched);
+    expect(fetched.statusCode).toBe(200);
+    for(const response of [created.body.result,fetched.body]){expect(response).not.toHaveProperty('seed');expect(response).not.toHaveProperty('session');expect(response.core.finalScore).toEqual(stored.core.finalScore);expect(response.candidate).toEqual(stored.candidate);expect(response.goldIds).toEqual(stored.goldIds);expect(response.blueIds).toEqual(stored.blueIds);}
+    expect(fetched.body).toEqual(created.body.result);expect(JSON.stringify(await getJSON(`preview-result:${id}`))).toBe(before);
+  });
+  it("never publishes owner-entered Lab scenario text through the unauthenticated full-result GET",async()=>{
+    process.env.PREVIEW_SIM_ENGINE_ENABLED='true';
+    const privateLabel='Private Lab label for the projection test',created=res();
+    await game(req({action:'loop',op:'play',mode:'lab',goldIds:GOLD,blueIds:BLUE,scenario:{teamLabel:privateLabel},simulationId:`lab-projection-${crypto.randomUUID()}`}),created);
+    expect(created.statusCode).toBe(200);expect(created.body.result.loop.scenario.teamLabel).toBe(privateLabel);
+    const id=created.body.resultId,stored=await getJSON(`preview-result:${id}`),before=JSON.stringify(stored);
+    const fetched=res();await game(req({}, {method:'GET',query:{id},headers:{host:'eraclash.test'}}),fetched);
+    expect(fetched.statusCode).toBe(200);expect(fetched.body.loop).not.toHaveProperty('scenario');expect(JSON.stringify(fetched.body)).not.toContain(privateLabel);expect(fetched.body.core.finalScore).toEqual(stored.core.finalScore);expect(fetched.body.candidate).toEqual(stored.candidate);expect(JSON.stringify(await getJSON(`preview-result:${id}`))).toBe(before);
+  });
+  it("preserves the absorbed legacy GET projection, including its existing seed field",async()=>{
+    const stored=await play(),fetched=res();await game(req({}, {method:'GET',query:{id:stored.id}}),fetched);
+    const {session,...legacyPublic}=stored;expect(fetched.statusCode).toBe(200);expect(fetched.body).toEqual(legacyPublic);expect(fetched.body.seed).toBe(stored.seed);
+  });
   it("publishes a freshly generated Candidate 4 score and performers, never a browser snapshot",async()=>{
     const record=await play(); const response=await publish(record);
     expect(response.statusCode).toBe(200); const saved=await getJSON(`re:${response.body.id}`);

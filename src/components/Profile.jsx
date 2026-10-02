@@ -126,8 +126,8 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 6 }}>
           {Object.entries(BADGES).map(([k, b]) => (
-            <div key={k} style={{ display: "flex", gap: 8, alignItems: "center", opacity: badges.includes(k) ? 1 : 0.3, fontSize: 12 }}>
-              <span>{b.icon}</span><b>{b.name}</b><span style={{ color: T.textDim, fontSize: 11 }}>· {b.desc}</span>
+            <div key={k} style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 12 }}>
+              <span aria-hidden="true" style={{ opacity: badges.includes(k) ? 1 : 0.3 }}>{b.icon}</span><b>{b.name}{!badges.includes(k) && <small style={{ color: T.textDim }}> · Locked</small>}</b><span style={{ color: T.textDim, fontSize: 11 }}>· {b.desc}</span>
             </div>
           ))}
         </div>

@@ -1,0 +1,20 @@
+// Targeted frozen-build Run1 UI reset smoke. The browser clock is advanced only
+// during focus delivery to trigger the calendar-refresh effect, then restored.
+// The server date and attempts are never changed, nor any API response mocked.
+import { chromium } from '@playwright/test';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+const base = process.env.LOOP_TEST_URL || 'http://localhost:4320';
+const label = process.env.LOOP_BROWSER_RUN || 'run-1-frozen-state-reset';
+const report = { label, target: base, scope: 'Local production-client actual games; controlled browser calendar refresh, not server next-day enforcement', checks: [], errors: [] };
+const b = await chromium.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true, args: ['--no-sandbox'] });
+const p = await b.newPage({ viewport: { width: 390, height: 844 } }); p.setDefaultTimeout(15000); p.on('pageerror', e => report.errors.push(e.message));
+const assert = (v,m) => { if (!v) throw new Error(m); };
+const refreshDay = async () => Promise.all([p.waitForResponse(r => r.url().endsWith('/api/game') && r.request().postDataJSON()?.op === 'config'), p.evaluate(() => { const RealDate = Date; globalThis.Date = class extends RealDate { constructor(...args) { super(...(args.length ? args : [RealDate.now() + 86400000])); } static now() { return RealDate.now() + 86400000; } }; try { window.dispatchEvent(new Event('focus')); } finally { globalThis.Date = RealDate; } })]);
+const play = async (name,op) => { const response = await Promise.all([p.waitForResponse(r => r.url().endsWith('/api/game') && r.request().postDataJSON()?.op === op), p.getByRole('button',{name,exact:true}).click()]).then(([r]) => r); const data = await response.json(); assert(response.ok() && data.resultId, `No authoritative ${op}`); return data; };
+try {
+  await p.goto(`${base}/clash/any-five`, {waitUntil:'networkidle'}); await p.getByRole('button',{name:'Fill a playable example',exact:true}).click(); const ids = await p.locator('.loop-selected strong').allTextContents(); await refreshDay(); assert(JSON.stringify(await p.locator('.loop-selected strong').allTextContents()) === JSON.stringify(ids), 'Non-Daily calendar refresh discarded five'); const first = await play('Run this five','play'); report.checks.push({ name:'Non-Daily draft survives calendar-triggered server config refresh and plays', status:'PASS', resultId:first.resultId });
+  await p.goto(`${base}/clash/daily`, {waitUntil:'networkidle'}); await p.getByRole('button',{name:'Open today’s draft',exact:true}).click(); await p.getByRole('button',{name:'Roll 2 · keep held picks',exact:true}).click(); await p.getByRole('button',{name:'Roll 3 · keep held picks',exact:true}).click(); await p.locator('.loop-coach .loop-primary').first().click(); const daily = await play('Play today’s Daily','daily-play'); await p.locator('.loop-share-grid').waitFor(); await refreshDay(); await p.getByRole('button',{name:'Open today’s draft',exact:true}).waitFor(); assert(await p.locator('.loop-share-grid').count()===0,'Old Daily grid remained after reset'); assert(await p.getByRole('button',{name:'Copy Daily grid',exact:true}).count()===0,'Old Daily card-copy control remained after reset'); report.checks.push({ name:'Daily calendar refresh clears previous grid/card-copy/draft state', status:'PASS', resultId:daily.resultId, limitation:'Server date remained current; next-day enforcement tested separately by root clock-controlled handler tests' });
+  const geometry=await p.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+1})); assert(!geometry.overflow,'Reset UI overflow'); report.checks.push({name:'390px mobile reset UI has no horizontal overflow',status:'PASS'});
+} catch(e) { report.checks.push({name:'Targeted UI reset smoke',status:'FAIL',error:e.stack}); process.exitCode=1; }
+finally { await b.close(); await mkdir(resolve('data/validation'),{recursive:true}); await writeFile(resolve('data/validation',`loop-modes-${label}.json`),JSON.stringify(report,null,2)); console.log(JSON.stringify(report)); }

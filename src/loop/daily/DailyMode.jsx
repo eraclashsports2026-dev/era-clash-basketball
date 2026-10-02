@@ -4,7 +4,7 @@ import ResultSummary from '../components/ResultSummary.jsx';
 import useLoopAction from '../components/useLoopAction.js';
 import PublicRecapNotice from '../components/PublicRecapNotice.jsx';
 import { BY_ID } from '../draft/model.js';
-import { newYorkDay } from './calendar.js';
+import { newYorkDay } from './clock.js';
 import { readHint, writeHint, userScope } from './storage.js';
 import { loopEvent } from '../events.js';
 import { teamDisplayName, leagueCopy } from '../rights.js';

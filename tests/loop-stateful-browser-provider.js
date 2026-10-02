@@ -4,6 +4,7 @@
 import { createTestProvider } from '../src/accounts/testAdapter.js';
 import { _setProvider } from '../src/accounts/provider.js';
 import { adopt } from '../src/accounts/accountState.js';
+import { flush } from '../src/analytics.js';
 const USERS = __LOOP_QA_USERS__; // Vite test-only define; never in a production source import.
 const fixture = createTestProvider({ users: USERS });
 const original = { ...fixture.provider };
@@ -28,3 +29,9 @@ window.__loopQASwitchAccount = async userId => {
   await adopt(session);
   return { userId: session.userId };
 };
+
+// Same imported singleton/provider as the app; avoids new module requests from
+// a browser assertion while the filesystem is hydrating unrelated files.
+window.__loopQAFlush = flush;
+window.__loopQAReadSaved = id => fixture.provider.getSavedClash(id);
+window.__loopQAAccountId = async () => (await fixture.provider.currentSession())?.userId || null;

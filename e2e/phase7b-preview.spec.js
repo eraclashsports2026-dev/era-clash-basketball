@@ -17,7 +17,7 @@ const buildMatchup = async (page) => {
   await page.getByRole("button", { name: /^Play/ }).click();
   await page.getByRole("menuitem", { name: /Dream Matchup/ }).click();
   await page.getByRole("button", { name: /Random Team/ }).first().click();
-  await page.getByRole("tab", { name: /Random Team/ }).click();
+  await page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ }).click();
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
   const next = page.getByRole("button", { name: /Continue to Era Style/ });
   await next.waitFor({ state: "visible", timeout: 8000 });

@@ -7,7 +7,7 @@ import useLoopAction from '../components/useLoopAction.js';
 import PublicRecapNotice from '../components/PublicRecapNotice.jsx';
 import { leagueCopy } from '../rights.js';
 import { franchiseLabel } from '../components/franchiseLabel.js';
-import { FRANCHISES, getFranchise } from '../franchises.js';
+import { FRANCHISES, getFranchise } from '../franchiseCatalog.js';
 import { assignFive, validateFive, MODE_TAGS, BY_ID, legalFive } from '../draft/model.js';
 
 const emptyFive = () => Array(5).fill(null);

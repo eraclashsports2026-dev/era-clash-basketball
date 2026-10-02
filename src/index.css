@@ -2494,6 +2494,9 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
    desktop cards and header are untouched.
    ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
+  /* Keep native focus/click scrolling below the pinned header. */
+  html { scroll-padding-top: calc(var(--ec-header-h, 57px) + 8px); }
+  :is(a[href], button, input, select, textarea, summary, [role="button"], [role="tab"], [role="checkbox"], [role="switch"]) { scroll-margin-top: calc(var(--ec-header-h, 57px) + 8px); }
   /* ── Compact header: menu · mark · account, one row, pinned ─────────────── */
   .ec-brand-header--compact { position: sticky; top: 0; z-index: 50; background: var(--ec-a-header, rgba(3, 6, 11, 0.94)); border-bottom: 1px solid var(--ec-a-border); }
   .ec-brand-header-row {

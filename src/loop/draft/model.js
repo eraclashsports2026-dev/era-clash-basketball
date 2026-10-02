@@ -2,7 +2,7 @@
 // player capability, calibration value, score, or competitive rating.
 import { PLAYERS, POSITIONS } from '../../players.js';
 import { personIdForCard, personIdFromName } from '../../v3/data/persons.js';
-import { FRANCHISES as FRANCHISE_CATALOG, getFranchise } from '../franchises.js';
+import { FRANCHISES as FRANCHISE_CATALOG, getFranchise } from '../franchiseCatalog.js';
 
 export const LOOP_DRAFT_VERSION = '1.0.0';
 export const BY_ID = new Map(PLAYERS.map(p => [p.id, p]));

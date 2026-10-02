@@ -177,7 +177,7 @@ export default function PlayLobby({
           Phase 9A.3P: the band is full for a first-time state and compact for a
           returning one — same mark, same band, less height, grid moved up. */}
       <header className={`ec-lobby-hero${compact ? " ec-lobby-hero--compact" : ""}`}>
-        <img className="ec-lobby-logo" src="/brand/eraclash-logo-mk1.png" alt="EraClash Basketball" width="760" height="304" decoding="async" />
+        <img className="ec-lobby-logo" src="/brand/eraclash-logo-mk1.png" alt="EraClash Basketball" width="760" height="304" decoding="async" loading="eager" fetchpriority="high" />
         <h1 id="ec-lobby-title" className="sr-only">Play EraClash Basketball</h1>
         <p className="ec-lobby-line">{line}</p>
       </header>

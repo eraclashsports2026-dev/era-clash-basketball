@@ -1,13 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { loopApi } from '../client.js';
-import TeamModes from './TeamModes.jsx';
-import SpinMode from './SpinMode.jsx';
-import GauntletMode from './GauntletMode.jsx';
 import DailyMode from '../daily/DailyMode.jsx';
-import FranchiseMode from './FranchiseMode.jsx';
+const FranchiseMode = React.lazy(() => import('./FranchiseMode.jsx'));
 import '../components/loop.css';
 import { loopEvent } from '../events.js';
-import { newYorkDay, nextNewYorkMidnight } from '../daily/calendar.js';
+import { newYorkDay, nextNewYorkMidnight } from '../daily/clock.js';
+
+function deferredMode(load, message) {
+  const Mode = React.lazy(load);
+  return function DeferredMode(props) {
+    return <React.Suspense fallback={<p role="status" aria-busy="true">{message}</p>}><Mode {...props} /></React.Suspense>;
+  };
+}
+const TeamModes = deferredMode(() => import("./TeamModes.jsx"), "Loading the team builder…");
+const SpinMode = deferredMode(() => import("./SpinMode.jsx"), "Loading Chaos Spin…");
+const GauntletMode = deferredMode(() => import("./GauntletMode.jsx"), "Loading the Gauntlet…");
 
 export const LOOP_MODE_LINKS = Object.freeze([
   { title: 'Chaos Clash', href: '/play/chaos', copy: 'Three player-and-coach rolls, an era reveal, and the game.', tag: 'CHAOS' },
@@ -67,7 +74,7 @@ export function LoopModes({ route, user, onResult, onNavigate, api = loopApi }) 
   else if (mode === 'spin') content = <SpinMode api={trackedApi} config={config} onResult={onResult} />;
   else if (mode === 'daily') content = <DailyMode api={trackedApi} config={config} user={user} onResult={onResult} />;
   else if (mode === 'gauntlet') content = <GauntletMode api={trackedApi} user={user} onResult={onResult} />;
-  else if (mode === 'franchise' || mode === 'all-time') content = <FranchiseMode api={trackedApi} route={route} onResult={onResult} />;
+  else if (mode === 'franchise' || mode === 'all-time') content = <React.Suspense fallback={<p role="status">Loading the franchise matchup…</p>}><FranchiseMode api={trackedApi} route={route} onResult={onResult} /></React.Suspense>;
   else content = <><h1>That mode is not available here</h1><p>Choose a mode from the hub to continue.</p></>;
   return <main className="loop-court" data-testid="loop-court"><div className="loop-top"><p className="loop-eyebrow">EraClash Basketball · Light Court</p><Link href="/clash/modes" onNavigate={onNavigate} className="loop-header-link">Modes hub</Link></div>{error && config && <div className="loop-error" role="alert"><p>{error}</p><button type="button" onClick={() => setRetry(value => value + 1)}>Retry configuration</button></div>}{content}</main>;
 }

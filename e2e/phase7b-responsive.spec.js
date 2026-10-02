@@ -11,7 +11,7 @@ const noOverflow = async (page, label) => {
 };
 const randomBoth = async (page) => {
   await page.getByRole("button", { name: /Random Team/ }).first().click();
-  await page.getByRole("tab", { name: /Random Team/ }).click();
+  await page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ }).click();
 };
 const pickCoach = async (page) => {
   await page.getByRole("button", { name: "Choose Coach" }).first().click();
@@ -94,7 +94,7 @@ test("R4: keyboard-only completion, including the coach modal", async ({ page })
     await page.keyboard.press("Enter");
   };
   await press(/Random Team/);
-  await page.getByRole("tab", { name: /Random Team/ }).focus();
+  await page.getByRole("group", { name: "Team Blue build actions", exact: true }).getByRole("button", { name: /Random Team/ }).focus();
   await page.keyboard.press("Enter");
   await press(/Continue to Coaches/);
   const next = page.getByRole("button", { name: /Continue to Era Style/ });

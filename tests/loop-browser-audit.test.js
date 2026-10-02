@@ -13,7 +13,10 @@ describe('Full browser audit evidence boundaries',()=>{
     const inventory=await buildRouteInventory(),paths=new Set(inventory.routes.map(row=>row.path));
     expect(inventory.routes.filter(row=>row.kind==='programmatic')).toHaveLength(435);
     expect(FRANCHISE_PAIRINGS.every(pairing=>paths.has(pairing.path))).toBe(true);
-    for(const route of ['/','/play','/clash/modes','/clash/daily','/clash/filters','/clash/rooms','/clash/one-per-era','/privacy','/terms','/support','/leaderboard','/my-eraclash','/challenges'])expect(paths.has(route)).toBe(true);
+    for(const route of ['/','/play','/clash/modes','/clash/daily','/clash/filters','/clash/rooms','/clash/one-per-era','/privacy','/terms','/support','/leaderboard','/my-eraclash','/challenges','/modes/era-gauntlet','/dev/basketball-theme-lab'])expect(paths.has(route)).toBe(true);
+    expect(inventory.routes.find(row=>row.path==='/dev/basketball-theme-lab').access).toBe('owner-only');
+    expect(inventory.routes.find(row=>row.path==='/my-eraclash').kind).toBe('account');
+    expect(inventory.routes.find(row=>row.path==='/leaderboard').kind).toBe('leaderboard');
     expect(inventory.sitemap.status).toBe('PASS');
   });
   it('requires an explicit execution environment and refuses overwrite-prone labels',()=>{

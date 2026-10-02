@@ -7,6 +7,7 @@
 //   ECLASH_TEST_MEMORY_STORE=1 ENABLE_CHAOS_TESTS=true node scripts/harness.mjs [port]
 import { createServer } from "node:http";
 import { readFileSync, existsSync } from "node:fs";
+import { brotliCompressSync, gzipSync, constants as zlibConstants } from "node:zlib";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { isKnownRoute } from '../src/navigation.js';
@@ -112,8 +113,19 @@ createServer(async (req, res) => {
     else { res.statusCode = 404; file = join(DIST, '404.html'); }
   }
   try {
-    res.setHeader("Content-Type", MIME[extname(file)] || "application/octet-stream");
-    res.end(readFileSync(file));
+    const type = MIME[extname(file)] || "application/octet-stream";
+    res.setHeader("Content-Type", type);
+    let bytes = readFileSync(file);
+    // Opt-in local delivery fidelity only: the real CDN compresses text assets.
+    // Keep ordinary gates unchanged; never compress images or API responses.
+    if (process.env.ECLASH_STATIC_COMPRESSION === '1' && bytes.length > 512 && /text\/|javascript|json|svg/.test(type)) {
+      const accepts = String(req.headers['accept-encoding'] || '');
+      if (/\bbr\b/.test(accepts)) { bytes = brotliCompressSync(bytes, { params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 4 } }); res.setHeader('Content-Encoding', 'br'); }
+      else if (/\bgzip\b/.test(accepts)) { bytes = gzipSync(bytes); res.setHeader('Content-Encoding', 'gzip'); }
+      res.setHeader('Vary', 'Accept-Encoding');
+    }
+    res.setHeader('Content-Length', String(bytes.length));
+    res.end(req.method === 'HEAD' ? undefined : bytes);
   } catch {
     res.statusCode = 404; res.end("not found");
   }

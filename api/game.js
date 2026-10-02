@@ -70,6 +70,11 @@ export default async function handler(req, res) {
     const r = hasStore() ? await getJSON(`${isPreviewId ? "preview-result" : "result"}:${id}`) : null;
     if (!r) return sendError(res, "NOT_FOUND", requestId);
     res.setHeader("Cache-Control", "public, max-age=300");
+    if (r.loop) {
+      const { seed, loop, ...loopResult } = publicResult(r);
+      const { scenario, ...publicLoop } = loop;
+      return res.status(200).json({ ...loopResult, loop: publicLoop });
+    }
     return res.status(200).json(publicResult(r));
   }
 

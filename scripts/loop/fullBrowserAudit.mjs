@@ -72,7 +72,11 @@ export async function buildRouteInventory({resultsFile=null,programmaticLimit=43
   const map=new Map();
   const add=(route,source,kind='application',extra={})=>{if(!route?.startsWith('/')||route.includes(':'))return;const row=map.get(route)||{path:route,kind,sources:[]};if(!row.sources.includes(source))row.sources.push(source);Object.assign(row,extra);map.set(route,row);};
   add('/','public entrance'); add('/play','navigation registry');
-  for(const mode of PLAY_MODES){add(mode.route,'PLAY_MODES','mode',{modeId:mode.id,implemented:mode.implemented});add(`/modes/${mode.id}`,'navigation information contract','mode-information',{modeId:mode.id});}
+  for(const mode of PLAY_MODES){
+    add(mode.route,'PLAY_MODES','mode',{modeId:mode.id,implemented:mode.implemented});
+    add(`/modes/${mode.id}`,'navigation information contract','mode-information',{modeId:mode.id});
+    if(mode.infoRoute)add(mode.infoRoute,'PLAY_MODES.infoRoute','mode-information',{modeId:mode.id});
+  }
   for(const route of KNOWN_ROUTES)add(route,'KNOWN_ROUTES',route==='/my-eraclash'?'account':route==='/leaderboard'?'leaderboard':'application');
   const hub=await fs.readFile(path.join(REPO,'src/loop/modes/LoopModes.jsx'),'utf8');
   for(const match of hub.matchAll(/href:\s*['"]([^'"]+)['"]/g))add(match[1],'LOOP_MODE_LINKS','loop-mode');
@@ -80,6 +84,11 @@ export async function buildRouteInventory({resultsFile=null,programmaticLimit=43
   const app=await fs.readFile(path.join(REPO,'src/App.jsx'),'utf8');
   for(const match of app.matchAll(/route\s*===\s*['"](\/[^'"]+)['"]/g))add(match[1],'App route branch',match[1]==='/auth/callback'?'auth-callback':'application');
   for(const route of ['/fantasy/eraclash','/fantasy/live'])add(route,'fantasy registry','mode-information',{implemented:false});
+  // Literal deployment destinations are observable routes too; never invent
+  // an identifier for parameterized card, challenge, profile or fixture paths.
+  // Add them after the navigation registry to preserve its richer route kinds.
+  const deployment=JSON.parse(await fs.readFile(path.join(REPO,'vercel.json'),'utf8'));
+  for(const rewrite of deployment.rewrites||[])if(typeof rewrite.source==='string'&&!/[:*()]/.test(rewrite.source))add(rewrite.source,'vercel.json literal rewrite',rewrite.source.startsWith('/dev/')?'owner-only':'application',rewrite.source.startsWith('/dev/')?{access:'owner-only'}:{});
   const sitemapPath=path.join(REPO,'artifacts/loop/franchise-pages/franchise-sitemap.xml');
   let sitemap={path:path.relative(REPO,sitemapPath),status:'UNVERIFIED',expected:435,found:0};
   try {
@@ -120,6 +129,11 @@ export function classifyInteraction(control) {
   return {status:'PROBE',reason:'Local navigation, disclosure, selection, or search state can be exercised without submission.'};
 }
 
+export function ownerSurfaceCoverage(route) {
+  if(route.access!=='owner-only')return null;
+  return {status:'UNVERIFIED',acceptanceStatus:'PARTIAL',probeControls:false,reason:'Owner-only development surface. Production builds compile the theme lab off; deployed middleware denies non-owner /dev/ access. A local harness may serve a fallback lobby with HTTP200, which does not establish theme-lab functionality. Actual response, geometry and axe observations are retained; no owner identity or enabled owner build was supplied.'};
+}
+
 async function toolLocation(options,name,file) {
   const require=createRequire(import.meta.url);
   try{return require.resolve(`${name}/${file}`);}catch{}
@@ -153,10 +167,14 @@ async function fetchBounded(url,options,method='GET') {
 
 async function documentControls(page) {
   return page.evaluate(()=>{
-    const elements=[...document.querySelectorAll('a[href],button,input:not([type=hidden]),select,textarea,[role=button],[role=tab],[role=checkbox],[role=switch]')];
+    const elements=[...document.querySelectorAll('a[href],button,summary,input:not([type=hidden]),select,textarea,[role=button],[role=tab],[role=checkbox],[role=switch]')];
     return elements.map((element,index)=>{
       element.setAttribute('data-browser-audit-control',String(index));
-      const rectangle=element.getBoundingClientRect(),style=getComputedStyle(element),visible=rectangle.width>0&&rectangle.height>0&&style.visibility!=='hidden'&&style.display!=='none';
+      const rectangle=element.getBoundingClientRect(),style=getComputedStyle(element);
+      // Collapsed details can retain geometry. Ask the browser whether the
+      // element is rendered before treating it as an actionable control.
+      const rendered=typeof element.checkVisibility==='function'?element.checkVisibility({checkOpacity:true,checkVisibilityCSS:true}):true;
+      const visible=rendered&&rectangle.width>0&&rectangle.height>0&&style.visibility!=='hidden'&&style.display!=='none';
       // A associated checkbox/radio label is a real clickable activation box,
       // so measure it rather than declaring its small native glyph the target.
       const labelTargets=['checkbox','radio'].includes(element.type)?[...(element.labels||[])].map(label=>label.getBoundingClientRect()).filter(r=>r.width&&r.height):[];
@@ -242,10 +260,13 @@ async function auditRoute(browser,devices,axePath,profile,route,options,links) {
   page.on('console',message=>{if(message.type()==='error')consoleErrors.push(message.text());});
   page.on('response',response=>{if(response.status()>=400)badResponses.push({url:safeUrl(response.url()),status:response.status(),resourceType:response.request().resourceType()});});
   page.on('requestfailed',request=>failedRequests.push({url:safeUrl(request.url()),error:request.failure()?.errorText}));
+  const ownerCoverage=ownerSurfaceCoverage(route);
   const row={path:route.path,kind:route.kind,profile:profile.id,identity:{...options.evidenceIdentity,actor:'fresh guest context'},startedAt:new Date().toISOString(),issues:[]};
+  if(ownerCoverage){row.ownerSurface={...ownerCoverage};row.issues.push({status:'UNVERIFIED',name:'owner-only surface coverage',detail:ownerCoverage.reason});}
   try {
     const response=await settledPage(page,options.origin+route.path,options);
     row.statusCode=response?.status()??null;row.finalUrl=safeUrl(page.url());row.title=await page.title();
+    if(ownerCoverage){const headers=response?.headers()||{};row.ownerSurface.httpStatus=row.statusCode;row.ownerSurface.responseHeaders=Object.fromEntries(['content-type','cache-control','content-security-policy','x-robots-tag'].filter(key=>headers[key]!==undefined).map(key=>[key,headers[key]]));}
     row.csp={bypass:false,normalPageLoad:true,header:response?.headers()?.['content-security-policy']||null,axeInstrumentation:'Playwright debugger evaluation after normal UI load'};
     const text=await page.locator('body').innerText();
     row.geometry=await page.evaluate(()=>{
@@ -291,12 +312,16 @@ async function auditRoute(browser,devices,axePath,profile,route,options,links) {
     else if(row.axe.violations.length)row.issues.push({status:'PARTIAL',name:'axe other violations',detail:row.axe.violations.map(v=>({id:v.id,impact:v.impact}))});
     const shouldScreenshot=route.kind!=='programmatic'||row.issues.some(i=>i.status==='FAIL')||[FRANCHISE_PAIRINGS[0].path,FRANCHISE_PAIRINGS[434].path].includes(route.path);
     if(shouldScreenshot){row.screenshot=`screenshots/${profile.id}-${slug(route.path)}.png`;await page.screenshot({path:path.join(options.output,row.screenshot),fullPage:true});}
-    if(options.controls){row.interactions=[];for(const control of row.controls){if(control.href){row.interactions.push({...control,...classifyInteraction(control)});continue;}row.interactions.push(await probeControl(browser,profile,route,control,options,axePath,devices));}}
+    if(ownerCoverage)row.interactions=[{status:'UNVERIFIED',reason:'Control probes skipped on the owner-only development surface. Its public response/fallback is not an enabled public gameplay journey.'}];
+    else if(options.controls){row.interactions=[];for(const control of row.controls){if(control.href){row.interactions.push({...control,...classifyInteraction(control)});continue;}row.interactions.push(await probeControl(browser,profile,route,control,options,axePath,devices));}}
     else row.interactions=[{status:'UNVERIFIED',reason:'Controls disabled by command option.'}];
     if(row.interactions?.some(i=>i.status==='FAIL'))row.issues.push({status:'FAIL',name:'control probe failure'});
     if(row.interactions?.some(i=>i.axe?.critical||i.axe?.serious))row.issues.push({status:'FAIL',name:'axe violation after control interaction'});
-    row.status=row.issues.some(i=>i.status==='FAIL')?'FAIL':row.issues.length?'PARTIAL':'PASS';
-  }catch(error){row.status='FAIL';row.issues.push({status:'FAIL',name:'audit route failed',detail:error.message});}
+    // Keep observed gate/fallback defects reviewable, but they cannot certify
+    // an unavailable private development surface or public gameplay. This
+    // scope exception applies only to explicitly inventoried owner access.
+    row.status=ownerCoverage?ownerCoverage.acceptanceStatus:row.issues.some(i=>i.status==='FAIL')?'FAIL':row.issues.length?'PARTIAL':'PASS';
+  }catch(error){row.status=ownerCoverage?ownerCoverage.acceptanceStatus:'FAIL';row.issues.push({status:ownerCoverage?'UNVERIFIED':'FAIL',name:'audit route failed',detail:error.message});}
   finally{row.errors=errors;row.consoleErrors=consoleErrors;row.failedResponses=badResponses;row.failedRequests=failedRequests;row.endedAt=new Date().toISOString();await context.close();}
   const filename=`routes/${profile.id}-${slug(route.path)}-${hash(route.path).slice(0,8)}.json`;await fs.writeFile(path.join(options.output,filename),JSON.stringify(row,null,2)+'\n');
   return {...row,artifact:filename};
@@ -371,7 +396,7 @@ export async function runAudit(options) {
   const inventory=await buildRouteInventory(options);
   const report={label:options.label,startedAt:new Date().toISOString(),origin:options.origin,environment:options.environment||'inventory-only',requestedSha:options.sha,checkoutSha:git(['rev-parse','HEAD']),checkoutDirty:!!git(['status','--porcelain']),scope:options.inventoryOnly?'PREPARATION_ONLY':options.scope,profiles:PROFILE_DEFINITIONS.filter(p=>options.profiles.includes(p.id)),inventory,sources:{axe:'https://github.com/dequelabs/axe-core/blob/develop/doc/API.md',lighthouse:'https://github.com/GoogleChrome/lighthouse/blob/main/docs/readme.md',emulation:'https://playwright.dev/docs/emulation'},limitations:['Chromium viewport/touch emulation does not verify physical iOS Safari or Android Chrome.','Automated axe findings do not establish full accessibility conformance or screen-reader usability.','Page loads retain normal CSP; debugger-injected axe is an out-of-band local instrument and does not prove that CSP blocks every malicious script.','Read-only control probes do not establish stateful gameplay, account, private-data, email or payment correctness.','The local checkout SHA and health identity are recorded separately; a caller-provided deployment SHA is not independently verified by this runner.'],physicalDeviceChecklist:['iOS Safari on an actual iPhone SE: keyboard, scrolling, dialogs and tap targets.','Actual iPhone 14 and Pro Max: safe areas, rotation, text zoom and sharing.','Actual Android Pixel Chrome: soft keyboard, back navigation, clipboard/share and touch.']};
   report.fileHashes={};
-  for(const file of ['scripts/loop/fullBrowserAudit.mjs','scripts/loop/sitemap.mjs','vite.config.js','index.html','src/App.jsx','src/navigation.js','src/loop/franchises.js','src/loop/modes/LoopModes.jsx','src/loop/components/loop.css','api/share-page.js','dist/index.html','dist/sitemap.xml'])try{report.fileHashes[file]=hash(await fs.readFile(path.join(REPO,file)));}catch{}
+  for(const file of ['scripts/loop/fullBrowserAudit.mjs','scripts/loop/sitemap.mjs','vite.config.js','index.html','src/App.jsx','src/navigation.js','src/loop/franchises.js','src/loop/franchiseCatalog.js','src/loop/daily/clock.js','src/loop/daily/calendar.js','src/loop/modes/LoopModes.jsx','src/loop/components/loop.css','api/share-page.js','api/game.js','scripts/harness.mjs','src/index.css','src/components/lobby/PlayLobby.jsx','dist/index.html','dist/sitemap.xml'])try{report.fileHashes[file]=hash(await fs.readFile(path.join(REPO,file)));}catch{}
   report.codeFingerprint=hash(JSON.stringify(report.fileHashes));
   if(options.resultsFile){const fixture=await fs.readFile(path.resolve(options.resultsFile));report.resultFixture={path:path.relative(REPO,path.resolve(options.resultsFile)),sha256:hash(fixture),bytes:fixture.length};}
   await fs.writeFile(path.join(options.output,'inventory.json'),JSON.stringify(inventory,null,2)+'\n');

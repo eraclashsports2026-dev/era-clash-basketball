@@ -14,7 +14,6 @@ import {
 } from "./career.js";
 import { createChallenge, loadChallengeFromUrl } from "./challengeClient.js";
 import { publishResult, shareText } from "./share.js";
-import Postgame from "./components/Postgame.jsx";
 import DailyPanel from "./components/DailyPanel.jsx";
 import DailyCoachEra from "./components/DailyCoachEra.jsx";
 import Profile from "./components/Profile.jsx";
@@ -27,9 +26,6 @@ import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
-import TimeArena from "./components/arena/TimeArena.jsx";
-import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
-import ProgressionReferenceFixture from "./ui/progression/ProgressionReferenceFixture.jsx";   // Phase 9D, same dev-only gate
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import {
   PLAY_MODES, findMode, defaultMode, MODE_STATUS,
@@ -41,7 +37,6 @@ import PlayLobby from "./components/lobby/PlayLobby.jsx";
 import AccountDialog from "./components/accounts/AccountDialog.jsx";
 import AuthCallback from "./components/accounts/AuthCallback.jsx";
 import SaveThisClash from "./components/accounts/SaveThisClash.jsx";
-import MyEraClash from "./components/accounts/MyEraClash.jsx";
 import { startAccountState, subscribeAccount, accountState, signOutAccount } from "./accounts/accountState.js";
 import { provider as accountProvider, withProvider } from "./accounts/provider.js";
 import { saveResultToCareer, claimGuestResult } from "./accounts/cloudSave.js";
@@ -56,7 +51,6 @@ import { simulateChaos, chooseChaosEra } from "./chaos/client.js";
 // invitation; an accepted challenge is an ordinary Chaos run the arena resumes.
 import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
 import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
-import ClashBreakdown from "./components/breakdown/ClashBreakdown.jsx";   // Clash Breakdown V1
 import { loadSavedReport } from "./accounts/savedReport.js";
 import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
 import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
@@ -64,13 +58,8 @@ import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forget
 import { rememberProgression, progressionFor, mergeProgression } from "./progression/client.js";
 import CareerProgress from "./components/progression/CareerProgress.jsx";
 // Phase 9E: the Challenge Rating leaderboard and the rating movement after a comparison.
-import LeaderboardPage from "./components/competitive/LeaderboardPage.jsx";
-import PublicProfilePage from "./components/profiles/PublicProfilePage.jsx";   // Phase 9F
 import { slugFromPath, PUBLIC_PROFILE_ROUTE } from "./profiles/contract.js";
 import RatingChange from "./components/competitive/RatingChange.jsx";
-import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
-import SocialReferenceFixture from "./ui/social/SocialReferenceFixture.jsx";   // dev-only gate (Clash Cards + Rivalries V1)
-import ProfileReferenceFixture from "./ui/profiles/ProfileReferenceFixture.jsx";   // dev-only gate
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
@@ -82,12 +71,32 @@ import { teamFit } from "./chemistryView.js";
 import { v3meta } from "./v3meta.js";
 import { runNarrative, toViewStatus } from "./narrativeMachine.js";
 import { shortBuild, watchForNewBuild } from "./buildStamp.js";
-import LoopModes from './loop/modes/LoopModes.jsx';
-import LoopResult from './loop/LoopResult.jsx';
-import PrivateRooms from './loop/PrivateRooms.jsx';
 import { PolicyPage, SupportPage } from './loop/PolicyPages.jsx';
 import { loopEvent } from './loop/events.js';
 import { loopApi } from './loop/client.js';
+
+// Defer conditional screens while keeping the arena header and active mode visible.
+// Declared at module scope so navigating or rerendering preserves component identity.
+function deferredScreen(load, message) {
+  const Screen = lazy(load);
+  return function DeferredScreen(props) {
+    return (
+      <Suspense fallback={<div role="status" aria-busy="true" style={{ maxWidth: 1100, margin: "24px auto", padding: 24, minHeight: 120 }}>{message}</div>}>
+        <Screen {...props} />
+      </Suspense>
+    );
+  };
+}
+
+const TimeArena = deferredScreen(() => import("./components/arena/TimeArena.jsx"), "Loading the arena…");
+const MyEraClash = deferredScreen(() => import("./components/accounts/MyEraClash.jsx"), "Loading My EraClash…");
+const Postgame = deferredScreen(() => import("./components/Postgame.jsx"), "Loading the full report…");
+const ClashBreakdown = deferredScreen(() => import("./components/breakdown/ClashBreakdown.jsx"), "Loading the breakdown…");
+const LoopModes = deferredScreen(() => import("./loop/modes/LoopModes.jsx"), "Loading this mode…");
+const LeaderboardPage = deferredScreen(() => import("./components/competitive/LeaderboardPage.jsx"), "Loading the leaderboard…");
+const PublicProfilePage = deferredScreen(() => import("./components/profiles/PublicProfilePage.jsx"), "Loading this profile…");
+const PrivateRooms = deferredScreen(() => import("./loop/PrivateRooms.jsx"), "Loading private rooms…");
+const LoopResult = deferredScreen(() => import("./loop/LoopResult.jsx"), "Loading the result…");
 
 // The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
 // server's edges; placeholder until both fives exist. No numbers, no winner.
@@ -167,6 +176,11 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 // `npm run build:visual-qa` (and the dev server), so a production build
 // statically eliminates both this route and the fixture module.
 const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
+const ReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/time-arena/ReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const ProgressionReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/progression/ProgressionReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const CompetitiveReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/competitive/CompetitiveReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const SocialReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/social/SocialReferenceFixture.jsx"), "Loading the reference fixture…") : null;
+const ProfileReferenceFixture = DEV_FIXTURES ? deferredScreen(() => import("./ui/profiles/ProfileReferenceFixture.jsx"), "Loading the reference fixture…") : null;
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
 const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
 const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
@@ -1576,7 +1590,7 @@ export default function App() {
             {Object.values(DIFFICULTIES).map((d) => (
               <button key={d.id} role="tab" aria-selected={difficulty === d.id} aria-label={`Difficulty ${d.label}`}
                 onClick={() => setDifficulty(d.id)} style={{
-                  padding: "8px 15px", borderRadius: R.sm, cursor: "pointer", minHeight: 42, fontSize: 13, fontWeight: 800,
+                  padding: "8px 15px", borderRadius: R.sm, cursor: "pointer", minHeight: 44, fontSize: 13, fontWeight: 800,
                   border: `1px solid ${difficulty === d.id ? T.goldBorder : T.border}`,
                   background: difficulty === d.id ? T.goldSoft : T.bgCard,
                   color: difficulty === d.id ? T.gold : T.textDim,
@@ -1630,21 +1644,23 @@ export default function App() {
                 <>
                   {/* Build method (Daily stays seeded rolls — that IS the daily) */}
                   {!isDaily && (
-                    <div role="tablist" aria-label="Build method" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+                    <div role="group" aria-label="Team Gold build actions" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+                      <div role="tablist" aria-label="Build method" style={{ display: "contents" }}>
                       {[["manual", "✍️ Manual Draft"], ["rolls", "🎲 Chaos Draft"]].map(([id, label]) => (
                         <button key={id} role="tab" aria-selected={buildMethod === id} onClick={() => { setBuildMethod(id); setYz(null); setManual([null, null, null, null, null]); }} style={{
-                          flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                          flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                           border: `1px solid ${buildMethod === id ? T.goldBorder : T.border}`,
                           background: buildMethod === id ? T.goldSoft : "transparent",
                           color: buildMethod === id ? T.gold : T.textDim,
                         }}>{label}</button>
                       ))}
+                      </div>
                       <button onClick={randomGold} style={{
-                        flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                        flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                         border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold,
                       }}>🔀 Random Team</button>
                       <button onClick={resetGold} disabled={!yz && !manual.some(Boolean)} aria-label="Reset Team Gold" style={{
-                        flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
+                        flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 44,
                         border: `1px solid ${T.border}`, background: "transparent",
                         color: (!yz && !manual.some(Boolean)) ? T.textMuted : T.textDim,
                         cursor: (!yz && !manual.some(Boolean)) ? "default" : "pointer",
@@ -1763,17 +1779,17 @@ export default function App() {
               )}
               {/* Blue build methods — Team Blue is user-controlled, never auto-locked */}
               {!isChallenge && blueBuildable && !opponent && (
-                <div role="tablist" aria-label="Blue build method" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-                  <button role="tab" onClick={() => setPicker({ slot: null, target: "blue-manual" })} style={{
-                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                <div role="group" aria-label="Team Blue build actions" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                  <button onClick={() => setPicker({ slot: null, target: "blue-manual" })} style={{
+                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                     border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
                   }}>✍️ Manual Draft</button>
-                  <button role="tab" onClick={randomBlue} style={{
-                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                  <button onClick={randomBlue} style={{
+                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
                     border: `1px solid ${T.blueBorder}`, background: T.blueSoft, color: T.blue,
                   }}>🔀 Random Team</button>
                   <button onClick={resetBlue} disabled={!blueManual.some(Boolean)} aria-label="Reset Team Blue" style={{
-                    flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
+                    flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 44,
                     border: `1px solid ${T.border}`, background: "transparent",
                     color: !blueManual.some(Boolean) ? T.textMuted : T.textDim,
                     cursor: !blueManual.some(Boolean) ? "default" : "pointer",
@@ -1924,7 +1940,7 @@ export default function App() {
                 {[["Edit rosters", "ROSTERS"], ["Edit coaches", "COACHES"], ["Edit era", "ERA"]].map(([label, stage]) => (
                   <button key={stage} onClick={() => setPlayStage(stage)} style={{
                     background: T.bgCard, border: `1px solid ${T.border}`, color: T.textDim, borderRadius: R.sm,
-                    padding: "8px 14px", cursor: "pointer", fontSize: 12.5, fontWeight: 700, minHeight: 42,
+                    padding: "8px 14px", cursor: "pointer", fontSize: 12.5, fontWeight: 700, minHeight: 44,
                   }}>{label}</button>
                 ))}
               </div>
@@ -2082,7 +2098,7 @@ export default function App() {
           padding: "10px 16px", background: T.goldSoft, borderBottom: `1px solid ${T.goldBorder}`, fontSize: 12.5, color: T.text }}>
           <span>A newer version of EraClash is live — you're viewing build <b>{shortBuild()}</b>.</span>
           <button onClick={() => window.location.reload()} style={{
-            padding: "7px 16px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+            padding: "7px 16px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
             border: "none", background: T.gold, color: T.onGold }}>Reload to update</button>
         </div>
       )}

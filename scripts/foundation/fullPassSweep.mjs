@@ -19,11 +19,21 @@ const HARNESS_ENV = { ...process.env, PREVIEW_SIM_ENGINE_ENABLED: "1", VERCEL_EN
 const kill = (port) => { const pid = spawnSync("lsof", ["-ti", `tcp:${port}`, "-sTCP:LISTEN"], { encoding: "utf8" }).stdout.trim(); if (pid) for (const p of pid.split(/\s+/)) spawnSync("kill", ["-9", p]); };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const up = async (port) => { for (let i = 0; i < 60; i++) { try { const r = await fetch(`http://localhost:${port}/api/health`); if (r.ok) return true; } catch {} await sleep(250); } return false; };
+let activeHarnesses = [];
+const stopHarnesses = () => {
+  // A slow File Provider import may not be listening yet. Track the children
+  // we started so a readiness timeout cannot leave a later ghost listener.
+  for (const child of activeHarnesses) { try { child.kill('SIGKILL'); } catch {} }
+  activeHarnesses = [];
+  kill(4178); kill(4179);
+};
 const fresh = async () => {
-  kill(4178); kill(4179); await sleep(400);
+  stopHarnesses(); await sleep(400);
   mkdirSync("/tmp/eraclash-sweep", { recursive: true });
-  spawn("node", ["scripts/harness.mjs", "4178"], { env: HARNESS_ENV, detached: true, stdio: ["ignore", openSync("/tmp/eraclash-sweep/4178.log", "a"), openSync("/tmp/eraclash-sweep/4178.log", "a")] }).unref();
-  spawn("node", ["scripts/harness.mjs", "4179"], { env: { ...HARNESS_ENV, ECLASH_DIST: "dist-fixtures" }, detached: true, stdio: ["ignore", openSync("/tmp/eraclash-sweep/4179.log", "a"), openSync("/tmp/eraclash-sweep/4179.log", "a")] }).unref();
+  const primaryHarness = spawn("node", ["scripts/harness.mjs", "4178"], { env: HARNESS_ENV, detached: true, stdio: ["ignore", openSync("/tmp/eraclash-sweep/4178.log", "a"), openSync("/tmp/eraclash-sweep/4178.log", "a")] });
+  activeHarnesses.push(primaryHarness); primaryHarness.unref();
+  const fixtureHarness = spawn("node", ["scripts/harness.mjs", "4179"], { env: { ...HARNESS_ENV, ECLASH_DIST: "dist-fixtures" }, detached: true, stdio: ["ignore", openSync("/tmp/eraclash-sweep/4179.log", "a"), openSync("/tmp/eraclash-sweep/4179.log", "a")] });
+  activeHarnesses.push(fixtureHarness); fixtureHarness.unref();
   return (await up(4178)) && (await up(4179));
 };
 
@@ -57,7 +67,7 @@ for (const [group, script, modes] of GATES) {
     console.log(`${r.status === 0 ? "PASS" : "FAIL"}  ${row.command}  ${summary || ""}${fails.length ? `  (${fails.length} failed)` : ""}`);
   }
 }
-kill(4178); kill(4179);
+stopHarnesses();
 // restore every historical artifact a gate rewrote (this pass records only its own file)
 spawnSync("git", ["checkout", "--", "data/validation"], { stdio: "inherit" });
 // Preserve unrelated new evidence: a sweep must never delete current-session

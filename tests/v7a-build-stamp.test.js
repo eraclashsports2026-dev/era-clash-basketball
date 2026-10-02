@@ -1,6 +1,8 @@
 // ── Build stamp: naming the running build, and noticing a newer one ───────────
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import { buildIdFromHtml, shortBuild } from "../src/buildStamp.js";
 
 afterEach(() => { vi.restoreAllMocks(); });
@@ -11,10 +13,26 @@ describe("build stamp", () => {
     expect(html).toMatch(/<meta\s+name="eraclash-build"\s+content="__ERACLASH_BUILD_ID__"/);
   });
 
-  it("the plugin stamps the HTML as well as the service worker", () => {
-    const cfg = readFileSync("vite.config.js", "utf8");
-    expect(cfg).toMatch(/dist", "index\.html"/);
-    expect(cfg).toMatch(/replaceAll\(SW_PLACEHOLDER, id\)/);
+  it.each(['relative', 'absolute'])("stamps the resolved %s output and preserves a separate build", async kind => {
+    const { swVersionPlugin, buildId, SW_PLACEHOLDER } = await import('../vite.config.js');
+    const root = mkdtempSync(join(tmpdir(), 'eraclash-build-stamp-'));
+    try {
+      const production = join(root, 'dist'), target = join(root, 'dist-neutral');
+      mkdirSync(production); mkdirSync(join(target, 'assets'), { recursive: true });
+      const preserved = '<html>separate production build</html>';
+      writeFileSync(join(production, 'index.html'), preserved);
+      const names = ['one.js', 'two.css'];
+      for (const name of names) writeFileSync(join(target, 'assets', name), 'fixture');
+      writeFileSync(join(target, 'sw.js'), `const BUILD_ID = "${SW_PLACEHOLDER}";`);
+      writeFileSync(join(target, 'index.html'), `<meta name="eraclash-build" content="${SW_PLACEHOLDER}">`);
+      const plugin = swVersionPlugin();
+      plugin.configResolved({ root, build: { outDir: kind === 'absolute' ? target : 'dist-neutral' } });
+      plugin.closeBundle.call({ warn: vi.fn(), info: vi.fn() });
+      const expected = buildId(names);
+      expect(readFileSync(join(target, 'sw.js'), 'utf8')).toContain(expected);
+      expect(buildIdFromHtml(readFileSync(join(target, 'index.html'), 'utf8'))).toBe(expected);
+      expect(readFileSync(join(production, 'index.html'), 'utf8')).toBe(preserved);
+    } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
   it("parses a stamped build id and ignores an unstamped one", () => {

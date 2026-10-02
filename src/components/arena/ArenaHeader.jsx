@@ -15,7 +15,7 @@ import { provider as accountProvider } from "../../accounts/provider.js";
 
 const statusTone = (status) => {
   switch (status) {
-    case MODE_STATUS.AVAILABLE: return { fg: "var(--ec-a-green, #4ade80)", bg: "rgba(74,222,128,0.12)" };
+    case MODE_STATUS.AVAILABLE: return { fg: "var(--ec-a-green-on-dark, #4ade80)", bg: "rgba(74,222,128,0.12)" };
     case MODE_STATUS.COMING_SOON: return { fg: "var(--ec-a-text-muted, #93a0b5)", bg: "rgba(147,160,181,0.12)" };
     case MODE_STATUS.DISABLED_FOR_PREVIEW: return { fg: "var(--ec-a-text-muted, #93a0b5)", bg: "rgba(147,160,181,0.12)" };
     default: return { fg: "var(--ec-a-gold, #f2b51d)", bg: "var(--ec-a-gold-soft, rgba(242,181,29,0.14))" };

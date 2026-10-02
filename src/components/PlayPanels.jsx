@@ -9,7 +9,7 @@ import { T, S, R, FONT } from "../theme.js";
 // ── Ball IQ toggle (a draft setting, not a hero card) ───────────────────────
 export function BallIqToggle({ on, onChange }) {
   return (
-    <label style={{ display: "inline-flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 12, color: T.textDim }}>
+    <label style={{ display: "inline-flex", alignItems: "center", minHeight: 44, gap: 8, cursor: "pointer", fontSize: 12, color: T.textDim }}>
       <input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)}
         style={{ position: "absolute", opacity: 0, width: 1, height: 1 }} />
       <span aria-hidden="true" style={{
